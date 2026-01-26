@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acuaria Labs | Creatividad Tecnológica</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Elementos decorativos flotantes -->
+    <div class="floating-elements">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+        <div class="bubble bubble-5"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="#" class="logo">
+                <img src="ACUARIA-LABS2.png" alt="Acuaria Labs">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">Nosotros</a></li>
+                <li><a href="#pillars">Qué hacemos</a></li>
+                <li><a href="#projects">Proyectos</a></li>
+                <li><a href="#contact" class="btn-nav">Contacto</a></li>
+            </ul>
+            <button class="mobile-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <p class="hero-tag">Laboratorio de ideas</p>
+                <h1>Donde la <span class="highlight">curiosidad</span> se convierte en <span class="highlight">tecnología</span></h1>
+                <p class="hero-description">
+                    Somos un espacio de experimentación donde confluyen el pensamiento científico,
+                    la creatividad y la tecnología para dar vida a proyectos que exploran nuevas posibilidades.
+                </p>
+                <div class="hero-cta">
+                    <a href="#pillars" class="btn btn-primary">Explorar</a>
+                    <a href="#projects" class="btn btn-secondary">Ver proyectos</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="dna-helix">
+                    <svg viewBox="0 0 200 400" class="helix-svg">
+                        <defs>
+                            <linearGradient id="helixGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#1a4a6e;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#2d7ab3;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- DNA Helix paths -->
+                        <path class="helix-path helix-1" d="M50,20 Q150,60 50,100 Q-50,140 50,180 Q150,220 50,260 Q-50,300 50,340 Q150,380 50,400" fill="none" stroke="url(#helixGradient)" stroke-width="3"/>
+                        <path class="helix-path helix-2" d="M150,20 Q50,60 150,100 Q250,140 150,180 Q50,220 150,260 Q250,300 150,340 Q50,380 150,400" fill="none" stroke="url(#helixGradient)" stroke-width="3"/>
+                        <!-- Connection lines -->
+                        <line class="helix-connection" x1="50" y1="60" x2="150" y2="60" stroke="#1a4a6e" stroke-width="2" opacity="0.4"/>
+                        <line class="helix-connection" x1="50" y1="140" x2="150" y2="140" stroke="#1a4a6e" stroke-width="2" opacity="0.4"/>
+                        <line class="helix-connection" x1="50" y1="220" x2="150" y2="220" stroke="#1a4a6e" stroke-width="2" opacity="0.4"/>
+                        <line class="helix-connection" x1="50" y1="300" x2="150" y2="300" stroke="#1a4a6e" stroke-width="2" opacity="0.4"/>
+                        <!-- Nodes -->
+                        <circle class="helix-node" cx="50" cy="60" r="6" fill="#1a4a6e"/>
+                        <circle class="helix-node" cx="150" cy="60" r="6" fill="#2d7ab3"/>
+                        <circle class="helix-node" cx="150" cy="140" r="6" fill="#1a4a6e"/>
+                        <circle class="helix-node" cx="50" cy="140" r="6" fill="#2d7ab3"/>
+                        <circle class="helix-node" cx="50" cy="220" r="6" fill="#1a4a6e"/>
+                        <circle class="helix-node" cx="150" cy="220" r="6" fill="#2d7ab3"/>
+                        <circle class="helix-node" cx="150" cy="300" r="6" fill="#1a4a6e"/>
+                        <circle class="helix-node" cx="50" cy="300" r="6" fill="#2d7ab3"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-visual">
+                    <div class="molecule-grid">
+                        <div class="molecule m1"></div>
+                        <div class="molecule m2"></div>
+                        <div class="molecule m3"></div>
+                        <div class="connection c1"></div>
+                        <div class="connection c2"></div>
+                        <div class="connection c3"></div>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p class="section-tag">Sobre Acuaria Labs</p>
+                    <h2>Un laboratorio para mentes inquietas</h2>
+                    <p>
+                        Nacimos de la convicción de que las mejores ideas surgen cuando
+                        la rigurosidad científica se encuentra con la libertad creativa.
+                    </p>
+                    <p>
+                        En Acuaria Labs creamos un ambiente donde la experimentación es bienvenida,
+                        donde cada pregunta puede convertirse en un proyecto y donde el conocimiento
+                        se comparte para multiplicar su impacto.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number">∞</span>
+                            <span class="stat-label">Curiosidad</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">+</span>
+                            <span class="stat-label">Colaboración</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">Δ</span>
+                            <span class="stat-label">Transformación</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pillars Section -->
+    <section id="pillars" class="pillars">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">Nuestros pilares</p>
+                <h2>Cómo materializamos ideas</h2>
+            </div>
+            <div class="pillars-grid">
+                <article class="pillar-card">
+                    <div class="pillar-icon">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="2"/>
+                            <path d="M32 16v32M16 32h32" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="32" cy="16" r="4" fill="currentColor"/>
+                            <circle cx="32" cy="48" r="4" fill="currentColor"/>
+                            <circle cx="16" cy="32" r="4" fill="currentColor"/>
+                            <circle cx="48" cy="32" r="4" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Proyectos</h3>
+                    <p>
+                        Desarrollamos proyectos tecnológicos que nacen de preguntas genuinas.
+                        Desde prototipos experimentales hasta soluciones funcionales,
+                        cada proyecto es una oportunidad de aprender y crear.
+                    </p>
+                    <ul class="pillar-tags">
+                        <li>Prototipos</li>
+                        <li>Software</li>
+                        <li>Hardware</li>
+                    </ul>
+                </article>
+
+                <article class="pillar-card featured">
+                    <div class="pillar-icon">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32 8l6 18h18l-14 11 5 18-15-11-15 11 5-18L8 26h18l6-18z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <circle cx="32" cy="32" r="8" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Conocimiento</h3>
+                    <p>
+                        Compartimos lo que aprendemos. A través de documentación abierta,
+                        talleres y recursos educativos, promovemos una cultura donde
+                        el saber circula libremente.
+                    </p>
+                    <ul class="pillar-tags">
+                        <li>Open Source</li>
+                        <li>Talleres</li>
+                        <li>Documentación</li>
+                    </ul>
+                </article>
+
+                <article class="pillar-card">
+                    <div class="pillar-icon">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="12" y="20" width="40" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M20 20V16a12 12 0 0124 0v4" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="32" cy="36" r="6" stroke="currentColor" stroke-width="2"/>
+                            <path d="M32 42v6" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Experimentación</h3>
+                    <p>
+                        Mantenemos un espacio seguro para probar ideas sin miedo al fracaso.
+                        La experimentación es nuestro método: hipótesis, prueba,
+                        iteración y descubrimiento.
+                    </p>
+                    <ul class="pillar-tags">
+                        <li>R&D</li>
+                        <li>Iteración</li>
+                        <li>Innovación</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tag">Laboratorio activo</p>
+                <h2>Proyectos en desarrollo</h2>
+            </div>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <div class="project-status">
+                        <span class="status-dot"></span>
+                        En progreso
+                    </div>
+                    <h3>Proyecto Alpha</h3>
+                    <p>Explorando nuevas interfaces de interacción humano-máquina mediante señales biométricas.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>ML</span>
+                        <span>Hardware</span>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-status">
+                        <span class="status-dot"></span>
+                        En progreso
+                    </div>
+                    <h3>Proyecto Beta</h3>
+                    <p>Sistema de visualización de datos complejos para hacer comprensible lo abstracto.</p>
+                    <div class="project-tech">
+                        <span>WebGL</span>
+                        <span>D3.js</span>
+                        <span>Data Viz</span>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-status idea">
+                        <span class="status-dot"></span>
+                        Ideación
+                    </div>
+                    <h3>Proyecto Gamma</h3>
+                    <p>Herramientas de código abierto para democratizar el acceso a tecnologías emergentes.</p>
+                    <div class="project-tech">
+                        <span>Open Source</span>
+                        <span>Community</span>
+                    </div>
+                </article>
+            </div>
+            <div class="projects-cta">
+                <p>¿Tienes una idea que quieres explorar?</p>
+                <a href="#contact" class="btn btn-primary">Conversemos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="philosophy">
+        <div class="container">
+            <blockquote class="philosophy-quote">
+                <p>"La creatividad es la inteligencia divirtiéndose"</p>
+                <cite>— Albert Einstein</cite>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <p class="section-tag">Conectemos</p>
+                    <h2>¿Listo para experimentar?</h2>
+                    <p>
+                        Si tienes una idea, una pregunta o simplemente curiosidad por lo que hacemos,
+                        nos encantaría escucharte. Cada conversación puede ser el inicio de algo nuevo.
+                    </p>
+                    <div class="contact-methods">
+                        <a href="mailto:hola@acuarialabs.com" class="contact-method">
+                            <span class="method-icon">@</span>
+                            <span>hola@acuarialabs.com</span>
+                        </a>
+                    </div>
+                </div>
+                <form class="contact-form" action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">¿Qué tienes en mente?</label>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Enviar mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="ACUARIA-LABS2.png" alt="Acuaria Labs" class="footer-logo">
+                    <p>Creatividad tecnológica en acción.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navegación</h4>
+                        <ul>
+                            <li><a href="#about">Nosotros</a></li>
+                            <li><a href="#pillars">Qué hacemos</a></li>
+                            <li><a href="#projects">Proyectos</a></li>
+                            <li><a href="#contact">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Social</h4>
+                        <ul>
+                            <li><a href="#">GitHub</a></li>
+                            <li><a href="#">LinkedIn</a></li>
+                            <li><a href="#">Twitter</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Acuaria Labs. Experimentando desde el laboratorio.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
