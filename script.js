@@ -70,33 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fadeInObserver.observe(el);
     });
 
-    // Form handling
-    const contactForm = document.querySelector('.contact-form');
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            // Get form data
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-
-            // Here you would typically send the data to a server
-            console.log('Form submitted:', data);
-
-            // Show success message (you can customize this)
-            const btn = contactForm.querySelector('button[type="submit"]');
-            const originalText = btn.textContent;
-            btn.textContent = 'Mensaje enviado';
-            btn.disabled = true;
-
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.disabled = false;
-                contactForm.reset();
-            }, 3000);
-        });
-    }
+    // Form handling - Netlify handles the submission
+    // No need to prevent default, Netlify will process the form
 
     // Parallax effect for floating bubbles
     let ticking = false;
