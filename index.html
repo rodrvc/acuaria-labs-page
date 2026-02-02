@@ -297,7 +297,10 @@
                         </a>
                     </div>
                 </div>
-                <form class="contact-form" name="contacto" method="POST" data-netlify="true">
+                <form class="contact-form" name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <p class="hidden" style="display:none;">
+                        <label>No llenes esto: <input name="bot-field" type="text"></label>
+                    </p>
                     <div class="form-group">
                         <label for="name">Nombre</label>
                         <input type="text" id="name" name="name" required>
