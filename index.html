@@ -25,13 +25,13 @@
             <a href="#" class="logo">
                 <img src="ACUARIA-LABS2.png" alt="Acuaria Labs">
             </a>
-            <ul class="nav-links">
+            <ul class="nav-links" id="site-nav">
                 <li><a href="#about">Nosotros</a></li>
                 <li><a href="#pillars">Qué hacemos</a></li>
                 <li><a href="#projects">Proyectos</a></li>
                 <li><a href="#contact" class="btn-nav">Contacto</a></li>
             </ul>
-            <button class="mobile-toggle" aria-label="Menu">
+            <button class="mobile-toggle" aria-label="Menu" aria-controls="site-nav" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -226,8 +226,16 @@
                         <span class="status-dot"></span>
                         En progreso
                     </div>
-                    <h3>Proyecto Alpha</h3>
-                    <p>Explorando nuevas interfaces de interacción humano-máquina mediante señales biométricas.</p>
+                    <div class="project-icon" aria-hidden="true">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 50L32 14L56 50H8Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M32 14V50" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 50V36H40V50" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="32" cy="30" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Campamento Tecnológico</h3>
+                    <p>Experiencias inmersivas para aprender y prototipar tecnología en comunidad.</p>
                     <div class="project-tech">
                         <span>Python</span>
                         <span>ML</span>
@@ -235,19 +243,28 @@
                     </div>
                 </article>
 
-                <article class="project-card">
+                <a class="project-card-link" href="https://adondepo.cl/" target="_blank" rel="noopener noreferrer" aria-label="Ayuda a la comunidad - adondepo.cl">
+                    <article class="project-card">
                     <div class="project-status">
                         <span class="status-dot"></span>
                         En progreso
                     </div>
-                    <h3>Proyecto Beta</h3>
-                    <p>Sistema de visualización de datos complejos para hacer comprensible lo abstracto.</p>
+                    <div class="project-icon" aria-hidden="true">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="26" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M20 50c2-8 8-12 12-12s10 4 12 12" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M8 26h8M48 26h8M32 4v8" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Ayuda a la comunidad</h3>
+                    <p>Aplicación para descubrir panoramas de la ciudad y conectar con iniciativas locales.</p>
                     <div class="project-tech">
                         <span>WebGL</span>
                         <span>D3.js</span>
                         <span>Data Viz</span>
                     </div>
-                </article>
+                    </article>
+                </a>
 
                 <article class="project-card">
                     <div class="project-status idea">

@@ -20,11 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileToggle = document.querySelector('.mobile-toggle');
     const navLinks = document.querySelector('.nav-links');
 
+    const toggleMenu = (forceClose = false) => {
+        if (!navLinks || !mobileToggle) {
+            return;
+        }
+        const shouldOpen = forceClose ? false : !navLinks.classList.contains('active');
+        navLinks.classList.toggle('active', shouldOpen);
+        mobileToggle.classList.toggle('active', shouldOpen);
+        document.body.classList.toggle('menu-open', shouldOpen);
+        mobileToggle.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+    };
+
     if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileToggle.classList.toggle('active');
-        });
+        mobileToggle.addEventListener('click', () => toggleMenu(false));
     }
 
     // Smooth scroll for anchor links
@@ -34,8 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 // Close mobile menu if open
-                navLinks.classList.remove('active');
-                mobileToggle.classList.remove('active');
+                toggleMenu(true);
 
                 target.scrollIntoView({
                     behavior: 'smooth',
