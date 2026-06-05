@@ -186,7 +186,7 @@
             </div>
 
             <div class="pipeline-graph" role="img" aria-label="Diagrama del pipeline de IA de Acuaria Labs: los datos del cliente pasan por ingesta, un modelo de lenguaje, agentes especializados y finalmente generan resultados.">
-                <svg class="pipeline-svg" viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+                <svg class="pipeline-svg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="edgeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" stop-color="#2d7ab3"/>
@@ -200,13 +200,13 @@
 
                     <!-- Connection edges (paths the particles travel along) -->
                     <g class="pipeline-edges" fill="none" stroke="url(#edgeGradient)" stroke-width="2">
-                        <path id="edge-1" class="pipe-edge" d="M150,260 C230,260 250,130 330,130"/>
-                        <path id="edge-2" class="pipe-edge" d="M150,260 C230,260 250,390 330,390"/>
-                        <path id="edge-3" class="pipe-edge" d="M430,130 C510,130 490,260 570,260"/>
-                        <path id="edge-4" class="pipe-edge" d="M430,390 C510,390 490,260 570,260"/>
-                        <path id="edge-5" class="pipe-edge" d="M670,260 C750,260 750,130 830,130"/>
-                        <path id="edge-6" class="pipe-edge" d="M670,260 C740,260 760,260 830,260"/>
-                        <path id="edge-7" class="pipe-edge" d="M670,260 C750,260 750,390 830,390"/>
+                        <path id="edge-1" class="pipe-edge" d="M150,310 C230,310 250,112 330,112"/>
+                        <path id="edge-2" class="pipe-edge" d="M150,310 C230,310 250,508 330,508"/>
+                        <path id="edge-3" class="pipe-edge" d="M430,112 C510,112 490,310 570,310"/>
+                        <path id="edge-4" class="pipe-edge" d="M430,508 C510,508 490,310 570,310"/>
+                        <path id="edge-5" class="pipe-edge" d="M670,310 C750,310 750,112 830,112"/>
+                        <path id="edge-6" class="pipe-edge" d="M670,310 C740,310 760,310 830,310"/>
+                        <path id="edge-7" class="pipe-edge" d="M670,310 C750,310 750,508 830,508"/>
                     </g>
 
                     <!-- Animated data particles travelling along the edges -->
@@ -222,13 +222,13 @@
 
                     <!-- Node glow halos -->
                     <g class="pipeline-halos">
-                        <circle cx="100" cy="260" r="55" fill="url(#nodeGlow)"/>
-                        <circle cx="380" cy="130" r="55" fill="url(#nodeGlow)"/>
-                        <circle cx="380" cy="390" r="55" fill="url(#nodeGlow)"/>
-                        <circle cx="620" cy="260" r="60" fill="url(#nodeGlow)"/>
-                        <circle cx="880" cy="130" r="50" fill="url(#nodeGlow)"/>
-                        <circle cx="880" cy="260" r="50" fill="url(#nodeGlow)"/>
-                        <circle cx="880" cy="390" r="50" fill="url(#nodeGlow)"/>
+                        <circle cx="100" cy="310" r="55" fill="url(#nodeGlow)"/>
+                        <circle cx="380" cy="112" r="55" fill="url(#nodeGlow)"/>
+                        <circle cx="380" cy="508" r="55" fill="url(#nodeGlow)"/>
+                        <circle cx="620" cy="310" r="60" fill="url(#nodeGlow)"/>
+                        <circle cx="880" cy="112" r="50" fill="url(#nodeGlow)"/>
+                        <circle cx="880" cy="310" r="50" fill="url(#nodeGlow)"/>
+                        <circle cx="880" cy="508" r="50" fill="url(#nodeGlow)"/>
                     </g>
                 </svg>
 
@@ -245,7 +245,7 @@
                         <p>Documentos, APIs, bases de datos, conversaciones.</p>
                     </article>
 
-                    <article class="pipe-node node-ingest" style="--x:38%; --y:25%;" data-step="02">
+                    <article class="pipe-node node-ingest" style="--x:38%; --y:18%;" data-step="02">
                         <div class="node-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
                                 <path d="M4 7h16M4 12h16M4 17h10"/>
@@ -256,7 +256,7 @@
                         <p>Limpiamos, estructuramos y vectorizamos la información.</p>
                     </article>
 
-                    <article class="pipe-node node-retrieval" style="--x:38%; --y:75%;" data-step="03">
+                    <article class="pipe-node node-retrieval" style="--x:38%; --y:82%;" data-step="03">
                         <div class="node-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
                                 <circle cx="11" cy="11" r="7"/>
@@ -279,7 +279,7 @@
                         <p>El núcleo de razonamiento que procesa y genera.</p>
                     </article>
 
-                    <article class="pipe-node node-agent" style="--x:88%; --y:25%;" data-step="05">
+                    <article class="pipe-node node-agent" style="--x:88%; --y:18%;" data-step="05">
                         <div class="node-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
                                 <circle cx="12" cy="8" r="4"/>
@@ -300,7 +300,7 @@
                         <p>Respuestas, automatizaciones y decisiones accionables.</p>
                     </article>
 
-                    <article class="pipe-node node-feedback" style="--x:88%; --y:75%;" data-step="07">
+                    <article class="pipe-node node-feedback" style="--x:88%; --y:82%;" data-step="07">
                         <div class="node-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
                                 <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
