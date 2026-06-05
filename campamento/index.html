@@ -82,18 +82,20 @@
                 <p class="hero-tag">Campamento Tecnológico · Antofagasta</p>
                 <h1>Aprende tecnología <span class="highlight">haciendo</span>, probando y creando</h1>
                 <p class="hero-description">
-                    Un espacio para experimentar y pasarlo bien mientras descubres el mundo tech.
-                    Sin presión, con apoyo real. No necesitas saber programar ni tener experiencia
-                    previa: solo ganas de aprender y curiosidad.
+                    Ya realizamos nuestro <strong>primer Campamento Tecnológico</strong> en Antofagasta,
+                    y se viene el próximo. Un espacio para experimentar y pasarlo bien mientras descubres
+                    el mundo tech. Sin presión y con apoyo real: no necesitas saber programar ni tener
+                    experiencia previa, solo ganas de aprender y curiosidad.
                 </p>
                 <div class="hero-cta">
-                    <a href="#inscribirse" class="btn btn-primary">Quiero participar</a>
-                    <a href="#temario" class="btn btn-secondary">Ver qué aprenderás</a>
+                    <a href="#inscribirse" class="btn btn-primary">Quiero el próximo cupo</a>
+                    <a href="#galeria" class="btn btn-secondary">Ver cómo fue</a>
                 </div>
             </div>
             <div class="hero-visual">
                 <div class="camp-hero-card">
-                    <!-- Reemplazar por una foto real del campamento -->
+                    <!-- Cuando exista campamento/img/hero.jpg se mostrará; si no, queda el placeholder -->
+                    <img class="camp-hero-img" src="img/hero.jpg" alt="Primer Campamento Tecnológico de Acuaria Labs en Antofagasta" onerror="this.classList.add('is-hidden')">
                     <div class="camp-photo-placeholder" role="img" aria-label="Foto del Campamento Tecnológico (pendiente)">
                         <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M8 50L32 14L56 50H8Z"/>
@@ -175,27 +177,22 @@
         </div>
     </section>
 
-    <!-- Practical info (placeholders) -->
-    <section class="projects">
+    <!-- Galería del primer campamento -->
+    <section id="galeria" class="projects">
         <div class="container">
             <div class="section-header">
-                <p class="section-tag">Información práctica</p>
-                <h2>Datos del campamento</h2>
-                <p class="section-sub">Estamos afinando los detalles. Esta info se actualizará pronto.</p>
+                <p class="section-tag">Así fue el primero</p>
+                <h2>Primer Campamento Tecnológico</h2>
+                <p class="section-sub">27 de enero al 3 de febrero · Antofagasta. Una semana de aprender, crear y compartir.</p>
             </div>
-            <div class="projects-grid camp-info">
-                <article class="project-card">
-                    <h3>Fechas</h3>
-                    <p>Por confirmar — déjanos tus datos y te avisamos primero.</p>
-                </article>
-                <article class="project-card">
-                    <h3>Lugar</h3>
-                    <p>Antofagasta. Sede por confirmar.</p>
-                </article>
-                <article class="project-card">
-                    <h3>Inversión</h3>
-                    <p>Por confirmar.</p>
-                </article>
+            <div class="camp-gallery">
+                <!-- Reemplaza cada figure por una foto real en campamento/img/ (galeria-1.jpg ... galeria-6.jpg) -->
+                <figure class="camp-shot"><img src="img/galeria-1.jpg" alt="Participantes en el primer Campamento Tecnológico de Acuaria Labs" loading="lazy" onerror="this.closest('figure').classList.add('camp-shot--empty')"></figure>
+                <figure class="camp-shot"><img src="img/galeria-2.jpg" alt="Trabajando en proyectos durante el campamento" loading="lazy" onerror="this.closest('figure').classList.add('camp-shot--empty')"></figure>
+                <figure class="camp-shot"><img src="img/galeria-3.jpg" alt="Electrónica y Arduino en el campamento" loading="lazy" onerror="this.closest('figure').classList.add('camp-shot--empty')"></figure>
+                <figure class="camp-shot"><img src="img/galeria-4.jpg" alt="Sesión de inteligencia artificial en el campamento" loading="lazy" onerror="this.closest('figure').classList.add('camp-shot--empty')"></figure>
+                <figure class="camp-shot"><img src="img/galeria-5.jpg" alt="Comunidad del Campamento Tecnológico de Acuaria Labs" loading="lazy" onerror="this.closest('figure').classList.add('camp-shot--empty')"></figure>
+                <figure class="camp-shot"><img src="img/galeria-6.jpg" alt="Entrega de certificados del primer campamento" loading="lazy" onerror="this.closest('figure').classList.add('camp-shot--empty')"></figure>
             </div>
         </div>
     </section>
@@ -205,11 +202,13 @@
         <div class="container">
             <div class="contact-content">
                 <div class="contact-info">
-                    <p class="section-tag">Quiero participar</p>
-                    <h2>Asegura tu cupo o trae tu idea</h2>
+                    <p class="section-tag">El próximo campamento</p>
+                    <h2>Quiero un cupo en el próximo</h2>
                     <p>
-                        ¿Te gustaría participar o tienes una idea que quieres convertir en proyecto?
-                        Déjanos tus datos y te contactamos. También puedes escribirnos por Instagram.
+                        El primero ya pasó y fue una gran experiencia. Déjanos tus datos y serás
+                        de los primeros en enterarte de las fechas del próximo Campamento Tecnológico.
+                        ¿Tienes una idea que quieres convertir en proyecto? Cuéntanos. También puedes
+                        escribirnos por Instagram.
                     </p>
                     <div class="contact-methods">
                         <a href="mailto:hola@acuarialabs.com" class="contact-method">
