@@ -354,10 +354,7 @@ a:hover {
 }
 
 .highlight {
-    background: var(--gradient-brand);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-primary-light);
     position: relative;
 }
 
