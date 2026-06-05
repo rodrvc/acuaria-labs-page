@@ -228,16 +228,20 @@ a:hover {
 }
 
 .btn-nav {
-    padding: 0.5rem 1.25rem;
+    padding: 0.55rem 1.25rem;
     background: var(--color-primary);
     color: var(--color-white) !important;
-    border-radius: 6px;
-    font-weight: 500;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 6px 16px -8px rgba(26, 74, 110, 0.5);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
 .btn-nav:hover {
-    background: var(--color-primary-dark);
+    background: var(--color-primary-light);
     color: var(--color-white) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px -8px rgba(74, 159, 212, 0.55);
 }
 
 .mobile-toggle {
@@ -263,37 +267,41 @@ a:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.875rem 2rem;
+    padding: 0.9rem 2rem;
     font-size: 1rem;
-    font-weight: 500;
-    border-radius: 8px;
-    border: 2px solid transparent;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
 .btn-primary {
-    background: var(--gradient-brand);
+    /* Celeste más brillante e iluminado, con destello superior */
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 45%),
+        linear-gradient(120deg, var(--color-primary-light) 0%, var(--color-accent) 100%);
     color: var(--color-white);
-    border-color: transparent;
-    box-shadow: var(--shadow-brand);
+    box-shadow: 0 8px 22px -8px rgba(74, 159, 212, 0.55);
 }
 
 .btn-primary:hover {
     color: var(--color-white);
     transform: translateY(-2px);
-    box-shadow: 0 20px 38px -10px rgb(45 122 179 / 0.6);
+    box-shadow: 0 14px 30px -8px rgba(74, 159, 212, 0.7);
+    filter: brightness(1.05);
 }
 
 .btn-secondary {
-    background: transparent;
+    background: var(--color-white);
     color: var(--color-primary);
-    border-color: var(--color-primary);
+    box-shadow: inset 0 0 0 1.5px var(--color-gray-200);
 }
 
 .btn-secondary:hover {
-    background: var(--color-primary);
-    color: var(--color-white);
+    color: var(--color-primary-light);
+    box-shadow: inset 0 0 0 1.5px var(--color-primary-light), 0 8px 20px -10px rgba(74, 159, 212, 0.4);
+    transform: translateY(-2px);
 }
 
 .btn-full {
