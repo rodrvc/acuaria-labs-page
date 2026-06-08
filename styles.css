@@ -4,10 +4,25 @@
 
 /* Variables */
 :root {
-    --color-primary: #1a4a6e;
-    --color-primary-light: #2d7ab3;
-    --color-primary-dark: #0f3249;
-    --color-accent: #4a9fd4;
+    /* ----------------------------------------------------------------
+       Sistema de color — UNA sola escala de azul (matiz 205.7°, el del logo)
+       Todos los tonos comparten matiz → combinan entre sí, sin saltos.
+       ---------------------------------------------------------------- */
+    --primary-800: #11324a; /* extremo oscuro / sombras */
+    --primary-700: #1a4b70; /* marca, títulos, texto, logo, footer */
+    --primary-600: #2a6692; /* hover oscuro, banda regional */
+    --primary-500: #3c80b4; /* hovers, iconos del pipeline */
+    --primary-400: #64a1ce; /* acento único: highlight hero, dots, glow */
+    --primary-200: #b8d5ea; /* bordes suaves, partículas */
+    --primary-100: #deecf7; /* chips */
+    --primary-50:  #eef6fb; /* fondos suaves de sección */
+
+    /* Alias compatibles: los nombres antiguos ahora apuntan a la escala nueva.
+       primary-light hacía doble papel; se separa en 500 (hover/iconos) y 400 (highlight). */
+    --color-primary: var(--primary-700);
+    --color-primary-light: var(--primary-500);
+    --color-primary-dark: var(--primary-800);
+    --color-accent: var(--primary-400);
     --color-white: #ffffff;
     --color-gray-50: #f8fafc;
     --color-gray-100: #f1f5f9;
@@ -20,7 +35,7 @@
     --color-gray-800: #1e293b;
     --color-gray-900: #0f172a;
 
-    --color-sky-50: #eef7fd;
+    --color-sky-50: var(--primary-50);
 
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -29,11 +44,11 @@
     --gradient-soft: linear-gradient(180deg, var(--color-white) 0%, var(--color-sky-50) 100%);
 
     /* Sombras suaves con tinte celeste (look más premium) */
-    --shadow-sm: 0 1px 2px 0 rgb(15 50 73 / 0.06);
-    --shadow-md: 0 6px 16px -6px rgb(15 50 73 / 0.14), 0 2px 4px -2px rgb(15 50 73 / 0.08);
-    --shadow-lg: 0 16px 32px -10px rgb(15 50 73 / 0.18), 0 4px 8px -4px rgb(15 50 73 / 0.1);
-    --shadow-xl: 0 28px 50px -16px rgb(26 74 110 / 0.28), 0 10px 20px -8px rgb(26 74 110 / 0.14);
-    --shadow-brand: 0 14px 30px -10px rgb(45 122 179 / 0.45);
+    --shadow-sm: 0 1px 2px 0 rgb(17 50 74 / 0.06);
+    --shadow-md: 0 6px 16px -6px rgb(17 50 74 / 0.14), 0 2px 4px -2px rgb(17 50 74 / 0.08);
+    --shadow-lg: 0 16px 32px -10px rgb(17 50 74 / 0.18), 0 4px 8px -4px rgb(17 50 74 / 0.1);
+    --shadow-xl: 0 28px 50px -16px rgb(26 75 112 / 0.28), 0 10px 20px -8px rgb(26 75 112 / 0.14);
+    --shadow-brand: 0 14px 30px -10px rgb(60 128 180 / 0.45);
 
     --transition-fast: 150ms ease;
     --transition-normal: 300ms ease;
@@ -58,8 +73,8 @@ body {
     color: var(--color-gray-700);
     background-color: var(--color-white);
     background-image:
-        radial-gradient(900px 500px at 88% -8%, rgba(74, 159, 212, 0.10), transparent 60%),
-        radial-gradient(700px 460px at 0% 6%, rgba(45, 122, 179, 0.07), transparent 55%);
+        radial-gradient(900px 500px at 88% -8%, rgba(100, 161, 206, 0.10), transparent 60%),
+        radial-gradient(700px 460px at 0% 6%, rgba(60, 128, 180, 0.07), transparent 55%);
     background-attachment: fixed;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -233,7 +248,7 @@ a:hover {
     color: var(--color-white) !important;
     border-radius: 10px;
     font-weight: 600;
-    box-shadow: 0 6px 16px -8px rgba(26, 74, 110, 0.5);
+    box-shadow: 0 6px 16px -8px rgba(26, 75, 112, 0.5);
     transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
@@ -241,7 +256,7 @@ a:hover {
     background: var(--color-primary-light);
     color: var(--color-white) !important;
     transform: translateY(-1px);
-    box-shadow: 0 10px 22px -8px rgba(74, 159, 212, 0.55);
+    box-shadow: 0 10px 22px -8px rgba(100, 161, 206, 0.55);
 }
 
 .mobile-toggle {
@@ -282,13 +297,13 @@ a:hover {
         linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 45%),
         linear-gradient(120deg, var(--color-primary-light) 0%, var(--color-accent) 100%);
     color: var(--color-white);
-    box-shadow: 0 8px 22px -8px rgba(74, 159, 212, 0.55);
+    box-shadow: 0 8px 22px -8px rgba(100, 161, 206, 0.55);
 }
 
 .btn-primary:hover {
     color: var(--color-white);
     transform: translateY(-2px);
-    box-shadow: 0 14px 30px -8px rgba(74, 159, 212, 0.7);
+    box-shadow: 0 14px 30px -8px rgba(100, 161, 206, 0.7);
     filter: brightness(1.05);
 }
 
@@ -300,7 +315,7 @@ a:hover {
 
 .btn-secondary:hover {
     color: var(--color-primary-light);
-    box-shadow: inset 0 0 0 1.5px var(--color-primary-light), 0 8px 20px -10px rgba(74, 159, 212, 0.4);
+    box-shadow: inset 0 0 0 1.5px var(--color-primary-light), 0 8px 20px -10px rgba(100, 161, 206, 0.4);
     transform: translateY(-2px);
 }
 
@@ -346,7 +361,7 @@ a:hover {
     height: 8px;
     border-radius: 50%;
     background: var(--color-accent);
-    box-shadow: 0 0 0 4px rgba(74, 159, 212, 0.18);
+    box-shadow: 0 0 0 4px rgba(100, 161, 206, 0.18);
 }
 
 .hero h1 {
@@ -354,7 +369,7 @@ a:hover {
 }
 
 .highlight {
-    color: var(--color-primary-light);
+    color: var(--primary-500);
     position: relative;
 }
 
@@ -379,7 +394,7 @@ a:hover {
 .dna-helix {
     width: 200px;
     height: 400px;
-    filter: drop-shadow(0 12px 28px rgba(45, 122, 179, 0.28));
+    filter: drop-shadow(0 12px 28px rgba(60, 128, 180, 0.28));
 }
 
 .helix-svg {
@@ -493,7 +508,7 @@ section {
     color: var(--color-primary-light);
     font-size: 0.8125rem;
     font-weight: 700;
-    border: 1px solid rgba(74, 159, 212, 0.25);
+    border: 1px solid rgba(100, 161, 206, 0.25);
     border-radius: 50px;
     margin-bottom: 1rem;
     text-transform: uppercase;
@@ -679,7 +694,7 @@ section {
 .pillar-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-xl);
-    border-color: rgba(74, 159, 212, 0.3);
+    border-color: rgba(100, 161, 206, 0.3);
 }
 
 .pillar-card:hover::after {
@@ -758,7 +773,7 @@ section {
 }
 
 .project-card-link:focus-visible {
-    outline: 3px solid rgba(26, 74, 110, 0.35);
+    outline: 3px solid rgba(26, 75, 112, 0.35);
     outline-offset: 4px;
     border-radius: 12px;
 }
@@ -774,7 +789,7 @@ section {
 }
 
 .project-card:hover {
-    border-color: rgba(74, 159, 212, 0.4);
+    border-color: rgba(100, 161, 206, 0.4);
     transform: translateY(-6px);
     box-shadow: var(--shadow-lg);
 }
@@ -973,7 +988,7 @@ section {
     outline: none;
     border-color: var(--color-primary);
     background: var(--color-white);
-    box-shadow: 0 0 0 3px rgba(26, 74, 110, 0.1);
+    box-shadow: 0 0 0 3px rgba(26, 75, 112, 0.1);
 }
 
 .form-group textarea {
@@ -1266,7 +1281,7 @@ section {
 .pipe-edge#edge-7 { animation-delay: 0.8s; }
 @keyframes drawPipe { to { stroke-dashoffset: 0; } }
 
-.pipeline-particles circle { filter: drop-shadow(0 0 3px rgba(45, 122, 179, 0.6)); }
+.pipeline-particles circle { filter: drop-shadow(0 0 3px rgba(60, 128, 180, 0.6)); }
 
 .pipeline-halos circle { animation: haloPulse 3.5s ease-in-out infinite; }
 @keyframes haloPulse {
