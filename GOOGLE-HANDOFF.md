@@ -30,12 +30,25 @@
   Para comprobar: busca en Google `site:acuarialabs.cl` — cuando aparezcan tus
   páginas, ya estás indexado.
 
-### Google Business Profile ✅ CREADO Y VERIFICADO
-- Perfil **Acuaria Labs** creado y **verificado** (escudo azul "Administras este perfil").
-- Categoría: "Empresa de software".
+### Google Business Profile ⏳ EN RE-VERIFICACIÓN (actualizado 9 jun 2026)
+- Perfil **Acuaria Labs** creado.
+- **Categorías:** "Software company" (principal) + "Automation company" (secundaria).
 - Teléfono cargado: 9 8278 5644.
-- Horario y sitio web cargados.
-- Configurado como **zona de servicio** (sin oficina pública) → correcto.
+- **WhatsApp** cargado como chat principal: `https://wa.me/56982785644`.
+- **Descripción** actualizada (software, IA, automatización, chatbots WhatsApp, integración).
+- **Servicios** agregados (IA / desarrollo a medida, etc.).
+- Sitio web: `https://acuarialabs.cl`.
+- ⚠️ **OJO — re-verificación en curso:** al editar la dirección, Google disparó una
+  re-verificación por **VIDEO**. El video YA fue grabado y subido (9 jun 2026).
+  - **Estado:** esperando revisión de Google (hasta 5 días hábiles). Llega un correo
+    al aprobar/rechazar — puede tardar y NO siempre avisa que está "en revisión".
+  - **Mientras no se apruebe, las ediciones NO se publican** en la ficha.
+  - **NO editar la ubicación/dirección** hasta que se apruebe (cada edición reinicia
+    la verificación → fue el círculo en que se cayó).
+  - Pendiente tras aprobar: dejar bien la **zona de servicio** (Antofagasta, sin local
+    visible) en Editar perfil → Location, ya que el negocio es desde casa (sin oficina).
+  - Si rechazan el video: regrabar 1 sola toma continua (espacio de trabajo → logo/web
+    acuarialabs.cl → pantalla del propio Business Profile), sin editar ni mostrar exterior.
 
 ---
 
