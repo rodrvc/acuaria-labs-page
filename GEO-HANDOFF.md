@@ -72,7 +72,7 @@ sola, sin contexto). Ejemplos de preguntas a responder:
 - ¿Qué es el Campamento de IA y cuándo es? (julio 2026)
 - Agregar **JSON-LD tipo FAQPage** a esa sección (lo entienden Google y las IA).
 
-### 🟡 Paso 3 — Escribir "para ser citado"
+### ✅ Paso 3 — Escribir "para ser citado" (COMPLETADO 9 jun 2026)
 Revisar el contenido del sitio para que tenga frases **afirmativas y autocontenidas**,
 citables tal cual. Ejemplo del estilo que funciona:
 > "Acuaria Labs es una empresa de inteligencia artificial con base en Antofagasta que
@@ -81,11 +81,24 @@ citables tal cual. Ejemplo del estilo que funciona:
 
 ### 🟡 Paso 4 — Presencia en fuentes que las IA leen/confían
 Las IA citan mucho estas fuentes — estar presente con NAP consistente:
-- **LinkedIn de empresa** (Acuaria Labs).
-- **Directorios locales** / cámara de comercio de Antofagasta.
-- **Reddit / foros** donde se hable de IA en Chile (aporte genuino, no spam).
+- **LinkedIn de empresa** (Acuaria Labs) — pendiente crear.
+- **Directorios locales** / cámara de comercio de Antofagasta — pendiente.
+- **Reddit** — estrategia definida (ver abajo), pendiente ejecutar.
 - Google Business Profile (ver `GOOGLE-HANDOFF.md` — en re-verificación).
 - A futuro: notas de prensa / menciones en medios locales.
+
+#### Reddit — estrategia concreta
+Regla: aporte genuino primero, mención de Acuaria Labs como contexto natural (no como spam).
+Subreddits objetivo: r/chile, r/Antofagasta, r/chile_dev (si existe), r/es_IA, r/LatamTech.
+
+Dos formatos que funcionan para GEO:
+1. **Post técnico** — "Cómo montamos un agente de WhatsApp para una pyme chilena" o similar.
+   Es el que más pesa: las IAs (Perplexity, ChatGPT) leen Reddit y citan contenido técnico con autoridad.
+2. **Post de evento** — anuncio del Campamento de julio 2026 en r/Antofagasta o r/chile cuando
+   se acerque la fecha. Tiene gancho real y genera menciones orgánicas.
+
+Para ejecutarlo: necesita un caso real o aprendizaje concreto que convertir en post.
+Rodrigo debe proveer el contenido; el borrador se puede armar en sesión.
 
 ### 🔵 Paso 5 — Contenido fresco y blog (largo plazo)
 - Blog con artículos que respondan preguntas reales (ej. "Casos de IA para la minería
@@ -108,8 +121,7 @@ Las IA citan mucho estas fuentes — estar presente con NAP consistente:
 ---
 
 ## Resumen de una línea
-**El sitio ya está indexado, tiene JSON-LD de LocalBusiness y ahora tiene sección FAQ con
-JSON-LD FAQPage (7 preguntas autocontenidas). Pendiente: (1) diagnosticar cómo ven las IA
-a Acuaria Labs hoy, (3) revisar contenido para que sea más citable, y (4) sumar presencia
-en LinkedIn, directorios y Reddit. Foco en las IA con búsqueda en vivo, que dan resultados
-en semanas.**
+**Completado: FAQ con JSON-LD FAQPage (7 preguntas), contenido citable en hero/about/pillars.
+Pendiente: (1) diagnóstico de visibilidad en IAs hoy, (4) presencia digital — LinkedIn de
+empresa, Reddit (post técnico o de evento), directorios locales. El Business Profile sigue
+en re-verificación por video (hasta 5 días hábiles desde el 9 jun 2026).**
