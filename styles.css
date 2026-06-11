@@ -900,6 +900,22 @@ section {
     font-size: 1rem;
 }
 
+/* CTA final sobre fondo oscuro (páginas de servicio) */
+.philosophy .projects-cta {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.philosophy .projects-cta p {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 300;
+    color: var(--color-white);
+    line-height: 1.4;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
 /* Contact Section */
 .contact {
     padding: 8rem 0;
