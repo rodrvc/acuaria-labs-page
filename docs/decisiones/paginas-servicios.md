@@ -13,10 +13,15 @@ Head: title/desc por keyword del servicio + canonical + OG + JSON-LD `Service` +
 FAQ visible (details/summary) = espejo exacto del FAQPage JSON-LD. Respuestas autocontenidas (GEO: citables por IAs).
 Reusar clases de styles.css existente. NO crear CSS nuevo por página.
 
-## D3 (2026-06-11): interlinking
-Nav de cada página de servicio enlaza a las otras 2 + home. Footer: columna "Servicios" con las 3.
+## D3 (2026-06-11, v2): navegación unificada en TODO el sitio
+Nav idéntico en las 5 páginas: Nosotros(#about) · Servicios(#servicios) · Proyectos(#projects) · FAQ · Contacto(btn-nav).
+Anclas → home con ../index.html# desde subdirs. FAQ en páginas de servicio = ancla local #faq. Campamento conserva btn "Quiero participar".
+Home: sección id="servicios" (entre #pipeline y #about, patrón projects-grid/project-card) con 3 tarjetas → páginas de servicio.
+Páginas de servicio: sección id="otros-servicios" ("También te puede servir", entre #faq y .philosophy) con 2 tarjetas a los otros servicios.
+Footer idéntico en todas: columnas Servicios / Navegación / Social.
 CTAs apuntan a `../index.html#contact` (formulario único en home, Netlify Forms).
+NO volver a navs distintos por página.
 
 ## Branch/estado
 Rama `paginas-servicios` (no mergeada a master aún).
-PENDIENTE antes de publicar: enlaces desde home → 3 páginas, agregarlas a sitemap.xml, merge+push con ok de Rodrigo.
+PENDIENTE antes de publicar: agregar las 3 páginas a sitemap.xml, merge+push con ok de Rodrigo.
