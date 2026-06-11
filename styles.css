@@ -1555,7 +1555,7 @@ section {
    FAQ Section
    ===================================================== */
 .faq {
-    padding: var(--section-padding);
+    padding: 8rem 0;
     background: var(--color-gray-50);
 }
 
