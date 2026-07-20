@@ -329,6 +329,7 @@ a:hover {
     display: flex;
     align-items: center;
     padding-top: 80px;
+    padding-bottom: 4rem;
     position: relative;
     overflow: hidden;
 }
