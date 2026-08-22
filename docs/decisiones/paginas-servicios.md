@@ -22,6 +22,13 @@ Footer idéntico en todas: columnas Servicios / Navegación / Social.
 CTAs apuntan a `../index.html#contact` (formulario único en home, Netlify Forms).
 NO volver a navs distintos por página.
 
+## D4 (2026-08-22): 4ta página de servicio — capacitación
+Ruta: `/capacitacion-ia-empresas/`. Talleres in-company para EQUIPOS/EMPRESAS (adultos), distinto de `/campamento/` (jóvenes 13-17). No enlazar como si fueran lo mismo.
+Mismo patrón D2/D3. FAQ con 4 preguntas (NO SENCE — Acuaria no es OTEC, decisión explícita de Rodrigo).
+Home #servicios: ahora 4 tarjetas (antes 3). Grid sigue en 3 columnas (styles.css sin cambios) → la 4ta card queda sola en su fila, aceptado.
+otros-servicios de las 3 páginas viejas: se agregó 3ra card (capacitación) en vez de mantener fijas en 2 — el grid soporta 3 columnas sin problema. Página nueva enlaza a las 3 anteriores.
+Footer "Servicios" (global, idéntico en todas las páginas): se agregó el 4to link en las 6 páginas existentes + la nueva.
+
 ## Branch/estado
 Rama `paginas-servicios` (no mergeada a master aún).
 PENDIENTE antes de publicar: agregar las 3 páginas a sitemap.xml, merge+push con ok de Rodrigo.
