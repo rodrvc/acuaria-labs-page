@@ -17,3 +17,8 @@ Cualquier CTA nuevo sobre fondo oscuro: usar ese patrón, no .projects-cta a sec
 Paleta: --color-primary #1a4b70, accent #3c80b4 / #64a1ce. Fuente: Inter.
 Secciones: padding 8rem 0. Decoración: .floating-elements/.bubble en todas las páginas.
 SVGs de heros: inline, gradiente primary→accent, stroke ~5.
+
+## D4 (2026-08-23): bloque CSS del blog dentro de styles.css (NO hoja aparte)
+Clases nuevas al final de `styles.css`, prefijo `.post-*` + `.blog-hero`: `.blog-hero` (cabecera corta, sin 100vh), `.post-breadcrumb`, `.post-meta`, `.post`, `.post-body` (máx 760px, tipografía de lectura), `.post-lead`, `.post-callout` (resumen citable GEO, fondo primary-50 + borde accent), `.post-card-meta`.
+Tarjetas del listado y "más artículos" reusan `.projects` / `.projects-grid` / `.project-card` / `.project-more`. FAQ reusa `.faq-*`. CTA final reusa `.philosophy .projects-cta` (D3).
+Razón: mantener D1 (un solo CSS) y no duplicar tarjetas/FAQ. Si se agregan más clases de blog → mismo bloque, mismo prefijo.
