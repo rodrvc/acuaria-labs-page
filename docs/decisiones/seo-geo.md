@@ -17,5 +17,8 @@ Frases citables por IAs: afirmativas, autocontenidas, con ciudad/datos ("Acuaria
 - sameAs en JSON-LD home: LinkedIn + GitHub + Instagram (mantener sincronizado con footer)
 - Business Profile verificado (11 jun 2026). NO editar dirección/ubicación en GBP (reinicia verificación)
 
+## D4 (2026-08-23): blog por rubro = vía de autoridad/contenido fresco
+Auditoría SEO (3 agentes ciegos) → competidores con autoridad tienen blog por rubro; Acuaria no. Creado `/blog/` (ver paginas-servicios.md D5). Cada artículo lleva un callout "En corto" afirmativo y autocontenido (citable por IAs) + FAQ espejo JSON-LD. Cadencia sugerida: 1 artículo/mes, siempre con ángulo local (Antofagasta / norte) y sin cifras no respaldables.
+
 ## Pendientes (contexto en GOOGLE-HANDOFF.md / GEO-HANDOFF.md)
 Fotos+reseñas GBP, directorios locales, Reddit (necesita caso real de Rodrigo), OG image 1200x630, fecha exacta campamento julio 2026.

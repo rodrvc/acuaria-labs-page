@@ -32,3 +32,12 @@ Footer "Servicios" (global, idéntico en todas las páginas): se agregó el 4to 
 ## Branch/estado
 Rama `paginas-servicios` (no mergeada a master aún).
 PENDIENTE antes de publicar: agregar las 3 páginas a sitemap.xml, merge+push con ok de Rodrigo.
+
+## D5 (2026-08-23): sección Blog — `/blog/` + `/blog/<slug>/`
+Rutas: listado `/blog/index.html`, artículos `/blog/<slug>/index.html` (mismo patrón de carpeta que servicios; HTML estático, sin build). Hoy 4 artículos por rubro local: contratistas de minería, pymes de servicios (WhatsApp), retail/comercio local, logística/transporte.
+Ángulo editorial fijo: "IA para las pymes/contratistas que trabajan CON la minería", no venderle a las mineras grandes (descartado en investigación previa). Contenido educativo; NO casos de clientes, cifras ni testimonios inventados.
+Estructura artículo: blog-hero (breadcrumb + tag + h1 + desc + meta) → .post-body (lead + callout "En corto" citable + h2/h3) → FAQ (3, espejo exacto de FAQPage JSON-LD) → "Más artículos" (3 cards) → CTA philosophy → footer.
+Head por artículo: title/desc por keyword, canonical, OG type=article, Twitter, JSON-LD BlogPosting + FAQPage + BreadcrumbList. Listado: JSON-LD Blog (con blogPost[]) + BreadcrumbList.
+Enlaces internos: cada artículo enlaza a las 4 páginas de servicio y a otro artículo relacionado.
+Nav global (D3) ahora: Nosotros · Servicios · Proyectos · **Blog** · FAQ · Contacto — agregado en las 6 páginas existentes + blog. Footer "Navegación" también lleva Blog. Sigue siendo idéntico en todas.
+Nuevo artículo = copiar un `/blog/<slug>/index.html` existente, cambiar head/JSON-LD/cuerpo, agregarlo al listado y al sitemap con lastmod.

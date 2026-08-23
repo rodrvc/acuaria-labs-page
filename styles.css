@@ -1638,3 +1638,97 @@ section {
     .faq-question { font-size: 1rem; padding: 1.1rem 1.25rem; }
     .faq-answer { padding: 0 1.25rem 1.1rem; }
 }
+
+/* ==========================================
+   Blog (/blog/ listado + /blog/<slug>/ artículos)
+   Reusa .projects-grid/.project-card para las tarjetas.
+   ========================================== */
+.blog-hero {
+    position: relative;
+    z-index: 1;
+    padding: 10rem 0 4rem;
+    background: var(--gradient-soft);
+}
+.blog-hero .hero-tag { margin-bottom: 1.25rem; }
+.blog-hero h1 {
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    max-width: 860px;
+    margin-bottom: 1.25rem;
+}
+.blog-hero .hero-description { max-width: 760px; }
+
+.post-breadcrumb {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--color-gray-500);
+    margin-bottom: 1.5rem;
+}
+.post-breadcrumb li + li::before { content: '›'; margin-right: 0.35rem; color: var(--color-gray-400); }
+
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    color: var(--color-gray-500);
+}
+.post-meta a { color: var(--color-primary); font-weight: 500; }
+
+.post {
+    padding: 5rem 0 6rem;
+    background: var(--color-white);
+}
+.post-body {
+    max-width: 760px;
+    margin: 0 auto;
+    color: var(--color-gray-700);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+}
+.post-body h2 {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    margin: 3rem 0 1rem;
+}
+.post-body h3 {
+    font-size: 1.2rem;
+    margin: 2rem 0 0.75rem;
+}
+.post-body p { margin-bottom: 1.25rem; }
+.post-body ul,
+.post-body ol {
+    margin: 0 0 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.post-body a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.post-lead {
+    font-size: 1.2rem;
+    color: var(--color-gray-600);
+}
+.post-callout {
+    margin: 2rem 0;
+    padding: 1.5rem 1.75rem;
+    background: var(--primary-50);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 0 14px 14px 0;
+}
+.post-callout p:last-child { margin-bottom: 0; }
+.post-callout strong { color: var(--color-primary); }
+
+.post-card-meta {
+    font-size: 0.8rem;
+    color: var(--color-gray-500);
+    margin-bottom: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .blog-hero { padding: 8rem 0 3rem; }
+    .post { padding: 3.5rem 0 4.5rem; }
+}
