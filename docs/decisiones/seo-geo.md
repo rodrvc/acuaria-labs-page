@@ -21,4 +21,5 @@ Frases citables por IAs: afirmativas, autocontenidas, con ciudad/datos ("Acuaria
 Auditoría SEO (3 agentes ciegos) → competidores con autoridad tienen blog por rubro; Acuaria no. Creado `/blog/` (ver paginas-servicios.md D5). Cada artículo lleva un callout "En corto" afirmativo y autocontenido (citable por IAs) + FAQ espejo JSON-LD. Cadencia sugerida: 1 artículo/mes, siempre con ángulo local (Antofagasta / norte) y sin cifras no respaldables.
 
 ## Pendientes (contexto en GOOGLE-HANDOFF.md / GEO-HANDOFF.md)
-Fotos+reseñas GBP, directorios locales, Reddit (necesita caso real de Rodrigo), OG image 1200x630, fecha exacta campamento julio 2026.
+Fotos+reseñas GBP, directorios locales, Reddit (necesita caso real de Rodrigo), actualizar página campamento (aún dice julio 2026 como próxima edición).
+HECHO 2026-08-23: OG image 1200x630 (`/og-image.png`, generada con paleta+logo del sitio) en og:image/twitter:image de todas las páginas salvo /campamento/ (usa su foto real hero.jpg).
