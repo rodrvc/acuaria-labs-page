@@ -1,0 +1,61 @@
+<!doctype html><meta charset="utf-8">
+<title>Cono de mineral — referencia</title>
+<style>
+ body{margin:0;font:15px/1.6 Inter,system-ui,sans-serif;color:#1a4b70;padding:24px 30px;background:#fff}
+ h1{font-size:17px;margin:0 0 4px}
+ p.sub{margin:0 0 20px;color:#6b8299;font-size:13px;max-width:720px}
+ .fila{display:flex;gap:24px;flex-wrap:wrap}
+ .caja{border:1px solid #e2ecf3;border-radius:6px;padding:14px 16px 12px;background:#fcfdfe}
+ .caja h2{font-size:12.5px;margin:0 0 9px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#3c80b4}
+ .nota{font-size:12.5px;color:#5b7286;max-width:300px;margin-top:8px}
+</style>
+<h1>Cono de mineral — a qué me refiero</h1>
+<p class="sub">Es el montón que se forma cuando cae material desde una cinta transportadora: un cono de base ancha.
+En minería se llama <b>acopio</b> o <i>stockpile</i>. Lo dibujo con partículas, que es como se vería en la escena.</p>
+
+<div class="fila">
+ <div class="caja"><h2>1 · Cono simple</h2><canvas id="a" width="330" height="290"></canvas>
+   <div class="nota">La forma básica. Se llena sólido con muy pocas partículas — justo lo contrario del camión.</div></div>
+ <div class="caja"><h2>2 · Con cinta transportadora</h2><canvas id="b" width="330" height="290"></canvas>
+   <div class="nota">Se le agrega la cinta que descarga desde arriba. Más narrativo: se entiende el proceso.</div></div>
+ <div class="caja"><h2>3 · Acopio doble</h2><canvas id="c" width="330" height="290"></canvas>
+   <div class="nota">Dos montones, como en faena real. Más rico visualmente, sigue siendo simple.</div></div>
+</div>
+
+<script>
+let sd=12345;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
+function cono(cx,base,alto,n){
+  const P=[];
+  for(let i=0;i<n;i++){
+    const t=Math.sqrt(rnd());          // más denso abajo
+    const r=base*t, a=rnd()*Math.PI*2;
+    const y=alto*(1-t)*(0.55+rnd()*0.45);
+    P.push([cx+Math.cos(a)*r, y, Math.sin(a)*r*0.42]);
+  }
+  return P;
+}
+function pinta(id,pts,extra){
+  const ctx=document.getElementById(id).getContext('2d');
+  ctx.clearRect(0,0,330,290);
+  const SUELO=248, CX=165, S=1;
+  ctx.strokeStyle='#eef3f7';ctx.beginPath();ctx.moveTo(18,SUELO);ctx.lineTo(312,SUELO);ctx.stroke();
+  pts.sort((p,q)=>p[2]-q[2]);
+  for(const [x,y,z] of pts){
+    const d=(z+70)/140;
+    ctx.fillStyle='rgba(31,105,150,'+(0.18+d*0.52).toFixed(2)+')';
+    ctx.beginPath();ctx.arc(CX+x, SUELO-y, 1.05+d*0.9, 0, 6.2832);ctx.fill();
+  }
+  if(extra) extra(ctx,CX,SUELO);
+}
+pinta('a',cono(0,96,150,2400));
+pinta('b',cono(0,92,142,2300),(ctx,CX,S0)=>{
+  ctx.strokeStyle='#9dbcd4';ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(CX+150,44);ctx.lineTo(CX+14,S0-152);ctx.stroke();
+  ctx.lineWidth=1.4;ctx.strokeStyle='#c3d7e6';
+  ctx.beginPath();ctx.moveTo(CX+150,54);ctx.lineTo(CX+18,S0-144);ctx.stroke();
+  ctx.fillStyle='rgba(31,105,150,.45)';
+  for(let i=0;i<7;i++){const t=i/7;ctx.beginPath();
+    ctx.arc(CX+16+t*6, S0-150+t*14, 1.6,0,6.2832);ctx.fill();}
+});
+pinta('c',cono(-52,66,110,1500).concat(cono(58,74,126,1700)));
+</script>

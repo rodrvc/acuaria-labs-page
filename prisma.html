@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acuaria Labs — Laboratorio de IA en Antofagasta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   LENGUAJE VISUAL: Soft Structural / Neumorfismo
+   Superficies claras en relieve, sombra doble (luz arriba-izq,
+   sombra abajo-der), double-bezel anidado. Sin degradados en
+   texto, sin eyebrows repetidos, sin marcadores 01/02/03.
+   ============================================================ */
+:root{
+  /* la base neumórfica: un gris azulado muy claro */
+  --fondo:#e8edf4;
+  --sup:#eaeff6;
+  --sup-alta:#f2f6fb;
+  --hueco:#dde4ee;
+
+  --luz:rgba(255,255,255,.95);
+  --sombra:rgba(163,177,198,.55);
+  --sombra-suave:rgba(163,177,198,.32);
+
+  --tinta:#1e3242;
+  --tinta-2:#4a6076;
+  --tinta-3:#7d8fa3;
+  --acento:#2f7fb8;
+  --acento-claro:#64a1ce;
+
+  --r-out:30px;
+  --r-in:22px;
+  --r-chico:14px;
+
+  --display:'Manrope',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+
+  /* escala tipográfica fluida (prism foundations) */
+  --t--1:clamp(.83rem,.80rem + .15vw,.94rem);
+  --t-0: clamp(1rem,.95rem + .25vw,1.09rem);
+  --t-1: clamp(1.2rem,1.12rem + .4vw,1.4rem);
+  --t-3: clamp(1.7rem,1.45rem + 1.1vw,2.5rem);
+  --t-5: clamp(1.8rem,1.3rem + min(2.2vw,3.4vh),3.4rem);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--fondo);color:var(--tinta-2);
+  font-family:var(--display);font-size:var(--t-0);line-height:1.62;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+
+/* ---------- relieve: la pieza central del lenguaje ---------- */
+.relieve{
+  background:var(--sup);
+  box-shadow:
+    -7px -7px 16px var(--luz),
+     8px  8px 20px var(--sombra-suave);
+}
+.hundido{
+  background:var(--hueco);
+  box-shadow:
+    inset 4px 4px 9px var(--sombra),
+    inset -4px -4px 9px var(--luz);
+}
+
+/* ---------- barra ---------- */
+header{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  z-index:80;width:min(1180px,calc(100% - 32px));
+  border-radius:var(--r-out);padding:9px;
+  background:var(--sup);
+  box-shadow:-6px -6px 14px var(--luz),7px 7px 18px var(--sombra-suave);
+}
+.barra{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--sup-alta);border-radius:calc(var(--r-out) - 9px);
+  padding:11px 13px 11px 20px;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.9);
+}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;color:var(--tinta);letter-spacing:-.02em;font-size:1.03rem;cursor:pointer}
+.logo i{
+  width:26px;height:26px;border-radius:50%;flex:0 0 auto;
+  background:var(--sup);
+  box-shadow:inset 2px 2px 4px var(--sombra),inset -2px -2px 4px var(--luz);
+  display:grid;place-items:center;
+}
+.logo i::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--acento);box-shadow:0 0 7px rgba(47,127,184,.6)}
+nav{display:flex;gap:5px;align-items:center}
+nav a{
+  font-size:var(--t--1);font-weight:600;color:var(--tinta-2);
+  padding:9px 15px;border-radius:var(--r-chico);cursor:pointer;
+  transition:box-shadow .22s,color .22s,background .22s;
+}
+nav a:hover{color:var(--tinta);background:var(--sup-alta);box-shadow:-3px -3px 7px var(--luz),3px 3px 8px var(--sombra-suave)}
+nav a.activo{
+  color:var(--acento);background:var(--hueco);
+  box-shadow:inset 2px 2px 5px var(--sombra),inset -2px -2px 5px var(--luz);
+}
+.mb{display:none;background:none;border:0;cursor:pointer;padding:10px}
+.mb span{display:block;width:20px;height:2px;background:var(--tinta);margin:4px 0;border-radius:2px}
+
+/* ---------- la escena ---------- */
+.viaje{position:relative}
+.marco{position:sticky;top:0;height:100vh;overflow:hidden}
+#lienzo{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block}
+
+/* ---------- el panel: texto y tarjetas JUNTOS en una sola pieza ---------- */
+.panel{
+  position:absolute;z-index:5;
+  left:50%;bottom:clamp(18px,3.5vh,44px);
+  transform:translateX(-50%);
+  width:min(700px,calc(100% - 40px));
+  max-height:46vh;
+  border-radius:var(--r-out);padding:10px;
+  background:var(--sup);
+  box-shadow:-9px -9px 20px var(--luz),11px 11px 28px var(--sombra-suave);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .42s cubic-bezier(.4,0,.2,1),transform .42s cubic-bezier(.4,0,.2,1),visibility .42s;
+}
+.panel.on{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.panel:not(.on){transform:translateX(-50%) translateY(18px);z-index:1}
+.panel.on{z-index:5}
+
+.nucleo{
+  background:var(--sup-alta);
+  border-radius:var(--r-in);
+  padding:clamp(14px,2vh,26px) clamp(18px,2.2vw,26px);
+  max-height:calc(46vh - 20px);overflow:auto;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.95);
+}
+
+.sello{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.10em;
+  color:var(--acento);background:var(--hueco);
+  padding:6px 13px;border-radius:9px;margin-bottom:14px;
+  box-shadow:inset 2px 2px 4px var(--sombra),inset -2px -2px 4px var(--luz);
+}
+h1,h2{
+  font-weight:800;color:var(--tinta);
+  font-size:var(--t-5);line-height:1.04;letter-spacing:-.035em;
+  margin:0 0 12px;text-wrap:balance;
+}
+h2{font-size:clamp(1.45rem,1rem + min(1.9vw,3vh),2.5rem)}
+h1 span,h2 span{color:var(--acento)}          /* color sólido, no degradado */
+.panel p{margin:0 0 16px;font-size:var(--t-0);max-width:60ch;text-wrap:pretty}
+.panel p strong{color:var(--tinta);font-weight:700}
+
+/* filas dentro del panel: pegadas al texto, misma pieza */
+.filas{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+@media (max-width:640px){.filas{grid-template-columns:1fr}}
+.fila{
+  display:flex;gap:12px;align-items:flex-start;
+  background:var(--sup);border-radius:var(--r-chico);
+  padding:clamp(10px,1.5vh,13px) 15px;
+  box-shadow:-3px -3px 8px var(--luz),4px 4px 10px var(--sombra-suave);
+  transition:box-shadow .24s,transform .24s;
+}
+.fila:hover{transform:translateX(3px);box-shadow:-2px -2px 6px var(--luz),6px 6px 14px var(--sombra-suave)}
+.fila .pt{
+  flex:0 0 auto;width:9px;height:9px;border-radius:50%;margin-top:8px;
+  background:var(--acento-claro);
+  box-shadow:inset -1px -1px 2px rgba(0,0,0,.16),0 0 6px rgba(100,161,206,.5);
+}
+.fila b{display:block;color:var(--tinta);font-weight:700;font-size:var(--t--1);margin-bottom:1px}
+.fila em{font-style:normal;font-size:clamp(.78rem,1.45vh,.87rem);color:var(--tinta-3);line-height:1.45}
+
+.acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.bt{
+  font-weight:700;font-size:var(--t--1);padding:13px 24px;
+  border-radius:var(--r-chico);cursor:pointer;border:0;
+  transition:box-shadow .2s,transform .2s,color .2s;
+  font-family:inherit;
+}
+.bt-p{
+  background:var(--acento);color:#fff;
+  box-shadow:-3px -3px 8px rgba(255,255,255,.5),5px 5px 14px rgba(47,127,184,.42);
+}
+.bt-p:hover{transform:translateY(-1px);box-shadow:-2px -2px 6px rgba(255,255,255,.5),7px 7px 18px rgba(47,127,184,.5)}
+.bt-p:active{box-shadow:inset 3px 3px 7px rgba(0,0,0,.22),inset -3px -3px 7px rgba(255,255,255,.18)}
+.bt-s{
+  background:var(--sup);color:var(--tinta);
+  box-shadow:-3px -3px 8px var(--luz),4px 4px 11px var(--sombra-suave);
+}
+.bt-s:hover{transform:translateY(-1px)}
+.bt-s:active{box-shadow:inset 3px 3px 7px var(--sombra),inset -3px -3px 7px var(--luz)}
+
+/* ---------- indicador de capítulo, a la derecha ---------- */
+.capitulos{
+  position:absolute;right:clamp(16px,2.6vw,34px);top:50%;transform:translateY(-50%);
+  z-index:6;display:flex;flex-direction:column;gap:9px;
+  padding:11px 9px;border-radius:20px;background:var(--sup);
+  box-shadow:-5px -5px 12px var(--luz),6px 6px 15px var(--sombra-suave);
+}
+.capitulos b{
+  display:block;width:9px;height:9px;border-radius:50%;
+  background:var(--hueco);
+  box-shadow:inset 2px 2px 3px var(--sombra),inset -1px -1px 2px var(--luz);
+  transition:background .35s,box-shadow .35s;
+}
+.capitulos b.on{background:var(--acento);box-shadow:0 0 9px rgba(47,127,184,.65)}
+
+.guia{
+  position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:6;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--tinta-3);
+  display:flex;flex-direction:column;align-items:center;gap:7px;transition:opacity .4s;
+}
+.guia i{display:block;width:1.5px;height:24px;background:linear-gradient(var(--acento-claro),transparent);animation:cae 2s ease-in-out infinite}
+@keyframes cae{
+  0%{transform:scaleY(0);transform-origin:top}
+  45%{transform:scaleY(1);transform-origin:top}
+  55%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+
+footer{padding:40px 0 46px;background:var(--fondo)}
+.pie{
+  max-width:1180px;margin:0 auto;padding:20px clamp(20px,5vw,40px);
+  border-radius:var(--r-out);background:var(--sup);
+  box-shadow:-6px -6px 14px var(--luz),7px 7px 18px var(--sombra-suave);
+  display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
+  font-size:var(--t--1);
+}
+.pie a{color:var(--tinta-2);transition:color .2s}
+.pie a:hover{color:var(--acento)}
+.redes{display:flex;gap:18px}
+
+:focus-visible{outline:2.5px solid var(--acento);outline-offset:3px;border-radius:6px}
+
+@media (max-width:960px){
+  nav{
+    position:fixed;left:16px;right:16px;top:88px;flex-direction:column;align-items:stretch;
+    background:var(--sup);border-radius:var(--r-out);padding:12px;gap:4px;
+    box-shadow:-6px -6px 14px var(--luz),7px 7px 18px var(--sombra-suave);
+    transform:translateY(-160%);transition:transform .38s cubic-bezier(.4,0,.2,1);
+  }
+  nav.abierto{transform:none}
+  .mb{display:block}
+  .capitulos{display:none}
+  .panel{bottom:16px;max-height:58vh;overflow:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="barra">
+    <div class="logo" data-ir="0"><i></i>Acuaria Labs</div>
+    <nav id="nav">
+      <a data-ir="1">Servicios</a>
+      <a data-ir="2">Proceso</a>
+      <a data-ir="3">Laboratorio</a>
+      <a data-ir="4">Territorio</a>
+      <a data-ir="5">Contacto</a>
+    </nav>
+    <button class="mb" id="mb" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="viaje" id="viaje">
+  <div class="marco">
+    <canvas id="lienzo"></canvas>
+
+    <div class="capitulos" aria-hidden="true">
+      <b class="on"></b><b></b><b></b><b></b><b></b><b></b>
+    </div>
+
+    <!-- CAP 0 — la red completa -->
+    <div class="panel on">
+      <div class="nucleo">
+        <span class="sello">ANTOFAGASTA · CHILE</span>
+        <h1>Inteligencia artificial hecha en el <span>norte</span></h1>
+        <p>Construimos agentes, chatbots y automatizaciones para empresas que operan aquí. <strong>Con base real en Antofagasta</strong>, no como oficina remota.</p>
+        <div class="acciones">
+          <button class="bt bt-p" data-ir="5">Conversemos tu proyecto</button>
+          <button class="bt bt-s" data-ir="1">Ver qué construimos</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAP 1 — el objeto: conversación (burbujas de chat) -->
+    <div class="panel">
+      <div class="nucleo">
+        <h2>Lo que <span>construimos</span></h2>
+        <div class="filas">
+          <div class="fila"><i class="pt"></i><div><b>Chatbots de WhatsApp</b><em>Responde a toda hora: consultas, agendamiento y calificación de clientes.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Automatización con IA</b><em>Correos, reportes y planillas que se hacen solos.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Desarrollo a medida</b><em>Agentes y sistemas RAG con los documentos de tu empresa.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Capacitación en IA</b><em>Talleres in-company. El día termina con un flujo funcionando.</em></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAP 2 — el objeto: engranajes del proceso -->
+    <div class="panel">
+      <div class="nucleo">
+        <h2>Del problema al <span>sistema funcionando</span></h2>
+        <div class="filas">
+          <div class="fila"><i class="pt"></i><div><b>Diagnóstico</b><em>Vemos tu operación y detectamos dónde se pierde tiempo o dinero.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Prototipo</b><em>Algo funcionando rápido, para probarlo con datos reales.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Producción</b><em>Lo integramos a tus sistemas y lo dejamos operando.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Acompañamiento</b><em>Medimos, ajustamos y volvemos a revisar.</em></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAP 3 — el objeto: bloques de proyectos apilados -->
+    <div class="panel">
+      <div class="nucleo">
+        <h2>El <span>laboratorio</span></h2>
+        <p>Proyectos propios que financiamos y mantenemos. Sirven para probar antes de llevarlo a un cliente.</p>
+        <div class="filas">
+          <div class="fila"><i class="pt"></i><div><b>Campamento Tecnológico</b><em>IA, Arduino y realidad aumentada. Julio 2026, Antofagasta.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Panoramas de la ciudad</b><em>App para descubrir qué pasa en Antofagasta.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Herramientas abiertas</b><em>Código abierto para que otros equipos del norte partan sin construir de cero.</em></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAP 4 — el objeto: el territorio con las tres ciudades -->
+    <div class="panel">
+      <div class="nucleo">
+        <h2>Estamos <span>acá</span></h2>
+        <p>Operamos físicamente desde Antofagasta. Podemos ir a tu planta o a tu oficina, y volver la semana siguiente a ver si lo que instalamos sigue funcionando.</p>
+        <div class="filas">
+          <div class="fila"><i class="pt"></i><div><b>Antofagasta</b><em>Base de operaciones.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Calama e Iquique</b><em>Cobertura presencial.</em></div></div>
+          <div class="fila"><i class="pt"></i><div><b>Todo Chile</b><em>Proyectos de forma remota.</em></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAP 5 — el objeto: la señal saliendo -->
+    <div class="panel">
+      <div class="nucleo">
+        <h2>Cuéntanos qué necesitas <span>resolver</span></h2>
+        <p>Respondemos todas las consultas. Si el proyecto no encaja con lo que hacemos, te lo decimos y te orientamos igual.</p>
+        <div class="acciones">
+          <a class="bt bt-p" href="https://wa.me/56982785644">Escribir por WhatsApp</a>
+          <a class="bt bt-s" href="mailto:hola@acuarialabs.cl">hola@acuarialabs.cl</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="guia" id="guia">SCROLL<i></i></div>
+  </div>
+</div>
+
+<footer>
+  <div class="pie">
+    <span>© 2026 Acuaria Labs · Antofagasta, Chile</span>
+    <div class="redes">
+      <a href="https://github.com/Acuaria-Labs">GitHub</a>
+      <a href="https://www.linkedin.com/company/acuaria-labs/">LinkedIn</a>
+      <a href="https://www.instagram.com/acuarialabs/">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<script type="importmap">
+{ "imports": {
+    "three": "https://unpkg.com/three@0.185.1/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.185.1/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { Line2 }            from 'three/addons/lines/Line2.js';
+import { LineGeometry }     from 'three/addons/lines/LineGeometry.js';
+import { LineMaterial }     from 'three/addons/lines/LineMaterial.js';
+import { RoomEnvironment }  from 'three/addons/environments/RoomEnvironment.js';
+window.THREE = THREE;   // el resto del archivo usa THREE global
+
+/* ============================================================
+   LA HISTORIA
+   Seis capitulos, cada uno con SU PROPIO objeto 3D que dice
+   algo del contenido. La camara viaja de un objeto al siguiente
+   y se detiene frente a el. No hay particulas de relleno.
+
+   0 · la red del norte      -> quienes somos
+   1 · burbujas de mensaje   -> chatbots y automatizacion
+   2 · engranajes en linea   -> el proceso, paso a paso
+   3 · bloques apilados      -> proyectos del laboratorio
+   4 · las tres ciudades     -> el territorio
+   5 · la senal saliendo     -> el contacto
+   ============================================================ */
+const CAPS=6;
+const nav=document.getElementById('nav');
+const mb=document.getElementById('mb');
+const viaje=document.getElementById('viaje');
+const guia=document.getElementById('guia');
+const paneles=[...document.querySelectorAll('.panel')];
+const puntos=[...document.querySelectorAll('.capitulos b')];
+const enlaces=[...document.querySelectorAll('nav a')];
+
+viaje.style.height=(CAPS*100)+'vh';
+mb.addEventListener('click',()=>nav.classList.toggle('abierto'));
+document.querySelectorAll('[data-ir]').forEach(el=>{
+  el.addEventListener('click',e=>{
+    e.preventDefault();nav.classList.remove('abierto');
+    const alto=viaje.offsetHeight-innerHeight;
+    scrollTo({top:(+el.dataset.ir/(CAPS-1))*alto,behavior:'smooth'});
+  });
+});
+
+(function(){
+  const cv=document.getElementById('lienzo');
+  if(!window.THREE){cv.style.display='none';return;}
+  const quieto=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const movil=matchMedia('(max-width: 960px)').matches;
+
+  const esc=new THREE.Scene();
+  esc.fog=new THREE.Fog(0xe8edf4, 9, 26);   // solo se ve el objeto de este capitulo
+  const cam=new THREE.PerspectiveCamera(42,1,0.1,220);
+  const rnd=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+  rnd.setPixelRatio(Math.min(devicePixelRatio,2));
+  // Luz de estudio: es esto —y no el material— lo que da el relieve neumorfico.
+  // RoomEnvironment genera un softbox procedural, sin descargar ningun HDR.
+  rnd.toneMapping=THREE.ACESFilmicToneMapping;
+  rnd.toneMappingExposure=1.10;
+  const pmrem=new THREE.PMREMGenerator(rnd);
+  esc.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+
+
+  const AZUL=0x2f7fb8, CLARO=0x64a1ce, BLANCO=0xf2f6fb;
+
+  /* material neumorfico: claro, mate, sin brillos duros */
+  const matSuave=(col,emi)=>new THREE.MeshStandardMaterial({
+    color:col,roughness:0.72,metalness:0.0,      // mate: metalness>0 rompe el soft-UI
+    envMapIntensity:1.0,
+    emissive:emi||0x000000,emissiveIntensity:emi?0.30:0
+  });
+
+  /* ---------- los seis objetos, cada uno en su lugar del mundo ---------- */
+  const mundo=[];
+  const SUBE=0.95;   // el panel vive abajo: los objetos se levantan
+  const nuevo=(x,y,z)=>{const g=new THREE.Group();g.position.set(x,y+SUBE,z);esc.add(g);mundo.push(g);return g};
+
+  /* CAP 0 — EL ANFITRION: un pequeño robot que te recibe
+     Muestra un asistente, moviendose como algo vivo que flota y te MIRA,
+     porque lo que vende Acuaria son agentes que atienden por ti.
+     Sin brazos ni piernas: toda la expresion vive en los ojos. */
+  const CAIDA=7.5;          // cuanto baja cada capitulo respecto al anterior
+  const g0=nuevo(0, 0*-CAIDA, 0);
+  const geoN=new THREE.SphereGeometry(1,48,36);   // esfera compartida por otros capitulos
+  // ---- fabrica de robots: uno grande que recibe, varios chicos revoloteando ----
+  // geometrias y materiales COMPARTIDOS entre todos: crear uno por robot
+  // multiplicaria el coste sin cambiar nada en pantalla.
+  const geoEsf=new THREE.SphereGeometry(1,48,36);
+  const matCuerpo=new THREE.MeshStandardMaterial({color:0xf6fafd,roughness:0.34,
+    metalness:0.0,envMapIntensity:1.35});
+  const matVisor=new THREE.MeshStandardMaterial({color:0x0c1f2e,roughness:0.08,
+    metalness:0.0,envMapIntensity:1.7});
+  const matOjoBase=new THREE.MeshStandardMaterial({color:0x1d90c8,roughness:0.25,
+    metalness:0,emissive:0x35b6ef,emissiveIntensity:1.25});
+  const matOjoNucleo=new THREE.MeshBasicMaterial({color:0xd6f6ff});
+  const matChispa=new THREE.MeshBasicMaterial({color:0xffffff});
+  const matHalo=new THREE.MeshStandardMaterial({color:CLARO,roughness:0.3,metalness:0,
+    emissive:CLARO,emissiveIntensity:0.7,transparent:true,opacity:0.85});
+  const geoHalo=new THREE.TorusGeometry(0.46,0.016,16,72);
+  const geoSombra=new THREE.CircleGeometry(0.62,48);
+
+  function creaRobot(conLuz){
+    const r=new THREE.Group();
+    const cuerpo=new THREE.Mesh(geoEsf,matCuerpo);
+    cuerpo.scale.set(0.90,0.86,0.80); r.add(cuerpo);
+
+    const visor=new THREE.Mesh(geoEsf,matVisor);
+    visor.scale.set(0.54,0.26,0.20); visor.position.set(0,0.20,0.68); r.add(visor);
+
+    const ojos=[], luces=[];
+    [-1,1].forEach(lado=>{
+      const x=lado*0.175, y=0.215, z=0.845;
+      const base=new THREE.Mesh(geoEsf,matOjoBase);
+      base.scale.set(0.072,0.108,0.052); base.position.set(x,y,z-0.012); r.add(base);
+      const nucleo=new THREE.Mesh(geoEsf,matOjoNucleo);
+      nucleo.scale.set(0.046,0.074,0.040); nucleo.position.set(x,y,z+0.004); r.add(nucleo);
+      const chispa=new THREE.Mesh(geoEsf,matChispa);
+      chispa.scale.setScalar(0.017);
+      chispa.position.set(x-lado*0.012,y+0.032,z+0.020); r.add(chispa);
+      ojos.push({base,nucleo,chispa});
+      // solo el anfitrion lleva luces reales: 2 por robot x 5 robots seria caro
+      if(conLuz){
+        const luz=new THREE.PointLight(0x63d6ff,1.7,0.9,2);
+        luz.position.set(x,y,z+0.02); r.add(luz); luces.push(luz);
+      }
+    });
+
+    const halo=new THREE.Mesh(geoHalo,matHalo);
+    halo.rotation.x=Math.PI/2; halo.position.y=-0.80; r.add(halo);
+    return {g:r, ojos, luces, halo};
+  }
+
+  // EL ANFITRION: el grande, al centro. Es el que te sigue con la mirada.
+  const anfitrion=creaRobot(true);
+  const robot=anfitrion.g;
+  robot.rotation.z=-0.085;          // ladeo fijo: le da caracter, no rigidez
+  g0.add(robot);
+  const ojos=anfitrion.ojos, halos=anfitrion.luces, halo=anfitrion.halo;
+
+  // sombra de contacto: lo asienta en el espacio. Sin ella parece un
+  // recorte pegado al fondo en vez de un objeto flotando.
+  const sombra=new THREE.Mesh(geoSombra,
+    new THREE.MeshBasicMaterial({color:0x8fa4bd,transparent:true,opacity:0.22,
+      depthWrite:false}));
+  sombra.rotation.x=-Math.PI/2; sombra.position.set(0.055,-1.06,0.02); g0.add(sombra);
+
+  // EL ENJAMBRE: chicos revoloteando en orbitas propias alrededor del grande.
+  // Cada uno con su radio, altura, velocidad y fase: si comparten ritmo se
+  // ve como un carrusel mecanico en vez de algo vivo.
+  // Vuelan como BANDADA: todas siguen la misma travesia a la vez, en
+  // formacion, con un lider al frente y las demas escalonadas detras.
+  // Cada una tiene su desfase y su desvio propio, asi la formacion respira
+  // en vez de moverse como un bloque rigido.
+  // Rutas con GIRO: cada una barre el cuadro con una curva pronunciada,
+  // no en linea recta. Los puntos intermedios hacen que la bandada
+  // se incline y voltee mientras cruza.
+  // Rutas que cruzan DE LADO A LADO por delante de la camara. Antes iban
+  // hacia el fondo y solo se veia la nuca: volando de perfil la cara queda
+  // siempre visible, y el giro se aprecia.
+  // Z se mantiene entre -1 y +3 (cerca de camara), nunca hacia el fondo.
+  const RUTAS=[
+    // izq -> der, subiendo, con panza hacia camara al centro
+    {p:[[-9, 0.2, 0.5],[-3,-1.0, 2.6],[ 3, 1.4, 2.4],[ 9, 2.6, 0.2]]},
+    // der -> izq, bajando y volviendo a subir
+    {p:[[ 9, 2.8, 0.0],[ 3, 0.4, 2.8],[-3,-1.2, 2.2],[-9, 1.0,-0.5]]},
+    // izq -> der en curva alta, se acerca y se aleja
+    {p:[[-9, 3.0,-0.8],[-2, 1.6, 2.9],[ 4, 2.2, 1.2],[ 9,-0.6, 0.6]]},
+    // der -> izq bien cerca, cruce rasante
+    {p:[[ 9,-1.4, 2.2],[ 2, 0.8, 3.0],[-4, 1.2, 1.8],[-9, 2.8, 0.4]]},
+    // izq -> der con hamaca marcada arriba-abajo
+    {p:[[-9, 1.8, 1.0],[-3, 3.2, 2.2],[ 3,-0.8, 2.6],[ 9, 1.6, 0.8]]},
+  ];
+
+  // la formacion: retraso respecto al lider + desvio lateral y en altura.
+  // Es lo que la vuelve una V de aves y no una fila india.
+  const CHICOS=[
+    {atras:0.000, lado: 0.00, sube: 0.00, esc:0.20, aleteo:1.05},
+    {atras:0.055, lado:-1.05, sube:-0.42, esc:0.17, aleteo:1.25},
+    {atras:0.058, lado: 1.12, sube:-0.34, esc:0.17, aleteo:0.95},
+    {atras:0.115, lado:-2.05, sube:-0.80, esc:0.14, aleteo:1.40},
+    {atras:0.120, lado: 2.15, sube:-0.72, esc:0.14, aleteo:1.15},
+  ];
+
+  // estado compartido: la bandada entera avanza por UNA ruta a la vez
+  const bandada={u:0.1, vel:0.115, ruta:RUTAS[0], espera:0};
+
+  // la trayectoria es una curva suave, no una recta: un ave no vuela en linea
+  function trazaRuta(r){
+    // CatmullRom pasa POR los puntos: da una trayectoria continua con
+    // giros reales, en vez del arco plano de una bezier de 3 puntos.
+    return new THREE.CatmullRomCurve3(r.p.map(q=>new THREE.Vector3(...q)),
+      false,'catmullrom',0.6);
+  }
+  let curvaBandada=trazaRuta(bandada.ruta);
+  const enjambre=CHICOS.map(c=>{
+    const rb=creaRobot(false);
+    rb.g.scale.setScalar(c.esc);
+    g0.add(rb.g);
+    return {...rb, c, parpadeo:Math.random()*3, prox:2+Math.random()*3,
+            banqueo:0, giroPrev:new THREE.Vector3(0,0,1)};
+  });
+
+  // el raton mueve la mirada: esto es lo que lo vuelve un anfitrion
+  const raton={x:0,y:0};
+  addEventListener('pointermove',e=>{
+    raton.x=(e.clientX/innerWidth)*2-1;
+    raton.y=-(e.clientY/innerHeight)*2+1;
+  },{passive:true});
+
+  let parpadeo=0, proxParpadeo=2.5;
+  /* CAP 1 — CONVERSACION: burbujas de mensaje apiladas */
+  const g1=nuevo(0, 1*-CAIDA, -30);
+  const burbuja=(w,h,x,y,col)=>{
+    const s=new THREE.Shape(), r=0.14;
+    s.moveTo(-w/2+r,-h/2);
+    s.lineTo(w/2-r,-h/2); s.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);
+    s.lineTo(w/2,h/2-r);  s.quadraticCurveTo(w/2,h/2,w/2-r,h/2);
+    s.lineTo(-w/2+r,h/2); s.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);
+    s.lineTo(-w/2,-h/2+r);s.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);
+    const g=new THREE.ExtrudeGeometry(s,{depth:0.10,bevelEnabled:true,bevelSize:0.035,bevelThickness:0.035,bevelSegments:3});
+    const m=new THREE.Mesh(g,matSuave(col,col===AZUL?AZUL:0));
+    m.position.set(x,y,0);return m;
+  };
+  [[1.5,.52,-.42,.72,BLANCO],[1.15,.46,.46,.10,AZUL],[1.65,.52,-.30,-.54,BLANCO],[.85,.42,.62,-1.12,AZUL]]
+    .forEach(([w,h,x,y,c],i)=>{const b=burbuja(w,h,x,y,c);b.userData.f=i*1.3;b.userData.v=0.55;g1.add(b)});
+
+  /* CAP 2 — EL PROCESO: cuatro engranajes en linea, girando */
+  const g2=nuevo(0, 2*-CAIDA, -60);
+  const geoEng=new THREE.TorusGeometry(0.42,0.13,12,26);
+  const geoDiente=new THREE.BoxGeometry(0.13,0.15,0.17);
+  for(let k=0;k<4;k++){
+    const e=new THREE.Group();
+    const aro=new THREE.Mesh(geoEng,matSuave(k===0?AZUL:BLANCO,k===0?AZUL:0));
+    e.add(aro);
+    for(let d=0;d<9;d++){
+      const t=(d/9)*6.2832;
+      const p=new THREE.Mesh(geoDiente,matSuave(k===0?AZUL:BLANCO,k===0?AZUL:0));
+      p.position.set(Math.cos(t)*0.53,Math.sin(t)*0.53,0);
+      p.rotation.z=t; e.add(p);
+    }
+    e.position.set((k-1.5)*1.16,0,0);
+    e.userData.dir=k%2?-1:1;
+    g2.add(e);
+  }
+
+  /* CAP 3 — EL LABORATORIO: bloques apilados, en construccion */
+  const g3=nuevo(0, 3*-CAIDA, -90);
+  const geoB=new THREE.BoxGeometry(1,1,1);
+  [[0,-0.50,0,1.15,.26,.85,BLANCO],[0.10,-0.18,0.05,0.94,.24,.72,BLANCO],
+   [-0.08,0.13,-0.03,0.74,.23,.60,AZUL],[0.04,0.42,0.02,0.52,.21,.45,BLANCO]]
+   .forEach(([x,y,z,sx,sy,sz,c],i)=>{
+     const b=new THREE.Mesh(geoB,matSuave(c,c===AZUL?AZUL:0));
+     b.position.set(x,y,z);b.scale.set(sx,sy,sz);
+     b.rotation.y=(i%2?1:-1)*0.14;
+     b.userData.f=i*1.1;b.userData.v=0.4;
+     g3.add(b);
+   });
+
+  /* CAP 4 — EL TERRITORIO: tres ciudades sobre la costa */
+  const g4=nuevo(0, 4*-CAIDA, -120);
+  const costa=new THREE.Mesh(
+    new THREE.PlaneGeometry(4.6,3.2,1,1),
+    new THREE.MeshStandardMaterial({color:0xdde4ee,roughness:0.9,transparent:true,opacity:0.85}));
+  costa.rotation.x=-Math.PI/2; costa.position.y=-0.5; g4.add(costa);
+  const TRES=[[-0.5,-1.0,'Antofagasta'],[0.95,0.15,'Calama'],[-0.75,1.15,'Iquique']];
+  TRES.forEach(([x,z],i)=>{
+    const alto=i===0?0.95:0.62;
+    const torre=new THREE.Mesh(new THREE.CylinderGeometry(0.052,0.075,alto,12),
+      matSuave(i===0?AZUL:BLANCO,i===0?AZUL:0));
+    torre.position.set(x,-0.5+alto/2,z); g4.add(torre);
+    const bola=new THREE.Mesh(geoN,matSuave(i===0?AZUL:CLARO,i===0?AZUL:CLARO));
+    bola.position.set(x,-0.5+alto+0.10,z); bola.scale.setScalar(i===0?0.135:0.10);
+    bola.userData.f=i*2;bola.userData.v=0.8; g4.add(bola);
+  });
+  g4.add(new THREE.LineSegments(
+    new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(TRES[0][0],-0.3,TRES[0][1]),new THREE.Vector3(TRES[1][0],-0.3,TRES[1][1]),
+      new THREE.Vector3(TRES[0][0],-0.3,TRES[0][1]),new THREE.Vector3(TRES[2][0],-0.3,TRES[2][1])]),
+    new THREE.LineBasicMaterial({color:AZUL,transparent:true,opacity:0.5})));
+
+  /* CAP 5 — LA SEÑAL: anillos saliendo de un punto */
+  const g5=nuevo(0, 5*-CAIDA, -150);
+  const emisor=new THREE.Mesh(geoN,matSuave(AZUL,AZUL));
+  emisor.scale.setScalar(0.24); g5.add(emisor);
+  const anillos=[];
+  for(let k=0;k<4;k++){
+    const a=new THREE.Mesh(new THREE.TorusGeometry(1,0.022,10,50),
+      new THREE.MeshBasicMaterial({color:CLARO,transparent:true,opacity:0.55}));
+    a.rotation.x=-Math.PI/2; a.userData.t=k*0.25; g5.add(a); anillos.push(a);
+  }
+
+  /* ---------- luces: suaves, de estudio (Soft Structural) ---------- */
+  esc.add(new THREE.HemisphereLight(0xffffff,0xc9d6e6,1.5));
+  const l1=new THREE.DirectionalLight(0xffffff,1.35); l1.position.set(-5,7,6); esc.add(l1);
+  const l2=new THREE.DirectionalLight(0xcfe2f2,0.55); l2.position.set(6,3,-4); esc.add(l2);
+
+  /* ---------- el viaje de la camara: se detiene frente a cada objeto ---------- */
+  const DX = movil ? 0 : -2.6;   // corre la mirada: el objeto queda a la derecha
+  // d = a que distancia se planta la camara del objeto; y = cuanto lo mira desde arriba.
+  const PARADAS=[
+    {o:0, d:8.2, y: 1.0},
+    {o:1, d:7.4, y: 0.5},
+    {o:2, d:8.0, y: 0.5},
+    {o:3, d:5.6, y: 0.6},
+    {o:4, d:7.2, y: 1.2},
+    {o:5, d:7.6, y: 0.7},
+  ];
+  let CAP_ACTUAL=0;
+  const mez=(a,b,t)=>a+(b-a)*t;
+  const posObj=new THREE.Vector3(), miraObj=new THREE.Vector3();
+  const posCam=new THREE.Vector3(), miraCam=new THREE.Vector3();
+  const mira=new THREE.Vector3();     // reusado por el enjambre cada cuadro
+  const prev=new THREE.Vector3(), sig=new THREE.Vector3(), tang=new THREE.Vector3();
+
+  function encuadra(p){
+    const f=p*(PARADAS.length-1);
+    const i=Math.min(PARADAS.length-2,Math.floor(f));
+    // La camara PERMANECE frente a cada objeto y solo viaja en el tramo
+    // central del capitulo. Asi nunca queda a medio camino atravesando algo.
+    let t=f-i;
+    CAP_ACTUAL = t<0.5 ? i : i+1;                  // el mismo criterio que usa el panel
+    t=Math.min(1,Math.max(0,(t-0.28)/0.44));       // zona muerta al entrar y al salir
+    t=t*t*(3-2*t);
+    const A=PARADAS[i], B=PARADAS[i+1];
+    const A_=mundo[A.o].position, B_=mundo[B.o].position;
+    const z=mez(A_.z,B_.z,t);
+    const yObj=mez(A_.y,B_.y,t);                     // altura del objeto de este capitulo
+
+    // La camara va por DELANTE y por ENCIMA del objeto, y desciende con el.
+    // El resultado se siente como caer hacia adelante mientras bajas el scroll.
+    posObj.set(0, yObj + mez(A.y,B.y,t)*0.30 + 0.30, z + mez(A.d,B.d,t));
+    miraObj.set(0, yObj - 0.75, z);                  // mira bajo el objeto: el objeto sube en cuadro
+  }
+  encuadra(0); posCam.copy(posObj); miraCam.copy(miraObj);
+
+  /* ---------- bucle ---------- */
+  const reloj=new THREE.Clock();
+  function medir(){
+    const a=cv.clientWidth,b=cv.clientHeight;
+    if(!a||!b)return;
+    rnd.setSize(a,b,false); cam.aspect=a/b; cam.updateProjectionMatrix();
+  }
+
+  function cuadro(){
+    const dt=Math.min(reloj.getDelta(),0.05), t=reloj.elapsedTime;
+
+    if(!quieto){
+      // cada objeto se mueve como lo que representa
+      // EL ANFITRION: flota, te mira y parpadea
+      const flota = Math.sin(t*0.9)*0.055;
+      robot.position.y = flota;                                 // respiracion
+      // el ladeo fijo (-0.085) mas un balanceo suave encima: sin esto el
+      // seguimiento del raton borraba el caracter de la pose
+      robot.rotation.z = -0.085 + Math.sin(t*0.62)*0.030;
+      // la cabeza sigue al raton, con tope para que no se descoyunte
+      // rotation.x POSITIVO inclina la cara hacia ABAJO, por eso va negado:
+      // sin esto el robot miraba justo al contrario del raton.
+      const objX = -raton.y*0.20, objY = raton.x*0.34;
+      robot.rotation.x += (objX-robot.rotation.x)*0.055;
+      robot.rotation.y += (objY-robot.rotation.y)*0.055;
+      // la sombra acompaña: se achica y aclara cuando el robot sube
+      const s0 = 1 - flota*1.5;
+      sombra.scale.set(s0,s0,1);
+      sombra.material.opacity = 0.22 - flota*0.16;
+      // parpadeo: los ojos se achatan un instante, cada tanto
+      parpadeo += dt;
+      let abierto = 1;
+      if(parpadeo > proxParpadeo){
+        const u=(parpadeo-proxParpadeo)/0.14;                   // dura 140 ms
+        if(u<1) abierto = Math.abs(Math.cos(u*Math.PI));
+        else { parpadeo=0; proxParpadeo=2.2+Math.random()*3.4; }
+      }
+      const k=Math.max(0.06,abierto);
+      ojos.forEach(o=>{ o.base.scale.y=0.108*k; o.nucleo.scale.y=0.074*k;
+        o.chispa.visible = k>0.55; });
+      halos.forEach(h=>h.intensity = 1.7*k);
+      // LA BANDADA: cruzan el cuadro JUNTAS, en formacion. Cuando la
+      // travesia termina, la bandada entera reaparece por otra ruta.
+      if(bandada.espera>0){                  // pausa entre travesias
+        bandada.espera-=dt;
+      } else {
+        bandada.u += dt*bandada.vel;
+        if(bandada.u>=1.15){                 // 1.15: deja salir a las rezagadas
+          bandada.u=0;
+          bandada.espera=1.2+Math.random()*2.2;
+          bandada.ruta=RUTAS[(Math.random()*RUTAS.length)|0];
+          bandada.vel=0.095+Math.random()*0.045;
+          curvaBandada=trazaRuta(bandada.ruta);
+        }
+      }
+      enjambre.forEach(e=>{
+        const c=e.c;
+        // cada una va un poco mas atras que el lider en la MISMA curva
+        const u=Math.max(0,Math.min(1,bandada.u-c.atras));
+        const dentro = bandada.u>c.atras && bandada.u-c.atras<1;
+        e.g.position.copy(curvaBandada.getPointAt(u));
+        // ORIENTACION: la cara apunta a la TANGENTE de la curva, es decir
+        // exactamente hacia donde vuela. lookAt dejaba el "arriba" suelto y
+        // por eso quedaban mirando torcido o hacia arriba.
+        curvaBandada.getTangentAt(u, tang);
+        mira.copy(e.g.position).add(tang);
+        e.g.up.set(0,1,0);                     // arriba siempre es arriba
+        e.g.lookAt(mira);
+        e.g.rotateY(Math.PI);                  // la cara mira a +Z, lookAt usa -Z
+        // giro hacia camara: de perfil puro solo se ve el costado, y con
+        // el giro invertido se veia la nuca. ~2.2 rad las pone de frente
+        // tres cuartos, con el visor a la vista mientras cruzan.
+        e.g.rotateY(tang.x>0 ? 2.25 : -2.25);
+        // desvio lateral y en altura: esto arma la V y la mantiene viva
+        e.g.translateX(c.lado);
+        e.g.translateY(c.sube + Math.sin(t*c.aleteo+c.atras*22)*0.12);
+
+        // INCLINACION AL GIRAR: comparo hacia donde apunta ahora contra
+        // hacia donde apuntaba un instante antes. Si la curva dobla, se
+        // tumba hacia adentro como un avion virando. Es lo que hace que
+        // el vuelo se lea vivo y no como un objeto arrastrado por un riel.
+        const ua=Math.max(0,u-0.03), ub2=Math.min(0.999,u+0.03);
+        prev.copy(curvaBandada.getPointAt(ua));
+        sig.copy(curvaBandada.getPointAt(ub2));
+        const giro=Math.atan2(sig.x-prev.x, sig.z-prev.z)
+                 - Math.atan2(e.giroPrev.x, e.giroPrev.z);
+        e.giroPrev.set(sig.x-prev.x, 0, sig.z-prev.z);
+        e.banqueo += (Math.max(-1,Math.min(1,giro*7)) - e.banqueo)*0.06;
+        e.g.rotateZ(e.banqueo*0.85 + Math.sin(t*c.aleteo+c.atras*18)*0.13);
+
+        // entra y sale desvanecida, no de golpe
+        const opa=Math.min(1,Math.min(u,1-u)/0.10);
+        e.g.visible = opa>0.02 && dentro && bandada.espera<=0;
+        // parpadeo propio de cada una
+        e.parpadeo += dt;
+        let ka=1;
+        if(e.parpadeo>e.prox){
+          const w=(e.parpadeo-e.prox)/0.13;
+          if(w<1) ka=Math.abs(Math.cos(w*Math.PI));
+          else { e.parpadeo=0; e.prox=2+Math.random()*3.5; }
+        }
+        e.ojos.forEach(o=>{ o.base.scale.y=0.108*ka; o.nucleo.scale.y=0.074*ka;
+          o.chispa.visible = ka>0.55; });
+        e.halo.rotation.z += dt*0.5;
+      });
+      halo.rotation.z += dt*0.35;
+      halo.material.emissiveIntensity = 0.45+Math.sin(t*1.6)*0.14;
+      g1.children.forEach(b=>{ if(b.userData.v)
+        b.position.y += Math.sin(t*b.userData.v+b.userData.f)*0.0022; });
+      g2.children.forEach((e,k)=>{ e.rotation.z += dt*0.55*e.userData.dir; });   // engranajes: giro real
+      g3.children.forEach(b=>{ if(b.userData.v)
+        b.rotation.y += dt*0.12*(b.userData.f%2?1:-1); });
+      g4.children.forEach(m=>{ if(m.userData.v)
+        m.position.y += Math.sin(t*m.userData.v+m.userData.f)*0.0018; });
+      // la señal: anillos que salen y se desvanecen
+      anillos.forEach(a=>{
+        a.userData.t += dt*0.30; if(a.userData.t>1) a.userData.t-=1;
+        const s=0.25+a.userData.t*2.2;
+        a.scale.set(s,s,1);
+        a.material.opacity=0.55*(1-a.userData.t);
+      });
+      emisor.scale.setScalar(0.24+Math.sin(t*2.2)*0.018);
+    }
+
+    posCam.lerp(posObj,0.11); miraCam.lerp(miraObj,0.11);
+    cam.position.copy(posCam); cam.lookAt(miraCam);
+    rnd.render(esc,cam);
+    requestAnimationFrame(cuadro);
+  }
+
+  /* ---------- el scroll manda ---------- */
+  let actual=-1, pedido=false;
+  function aplica(){
+    pedido=false;
+    const alto=Math.max(1,viaje.offsetHeight-innerHeight);
+    const p=Math.min(1,Math.max(0,scrollY/alto));
+    encuadra(p);
+    const i=Math.min(CAPS-1,CAP_ACTUAL);               // panel = el mismo que enfoca la camara
+    if(i!==actual){
+      actual=i;
+      paneles.forEach((el,k)=>el.classList.toggle('on',k===i));
+      puntos.forEach((el,k)=>el.classList.toggle('on',k===i));
+      enlaces.forEach(a=>a.classList.toggle('activo',+a.dataset.ir===i));
+    }
+    guia.style.opacity=p>0.02?0:1;
+  }
+  function alScroll(){if(!pedido){pedido=true;requestAnimationFrame(aplica)}}
+
+  addEventListener('scroll',alScroll,{passive:true});
+  addEventListener('resize',()=>{medir();alScroll()});
+  medir(); aplica();
+  setTimeout(()=>{medir();dispatchEvent(new Event('resize'))},90);
+  requestAnimationFrame(cuadro);
+})();
+</script>
+</body>
+</html>

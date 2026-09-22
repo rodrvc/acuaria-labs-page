@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acuaria Labs — Laboratorio de IA en Antofagasta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --marino:#11324a; --azul:#1a4b70; --azul-med:#2a6692;
+  --celeste:#3c80b4; --acento:#64a1ce; --borde:#b8d5ea;
+  --bruma:#eef6fb; --texto:#4a6579;
+  --display:'Space Grotesk',system-ui,sans-serif;
+  --cuerpo:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:#fff;color:var(--texto);
+  font-family:var(--cuerpo);font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit}
+.env{max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+
+/* ---------- barra ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:80;
+  backdrop-filter:blur(14px);background:rgba(255,255,255,.7);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s;
+}
+header.pegado{border-bottom-color:var(--borde);background:rgba(255,255,255,.93)}
+.barra{display:flex;align-items:center;justify-content:space-between;height:74px}
+.logo{
+  font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.02em;
+  color:var(--marino);text-decoration:none;display:flex;align-items:center;gap:10px;cursor:pointer;
+}
+.logo i{
+  width:9px;height:9px;border-radius:50%;background:var(--acento);
+  box-shadow:0 0 0 4px rgba(100,161,206,.22);animation:respira 3.4s ease-in-out infinite;
+}
+@keyframes respira{0%,100%{box-shadow:0 0 0 4px rgba(100,161,206,.22)}50%{box-shadow:0 0 0 9px rgba(100,161,206,.05)}}
+nav{display:flex;gap:30px;align-items:center}
+nav a{text-decoration:none;font-size:14.5px;font-weight:500;color:var(--texto);position:relative;padding:4px 0;cursor:pointer;transition:color .2s}
+nav a::after{content:'';position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--acento);transition:right .28s cubic-bezier(.4,0,.2,1)}
+nav a:hover{color:var(--azul)}
+nav a:hover::after{right:0}
+.cta-nav{background:var(--azul);color:#fff!important;padding:11px 22px;border-radius:100px;font-weight:600;transition:transform .2s,box-shadow .2s,background .2s}
+.cta-nav::after{display:none}
+.cta-nav:hover{background:var(--marino);transform:translateY(-1px);box-shadow:0 8px 22px rgba(26,75,112,.26)}
+.menu-btn{display:none;background:none;border:0;cursor:pointer;padding:8px}
+.menu-btn span{display:block;width:23px;height:2px;background:var(--marino);margin:5px 0;border-radius:2px}
+
+/* ============================================================
+   LA ESCENA
+   Muestra la red de nodos del norte de Chile. La camara
+   desciende sobre el territorio conforme bajas.
+   ============================================================ */
+.secuencia{position:relative}
+.escenario{position:sticky;top:0;height:100vh;overflow:hidden}
+#lienzo{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:block}
+
+/* niebla de horizonte, para que la red se funda con el blanco */
+.horizonte{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 22%,rgba(255,255,255,0) 74%,#fff 100%);
+}
+
+.riel{
+  position:absolute;left:clamp(18px,3.4vw,40px);top:50%;transform:translateY(-50%);
+  z-index:6;display:flex;flex-direction:column;gap:14px;
+}
+.riel b{width:2px;height:32px;background:var(--borde);border-radius:2px;position:relative;overflow:hidden;display:block}
+.riel b::after{content:'';position:absolute;inset:0;background:var(--azul);transform:scaleY(0);transform-origin:top;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+.riel b.on::after{transform:scaleY(1)}
+
+.acto{
+  position:absolute;inset:0;z-index:5;
+  display:flex;align-items:center;padding:74px clamp(20px,5vw,56px) 0;
+  opacity:0;visibility:hidden;transform:translateY(22px);pointer-events:none;
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1),visibility .5s;
+}
+.acto.on{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.caja{max-width:min(520px,49%);margin-left:clamp(0px,3vw,44px)}
+
+.marbete{
+  display:inline-flex;align-items:center;gap:9px;
+  background:rgba(255,255,255,.85);border:1px solid var(--borde);
+  padding:8px 17px;border-radius:100px;font-size:12.5px;font-weight:600;
+  color:var(--celeste);letter-spacing:.04em;margin-bottom:clamp(12px,2.4vh,24px);backdrop-filter:blur(8px);
+}
+.marbete i{width:6px;height:6px;border-radius:50%;background:var(--acento);animation:respira 3.4s ease-in-out infinite}
+
+.acto h1,.acto h2{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(1.7rem,min(4.6vw,5.2vh),3.9rem);
+  line-height:1.05;letter-spacing:-.035em;color:var(--marino);
+  margin:0 0 clamp(10px,2vh,20px);
+}
+.acto h2{font-size:clamp(1.55rem,min(4vw,4.6vh),3.2rem)}
+.acto em{
+  font-style:normal;
+  background:linear-gradient(105deg,var(--celeste),var(--acento) 55%,var(--azul-med));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.acto p{font-size:clamp(.95rem,1.9vh,1.1rem);margin:0 0 clamp(14px,2.6vh,26px);max-width:44ch}
+.acto p b{color:var(--azul);font-weight:600}
+
+.botones{display:flex;flex-wrap:wrap;gap:13px}
+.btn{
+  display:inline-flex;align-items:center;text-decoration:none;cursor:pointer;
+  font-weight:600;font-size:15.5px;padding:15px 29px;border-radius:100px;
+  transition:transform .2s,box-shadow .2s,background .2s,border-color .2s;
+}
+.btn-p{background:var(--azul);color:#fff;box-shadow:0 5px 20px rgba(26,75,112,.2)}
+.btn-p:hover{background:var(--marino);transform:translateY(-2px);box-shadow:0 12px 30px rgba(26,75,112,.3)}
+.btn-s{background:rgba(255,255,255,.8);color:var(--azul);border:1px solid var(--borde);backdrop-filter:blur(8px)}
+.btn-s:hover{border-color:var(--acento);transform:translateY(-2px);background:#fff}
+
+.lista{display:grid;gap:clamp(6px,1.1vh,10px);margin:0;padding:0;list-style:none}
+.lista li{
+  display:flex;gap:13px;align-items:flex-start;
+  background:rgba(255,255,255,.82);border:1px solid var(--borde);
+  border-radius:14px;padding:clamp(9px,1.5vh,13px) 16px;backdrop-filter:blur(8px);
+  transition:border-color .25s,transform .25s;
+}
+.lista li:hover{border-color:var(--acento);transform:translateX(4px)}
+.lista i{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--acento);margin-top:9px}
+.lista b{display:block;font-family:var(--display);font-weight:600;color:var(--marino);font-size:1.01rem}
+.lista span{font-size:clamp(.82rem,1.55vh,.91rem);line-height:1.45}
+
+.ruta{display:grid;gap:clamp(8px,1.5vh,13px);margin:0;padding:0;list-style:none;counter-reset:n}
+.ruta li{display:flex;gap:15px;align-items:flex-start;counter-increment:n}
+.ruta li::before{
+  content:counter(n,decimal-leading-zero);
+  font-family:var(--display);font-weight:700;font-size:.8rem;color:var(--acento);
+  flex:0 0 auto;padding-top:4px;letter-spacing:.04em;
+}
+.ruta b{display:block;font-family:var(--display);font-weight:600;color:var(--marino);font-size:1.03rem}
+.ruta span{font-size:clamp(.83rem,1.55vh,.92rem);line-height:1.45}
+
+.vias{display:flex;flex-wrap:wrap;gap:12px}
+.via{
+  display:inline-flex;align-items:center;text-decoration:none;
+  background:rgba(255,255,255,.8);border:1px solid var(--borde);color:var(--azul);
+  padding:14px 25px;border-radius:100px;font-weight:600;font-size:15px;
+  backdrop-filter:blur(8px);transition:border-color .2s,transform .2s,background .2s;
+}
+.via:hover{border-color:var(--acento);transform:translateY(-2px);background:#fff}
+.via.fuerte{background:var(--azul);color:#fff;border-color:var(--azul)}
+.via.fuerte:hover{background:var(--marino);border-color:var(--marino)}
+
+.pista{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:6;
+  font-size:11.5px;color:var(--celeste);font-weight:600;letter-spacing:.1em;
+  display:flex;flex-direction:column;align-items:center;gap:9px;transition:opacity .4s;
+}
+.pista i{display:block;width:1.5px;height:28px;background:linear-gradient(var(--acento),transparent);animation:baja 1.9s ease-in-out infinite}
+@keyframes baja{
+  0%{transform:scaleY(0);transform-origin:top}
+  45%{transform:scaleY(1);transform-origin:top}
+  55%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+
+footer{border-top:1px solid var(--borde);padding:44px 0;background:#fff;position:relative;z-index:10}
+.pie{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center;font-size:13.5px}
+.pie a{text-decoration:none;color:var(--texto);transition:color .2s}
+.pie a:hover{color:var(--azul)}
+.redes{display:flex;gap:20px}
+
+:focus-visible{outline:2.5px solid var(--acento);outline-offset:3px;border-radius:4px}
+
+@media (max-width:900px){
+  nav{
+    position:fixed;inset:74px 0 auto;background:#fff;flex-direction:column;
+    padding:26px clamp(20px,5vw,56px) 34px;gap:18px;align-items:stretch;
+    border-bottom:1px solid var(--borde);
+    transform:translateY(-125%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  nav.abierto{transform:none}
+  .menu-btn{display:block}
+  .cta-nav{text-align:center}
+  .riel{display:none}
+  .acto{align-items:flex-end;padding-bottom:84px}
+  .caja{
+    max-width:100%;margin-left:0;background:rgba(255,255,255,.9);
+    backdrop-filter:blur(10px);border-radius:20px;padding:24px 22px;border:1px solid var(--borde);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header id="cab">
+  <div class="env barra">
+    <a class="logo" data-ir="0"><i></i>Acuaria Labs</a>
+    <nav id="nav">
+      <a data-ir="1">Servicios</a>
+      <a data-ir="2">Cómo trabajamos</a>
+      <a data-ir="3">Laboratorio</a>
+      <a data-ir="4">Antofagasta</a>
+      <a class="cta-nav" data-ir="5">Conversemos</a>
+    </nav>
+    <button class="menu-btn" id="mb" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="secuencia" id="secuencia">
+  <div class="escenario">
+    <canvas id="lienzo"></canvas>
+    <div class="horizonte"></div>
+
+    <div class="riel" aria-hidden="true">
+      <b class="on"></b><b></b><b></b><b></b><b></b><b></b>
+    </div>
+
+    <section class="acto on">
+      <div class="caja">
+        <span class="marbete"><i></i>LABORATORIO DE IA · ANTOFAGASTA</span>
+        <h1>Inteligencia artificial hecha en el <em>norte de Chile</em></h1>
+        <p>Diseñamos agentes, chatbots y automatizaciones para empresas que operan aquí. <b>Con base real en Antofagasta</b>, no como oficina remota.</p>
+        <div class="botones">
+          <a class="btn btn-p" data-ir="5">Conversemos tu proyecto</a>
+          <a class="btn btn-s" data-ir="1">Ver qué construimos</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="acto">
+      <div class="caja">
+        <h2>Lo que <em>construimos</em></h2>
+        <ul class="lista">
+          <li><i></i><div><b>Chatbots de WhatsApp</b><span>Tu negocio responde a toda hora: consultas, agendamiento y calificación de clientes.</span></div></li>
+          <li><i></i><div><b>Automatización con IA</b><span>Correos, reportes, planillas y sistemas hablando entre sí, sin intervención manual.</span></div></li>
+          <li><i></i><div><b>Desarrollo a medida</b><span>Agentes y sistemas RAG que responden con los documentos de tu empresa.</span></div></li>
+          <li><i></i><div><b>Capacitación en IA</b><span>Talleres in-company. Se termina el día con un flujo funcionando.</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="acto">
+      <div class="caja">
+        <h2>Del problema al <em>sistema funcionando</em></h2>
+        <ol class="ruta">
+          <li><div><b>Diagnóstico</b><span>Vemos tu operación y detectamos dónde se pierde tiempo o dinero.</span></div></li>
+          <li><div><b>Prototipo</b><span>Construimos algo funcionando rápido, para probarlo con datos reales.</span></div></li>
+          <li><div><b>Producción</b><span>Lo integramos a tus sistemas y lo dejamos operando de verdad.</span></div></li>
+          <li><div><b>Acompañamiento</b><span>Medimos, ajustamos y volvemos a ver si sigue funcionando.</span></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="acto">
+      <div class="caja">
+        <h2>El <em>laboratorio</em></h2>
+        <p>Proyectos propios que financiamos y mantenemos nosotros. Sirven para probar cosas antes de llevarlas a un cliente.</p>
+        <ul class="lista">
+          <li><i></i><div><b>Campamento Tecnológico</b><span>IA, automatizaciones, Arduino y realidad aumentada. Julio 2026, Antofagasta.</span></div></li>
+          <li><i></i><div><b>Panoramas de la ciudad</b><span>App para descubrir qué pasa en Antofagasta y conectar con iniciativas locales.</span></div></li>
+          <li><i></i><div><b>Herramientas abiertas</b><span>Código abierto para que otros equipos del norte partan sin construir de cero.</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="acto">
+      <div class="caja">
+        <h2>Estamos <em>acá</em>, no en una oficina remota</h2>
+        <p>Operamos físicamente desde Antofagasta. Podemos ir a tu planta, a tu bodega o a tu oficina, y volver la semana siguiente a ver si lo que instalamos está funcionando.</p>
+        <p><b>Antofagasta, Calama e Iquique</b> de forma presencial. Todo Chile de forma remota.</p>
+      </div>
+    </section>
+
+    <section class="acto">
+      <div class="caja">
+        <h2>Cuéntanos qué necesitas <em>resolver</em></h2>
+        <p>Respondemos todas las consultas. Si el proyecto no encaja con lo que hacemos, te lo decimos y te orientamos igual.</p>
+        <div class="vias">
+          <a class="via fuerte" href="https://wa.me/56982785644">Escribir por WhatsApp</a>
+          <a class="via" href="mailto:hola@acuarialabs.cl">hola@acuarialabs.cl</a>
+          <a class="via" href="tel:+56982785644">+56 9 8278 5644</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="pista" id="pista">SCROLL<i></i></div>
+  </div>
+</div>
+
+<footer>
+  <div class="env pie">
+    <span>© 2026 Acuaria Labs · Antofagasta, Chile</span>
+    <div class="redes">
+      <a href="https://github.com/Acuaria-Labs">GitHub</a>
+      <a href="https://www.linkedin.com/company/acuaria-labs/">LinkedIn</a>
+      <a href="https://www.instagram.com/acuarialabs/">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+/* ============================================================
+   ESTA ESCENA MUESTRA una red de nodos repartida sobre el
+   territorio del norte de Chile, MOVIENDOSE COMO un sistema
+   distribuido en reposo — cada nodo con su propia deriva
+   independiente, y pulsos de datos recorriendo los enlaces —
+   PORQUE Acuaria Labs conecta empresas dispersas de la region
+   con sistemas que se hablan entre si, y su valor real es
+   estar fisicamente en ese territorio.
+
+   No es una esfera decorativa: la forma y el movimiento salen
+   del tema del sitio.
+   ============================================================ */
+
+const ACTOS=6;
+const cab=document.getElementById('cab');
+const nav=document.getElementById('nav');
+const mb=document.getElementById('mb');
+const sec=document.getElementById('secuencia');
+const pista=document.getElementById('pista');
+const actos=[...document.querySelectorAll('.acto')];
+const rieles=[...document.querySelectorAll('.riel b')];
+
+sec.style.height=(ACTOS*100)+'vh';
+mb.addEventListener('click',()=>nav.classList.toggle('abierto'));
+document.querySelectorAll('[data-ir]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();nav.classList.remove('abierto');
+    const alto=sec.offsetHeight-innerHeight;
+    scrollTo({top:(+a.dataset.ir/(ACTOS-1))*alto,behavior:'smooth'});
+  });
+});
+
+(function(){
+  const lienzo=document.getElementById('lienzo');
+  const suave=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const movil=matchMedia('(max-width: 900px)').matches;
+
+  if(!window.THREE){console.warn('three.js no cargó');return;}
+
+  const escena=new THREE.Scene();
+  const camara=new THREE.PerspectiveCamera(46,1,0.1,120);
+  const render=new THREE.WebGLRenderer({canvas:lienzo,antialias:true,alpha:true});
+  render.setPixelRatio(Math.min(devicePixelRatio,2));   // DPR clampeado
+
+  /* ---- las ciudades reales del norte, en su posicion relativa ---- */
+  const CIUDADES=[
+    {n:'Iquique',    x:-2.05,z:-5.30},
+    {n:'Calama',     x: 1.85,z:-0.95},
+    {n:'Antofagasta',x:-1.35,z: 0.55, capital:true},
+    {n:'Taltal',     x:-0.55,z: 3.45},
+    {n:'Mejillones', x:-1.95,z:-0.85},
+    {n:'Tocopilla',  x:-2.25,z:-2.85},
+  ];
+
+  /* ---- los nodos: ciudades + empresas alrededor de cada una ---- */
+  const nodos=[];
+  CIUDADES.forEach((c,ci)=>{
+    nodos.push({x:c.x,y:0,z:c.z,r:c.capital?0.185:0.125,ciudad:ci,fase:Math.random()*6.28,vel:0.4+Math.random()*0.5});
+    const cuantos=c.capital?7:(3+Math.floor(Math.random()*3));
+    for(let k=0;k<cuantos;k++){
+      const a=Math.random()*6.2832, d=0.55+Math.random()*1.15;
+      nodos.push({
+        x:c.x+Math.cos(a)*d, y:(Math.random()-0.5)*0.5, z:c.z+Math.sin(a)*d,
+        r:0.042+Math.random()*0.042, ciudad:ci,
+        fase:Math.random()*6.28, vel:0.35+Math.random()*0.75
+      });
+    }
+  });
+
+  /* ---- NODOS: un solo InstancedMesh, no N mallas ---- */
+  const geoNodo=new THREE.SphereGeometry(1,14,12);
+  const matNodo=new THREE.MeshStandardMaterial({
+    color:0xffffff,roughness:0.28,metalness:0.05,
+    emissive:0x64a1ce,emissiveIntensity:0.16,
+  });
+  const malla=new THREE.InstancedMesh(geoNodo,matNodo,nodos.length);
+  malla.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  escena.add(malla);
+
+  const capital=new THREE.Mesh(
+    new THREE.SphereGeometry(1,48,36),
+    new THREE.MeshStandardMaterial({color:0x1a4b70,roughness:0.22,metalness:0.15,
+      emissive:0x3c80b4,emissiveIntensity:0.42})
+  );
+  escena.add(capital);
+
+  /* ---- ENLACES: una sola geometria de lineas ---- */
+  const pares=[];
+  for(let i=0;i<nodos.length;i++){
+    for(let j=i+1;j<nodos.length;j++){
+      const a=nodos[i],b=nodos[j];
+      const d=Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z);
+      // dentro de una misma ciudad, o troncales entre ciudades cercanas
+      if((a.ciudad===b.ciudad&&d<1.5)||(a.ciudad!==b.ciudad&&d<2.6&&a.r>0.1&&b.r>0.1)){
+        pares.push([i,j]);
+      }
+    }
+  }
+  const posLin=new Float32Array(pares.length*6);
+  const geoLin=new THREE.BufferGeometry();
+  geoLin.setAttribute('position',new THREE.BufferAttribute(posLin,3));
+  const lineas=new THREE.LineSegments(geoLin,
+    new THREE.LineBasicMaterial({color:0x64a1ce,transparent:true,opacity:0.24}));
+  escena.add(lineas);
+
+  /* ---- PULSOS: datos viajando por los enlaces troncales ---- */
+  const troncales=pares.filter(([i,j])=>nodos[i].r>0.1&&nodos[j].r>0.1);
+  const NP=Math.min(troncales.length,10);
+  const pulsos=Array.from({length:NP},(_,k)=>({
+    par:troncales[k%troncales.length],
+    t:Math.random(), vel:0.16+Math.random()*0.18
+  }));
+  const geoPul=new THREE.SphereGeometry(1,10,8);
+  const matPul=new THREE.MeshBasicMaterial({color:0x1a4b70});
+  const mallaPul=new THREE.InstancedMesh(geoPul,matPul,NP);
+  mallaPul.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  escena.add(mallaPul);
+
+  /* ---- suelo: el territorio ---- */
+  const suelo=new THREE.Mesh(
+    new THREE.PlaneGeometry(46,46,1,1),
+    new THREE.MeshBasicMaterial({color:0xeef6fb,transparent:true,opacity:0.55})
+  );
+  suelo.rotation.x=-Math.PI/2; suelo.position.y=-1.5;
+  escena.add(suelo);
+
+  const rejilla=new THREE.GridHelper(42,42,0xb8d5ea,0xdcebf6);
+  rejilla.position.y=-1.49;
+  rejilla.material.transparent=true; rejilla.material.opacity=0.34;
+  escena.add(rejilla);
+
+  /* ---- luces: baratas, sin sombras ---- */
+  escena.add(new THREE.HemisphereLight(0xffffff,0xd6e8f5,1.15));
+  const sol=new THREE.DirectionalLight(0xffffff,1.5);
+  sol.position.set(-4,7,5); escena.add(sol);
+
+  /* ---- la camara desciende sobre el territorio con el scroll ---- */
+  // dx desplaza la mirada a la izquierda => la red se dibuja a la DERECHA,
+  // dejando libre la mitad izquierda para el texto.
+  const DX = movil ? 0 : 3.1;
+  const VISTAS=[
+    {p:[ 0.4, 7.4, 9.2], m:[0,0,-0.6]},    // llegada, alto y lejos
+    {p:[-2.6, 4.2, 6.0], m:[-1.2,0,0.2]},  // baja hacia Antofagasta
+    {p:[ 3.0, 3.2, 5.4], m:[1.1,0,-0.7]},  // cruza a Calama
+    {p:[-1.9, 2.4, 2.8], m:[-1.4,0,0.4]},  // dentro de la red
+    {p:[-1.3, 1.7, 3.8], m:[-1.35,0,0.55]},// sobre Antofagasta
+    {p:[ 0.2, 5.0, 7.4], m:[0,0,-0.2]},    // se aleja al cierre
+  ].map(v=>({p:[v.p[0]-DX,v.p[1],v.p[2]], m:[v.m[0]-DX,v.m[1],v.m[2]]}));
+  const mez=(a,b,t)=>a+(b-a)*t;
+  const camPos=new THREE.Vector3(...VISTAS[0].p);
+  const camMira=new THREE.Vector3(...VISTAS[0].m);
+  const objPos=camPos.clone(), objMira=camMira.clone();
+
+  function encuadra(p){
+    const f=p*(VISTAS.length-1);
+    const i=Math.min(VISTAS.length-2,Math.floor(f));
+    const t=f-i, a=VISTAS[i], b=VISTAS[i+1];
+    const s=t*t*(3-2*t);                       // suavizado
+    objPos.set(mez(a.p[0],b.p[0],s),mez(a.p[1],b.p[1],s),mez(a.p[2],b.p[2],s));
+    objMira.set(mez(a.m[0],b.m[0],s),mez(a.m[1],b.m[1],s),mez(a.m[2],b.m[2],s));
+  }
+
+  /* ---- bucle ---- */
+  const M=new THREE.Matrix4(), V=new THREE.Vector3(), Q=new THREE.Quaternion(), S=new THREE.Vector3();
+  const reloj=new THREE.Clock();
+
+  function medir(){
+    const a=lienzo.clientWidth, b=lienzo.clientHeight;
+    if(!a||!b)return;
+    render.setSize(a,b,false);
+    camara.aspect=a/b; camara.updateProjectionMatrix();
+  }
+
+  function cuadro(){
+    const dt=Math.min(reloj.getDelta(),0.05);
+    const t=reloj.elapsedTime;
+
+    // cada nodo con su deriva propia: calma, pero vivo
+    for(let i=0;i<nodos.length;i++){
+      const n=nodos[i];
+      const dy = suave?0 : Math.sin(t*n.vel+n.fase)*0.085;
+      const dx = suave?0 : Math.cos(t*n.vel*0.7+n.fase)*0.045;
+      V.set(n.x+dx,n.y+dy,n.z);
+      n._x=V.x; n._y=V.y; n._z=V.z;
+      S.setScalar(n.r);
+      M.compose(V,Q,S);
+      malla.setMatrixAt(i,M);
+      if(n.r>0.18){capital.position.copy(V);capital.scale.setScalar(n.r);}
+    }
+    malla.instanceMatrix.needsUpdate=true;
+
+    // los enlaces siguen a sus nodos
+    for(let k=0;k<pares.length;k++){
+      const [i,j]=pares[k], o=k*6;
+      posLin[o]=nodos[i]._x; posLin[o+1]=nodos[i]._y; posLin[o+2]=nodos[i]._z;
+      posLin[o+3]=nodos[j]._x; posLin[o+4]=nodos[j]._y; posLin[o+5]=nodos[j]._z;
+    }
+    geoLin.attributes.position.needsUpdate=true;
+
+    // pulsos de datos recorriendo las troncales
+    for(let k=0;k<NP;k++){
+      const p=pulsos[k];
+      if(!suave){p.t+=dt*p.vel; if(p.t>1){p.t=0;}}
+      const a=nodos[p.par[0]], b=nodos[p.par[1]];
+      V.set(mez(a._x,b._x,p.t),mez(a._y,b._y,p.t)+0.05,mez(a._z,b._z,p.t));
+      S.setScalar(0.036);
+      M.compose(V,Q,S);
+      mallaPul.setMatrixAt(k,M);
+    }
+    mallaPul.instanceMatrix.needsUpdate=true;
+
+    // la camara persigue su objetivo con inercia
+    camPos.lerp(objPos,0.055);
+    camMira.lerp(objMira,0.055);
+    camara.position.copy(camPos);
+    camara.lookAt(camMira);
+
+    render.render(escena,camara);
+    requestAnimationFrame(cuadro);
+  }
+
+  /* ---- el scroll manda ---- */
+  let actual=-1, pedido=false;
+  function aplica(){
+    pedido=false;
+    const alto=Math.max(1,sec.offsetHeight-innerHeight);
+    const p=Math.min(1,Math.max(0,scrollY/alto));
+    encuadra(p);
+    const i=Math.min(ACTOS-1,Math.round(p*(ACTOS-1)));
+    if(i!==actual){
+      actual=i;
+      actos.forEach((a,k)=>a.classList.toggle('on',k===i));
+      rieles.forEach((r,k)=>r.classList.toggle('on',k<=i));
+    }
+    pista.style.opacity=p>0.02?0:1;
+    cab.classList.toggle('pegado',scrollY>16);
+  }
+  function alScroll(){if(!pedido){pedido=true;requestAnimationFrame(aplica)}}
+
+  addEventListener('scroll',alScroll,{passive:true});
+  addEventListener('resize',()=>{medir();alScroll()});
+
+  medir(); aplica();
+  // defensa contra el canvas atascado en 300x150
+  setTimeout(()=>{medir();dispatchEvent(new Event('resize'))},90);
+  requestAnimationFrame(cuadro);
+})();
+</script>
+</body>
+</html>

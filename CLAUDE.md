@@ -12,6 +12,7 @@ Nueva decisión tomada en sesión → registrarla en el archivo del área (crear
 - `docs/decisiones/correo.md` — Google Workspace, MX/SPF/DKIM, alias hola@, cómo verificar
 
 ## Handoffs de contexto largo (solo si se retoma ese tema)
+- `CLARA-HANDOFF.md` — portada nueva activa (`index-nuevo.html`, issue ACU-242); escena de partículas matraz/gota/ampolleta con órbitas, cómo abrirla e iterar sin tocar producción
 - `GOOGLE-HANDOFF.md` — Search Console + Business Profile
 - `GEO-HANDOFF.md` — estrategia GEO (IAs citando el sitio)
 - `SEO-HANDOFF.md`, `COLOR-HANDOFF.md` — históricos

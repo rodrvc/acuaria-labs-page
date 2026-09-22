@@ -1,0 +1,236 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Laboratorio — camión de partículas</title>
+<style>
+  :root{--primary:#1a4b70;--accent:#3c80b4}
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 Inter,system-ui,sans-serif;color:var(--primary);background:#fff;
+       display:flex;flex-direction:column;min-height:100vh}
+  header{padding:14px 20px;border-bottom:1px solid #e7eef4}
+  h1{margin:0;font-size:15px;font-weight:600;letter-spacing:.01em}
+  header p{margin:2px 0 0;font-size:12px;color:#6b8299}
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:10px}
+  canvas{max-width:100%;height:auto}
+  .panel{border-top:1px solid #e7eef4;padding:12px 20px 18px;display:flex;flex-wrap:wrap;gap:22px;align-items:center}
+  .grp{display:flex;align-items:center;gap:9px}
+  label{font-size:12px;color:#6b8299;min-width:74px}
+  input[type=range]{width:190px;accent-color:var(--accent)}
+  output{font-size:12px;font-variant-numeric:tabular-nums;color:var(--primary);min-width:46px}
+  button{font:inherit;font-size:13px;padding:7px 15px;border:1px solid var(--primary);background:#fff;
+         color:var(--primary);border-radius:3px;cursor:pointer}
+  button:hover{background:var(--primary);color:#fff}
+  button[aria-pressed=true]{background:var(--primary);color:#fff}
+</style>
+<header>
+  <h1>Laboratorio — camión de partículas</h1>
+  <p>Prueba aislada. No es la página real y no afecta al sitio. Rueda del mouse sobre el dibujo = acercar / alejar la cámara.</p>
+</header>
+<main><canvas id="c" width="1100" height="620"></canvas></main>
+<div class="panel">
+  <button id="spin" aria-pressed="true">Pausar giro</button>
+  <div class="grp"><label for="ang">Ángulo</label><input id="ang" type="range" min="0" max="360" value="0"><output id="angO">0°</output></div>
+  <div class="grp"><label for="tilt">Inclinación</label><input id="tilt" type="range" min="-30" max="45" value="8"><output id="tiltO">8°</output></div>
+  <div class="grp"><label for="oculta">Ocultar detrás</label><input id="oculta" type="range" min="0" max="100" value="55"><output id="ocultaO">55%</output></div>
+  <div class="grp"><label for="vel">Velocidad</label><input id="vel" type="range" min="0" max="100" value="22"><output id="velO">22</output></div>
+  <div class="grp"><label for="zoom">Distancia cámara</label><input id="zoom" type="range" min="18" max="260" value="135"><output id="zoomO">100</output></div>
+  <div class="grp"><label for="fov">Lente</label><input id="fov" type="range" min="15" max="95" value="45"><output id="fovO">45°</output></div>
+  <div class="grp"><label for="tam">Tamaño camión</label><input id="tam" type="range" min="10" max="400" value="100"><output id="tamO">100%</output></div>
+  <div class="grp"><label for="flat">Achatar ancho</label><input id="flat" type="range" min="2" max="100" value="100"><output id="flatO">100%</output></div>
+  <div class="grp"><label for="squash">Comprimir todo</label><input id="squash" type="range" min="20" max="100" value="100"><output id="squashO">100%</output></div>
+  <div class="grp"><label for="aris">Aristas</label><input id="aris" type="range" min="0" max="100" value="70"><output id="arisO">70%</output></div>
+  <div class="grp"><label for="silu">Silueta</label><input id="silu" type="range" min="0" max="100" value="55"><output id="siluO">55%</output></div>
+  <div class="grp"><label for="luz">Luz</label><input id="luz" type="range" min="0" max="100" value="60"><output id="luzO">60%</output></div>
+  <div class="grp"><label for="luzA">Dirección luz</label><input id="luzA" type="range" min="0" max="360" value="315"><output id="luzAO">315°</output></div>
+  <div class="grp"><button id="cortar" aria-pressed="true">Corte: ON</button></div>
+  <div class="grp"><label for="corte">Posición corte</label><input id="corte" type="range" min="-100" max="100" value="0"><output id="corteO">mitad</output></div>
+  <div class="grp"><label for="flot">Flotar</label><input id="flot" type="range" min="0" max="100" value="20"><output id="flotO">20%</output></div>
+
+</div>
+<script src="lab-camion-data.js?v=4"></script>
+<script>
+for(let i=TRUCK.length-1;i>0;i--){const j=(i*2654435761)%(i+1);const t=TRUCK[i];TRUCK[i]=TRUCK[j];TRUCK[j]=t;}
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+// Ancho del modelo: cuanto hay que desplazar un punto oculto para llevarlo
+// a la cara visible.
+
+// --- Nube de partículas de la escena -------------------------------------
+// No están pegadas al camión: viven sueltas en el espacio. El camión gira
+// invisible entre ellas y las enciende cuando las contiene.
+let NUBE=[];
+let NUBE_ON=[];   // partículas encendidas, ya resueltas contra el modelo
+function resolverNube(){
+  // Se calcula UNA vez por cambio de nube/alcance: girar la cámara no altera
+  // qué partícula toca el camión, así que no hay que rehacerlo por cuadro.
+  NUBE_ON=[];
+  for(const q of NUBE){
+    const m=TRUCK[q[4]];                   // ya conoce su punto de superficie
+    NUBE_ON.push([q[0],q[1],q[2],m[3],m[4],m[5],m[6],q[3]]);
+  }
+}
+function construirNube(n){
+  // Las partículas se COLOCAN sobre la superficie del camión, no al azar
+  // esperando acertarle. Cada una queda pegada al modelo desde el inicio.
+  NUBE=[];
+  let sd=1013904223;
+  const rnd=()=>{ sd=(sd*1664525+1013904223)>>>0; return sd/4294967296; };
+  const N=Math.min(n,TRUCK.length);      // sin duplicados: no hay más puntos que estos
+  for(let i=0;i<N;i++){
+    const j=(i*7919)%TRUCK.length;         // recorrido disperso del modelo
+    const m=TRUCK[j];
+    const jx=(rnd()*2-1)*0.006, jy=(rnd()*2-1)*0.006, jz=(rnd()*2-1)*0.006;
+    NUBE.push([m[0]+jx, m[1]+jy, m[2]+jz, rnd()*6.283, j]);
+  }
+}
+construirNube(TRUCK.length);   // uno por punto del modelo: sin duplicados
+resolverNube();
+// Con muchas particulas conviene puntos mas chicos y tenues, si no se empasta.
+const DENS=TRUCK.length>20000?0.85:1.6, ALPHA=TRUCK.length>20000?0.75:1.5;
+const $=id=>document.getElementById(id);
+let angle=0, spinning=true, last=performance.now();
+const dpr=Math.min(devicePixelRatio||1,2);
+function size(){
+  const w=Math.min(1100,innerWidth-24), h=Math.round(w*620/1100);
+  cv.style.width=w+'px'; cv.style.height=h+'px';
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+}
+size(); addEventListener('resize',size);
+
+function draw(){
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const a=angle*Math.PI/180, tilt=(+$('tilt').value)*Math.PI/180;
+  const hide=(+$('oculta').value)/100;
+  const ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(tilt),sb=Math.sin(tilt);
+  const flat=(+$('flat').value)/100, sq=(+$('squash').value)/100*(+$('tam').value)/100;
+  const wAris=(+$('aris').value)/100, wSilu=(+$('silu').value)/100;
+  const wLuz=(+$('luz').value)/100, la=(+$('luzA').value)*Math.PI/180;
+  const lx=Math.cos(la), ly=0.55, lz=Math.sin(la), ll=Math.hypot(lx,ly,lz);
+  const Lx=lx/ll, Ly=ly/ll, Lz=lz/ll;
+  const dist=(+$('zoom').value)/100*3.2;
+  const focal=1/Math.tan((+$('fov').value)*Math.PI/180/2);
+  const base=Math.min(W,H*1.55)*0.5;
+  const flotv=(+$('flot').value)/100, tNow=performance.now()/1000;
+
+  // Las partículas de la escena. El camión gira invisible entre ellas y las
+  // enciende; cada una toma de la superficie su normal, arista y luz.
+
+  // Plano de corte perpendicular a la mirada, fijo respecto a la cámara.
+  // El camión gira detrás de él, así que va cambiando qué mitad queda delante.
+  const cortar=$('cortar').getAttribute('aria-pressed')==='true';
+  let planoZ=-Infinity;
+  if(cortar){
+    let mnZ=Infinity,mxZ=-Infinity;
+    for(const q of NUBE_ON){
+      const pxx=q[0]*sq, pyy=q[1]*sq, pz=q[2]*flat*sq;
+      const Zr=-pxx*sa+pz*ca;
+      const Z=pyy*sb+Zr*cb;
+      if(Z<mnZ)mnZ=Z; if(Z>mxZ)mxZ=Z;
+    }
+    const t=(+$('corte').value)/100;      // -1 = todo, +1 = casi nada
+    planoZ=mnZ+(mxZ-mnZ)*(0.5+t*0.5);
+  }
+
+  const vis=[];
+  for(const q of NUBE_ON){
+    const fx=flotv?Math.sin(tNow*0.6+q[7])*0.014*flotv:0;
+    const fy=flotv?Math.cos(tNow*0.5+q[7]*1.7)*0.014*flotv:0;
+    const pxx=(q[0]+fx)*sq, pyy=(q[1]+fy)*sq, pz=q[2]*flat*sq;
+    const X0=pxx*ca+pz*sa, Zr=-pxx*sa+pz*ca;
+    const NXr=q[3]*ca+q[5]*sa, NZr=-q[3]*sa+q[5]*ca;
+    const Y0=pyy*cb-Zr*sb, Z=pyy*sb+Zr*cb;
+    const NYr=q[4]*cb-NZr*sb, NZ=q[4]*sb+NZr*cb;
+    if(NZ < -hide) continue;
+    if(cortar && Z < planoZ) continue;    // mitad de atrás: no se dibuja
+    const depth=dist-Z; if(depth<0.05) continue;
+    const k=focal/depth;
+    vis.push([X0*k, Y0*k, Z, NZ, k,
+              Math.max(0,NXr*Lx+NYr*Ly+NZ*Lz), 1-Math.min(1,Math.abs(NZ)), q[6]]);
+  }
+
+  // Sólido: lo cercano tapa lo lejano.
+  vis.sort((m,n)=>n[2]-m[2]);
+  let zmin=Infinity,zmax=-Infinity;
+  for(const v of vis){ if(v[2]<zmin)zmin=v[2]; if(v[2]>zmax)zmax=v[2]; }
+  const span=(zmax-zmin)||1;
+  const CELL=Math.max(2,3.2*dpr);
+  const gw=Math.ceil(W/CELL)+2, gh=Math.ceil(H/CELL)+2;
+  const zbuf=new Float32Array(gw*gh).fill(-1e9);
+  // Binning en 8 niveles de opacidad, igual que la escena original: eso es lo
+  // que hace que todas las partículas se vean de la misma familia.
+  const BINS=8, bins=Array.from({length:BINS},()=>[]);
+  let pintadas=0;
+  for(const [X,Y,Z,NZ,k,lam,rim,isE] of vis){
+    const sx=W/2+X*base, sy=H/2-Y*base;
+    const gi=(Math.floor(sy/CELL)+1)*gw+(Math.floor(sx/CELL)+1);
+    if(gi>=0 && gi<zbuf.length){
+      if(zbuf[gi]>-1e8 && Z<zbuf[gi]-0.004) continue;
+      zbuf[gi]=Z;
+    }
+    const d=(Z-zmin)/span, f=Math.max(0,NZ);
+    // acc suavizado: la arista realza, no crea una segunda clase de partícula
+    const acc=Math.min(1,(isE*0.55 + rim*rim)*0.5*(wAris+wSilu));
+    const shade=(1-wLuz)+lam*wLuz;
+    // radio con piso: ninguna partícula desaparece por estar en sombra
+    const r=Math.max(0.55*dpr,(0.64+d*0.22+acc*0.16)*dpr*DENS*Math.min(2.4,k*dist*0.55));
+    const t=Math.max(0,Math.min(0.999,(0.30+d*0.34+f*0.22)*shade*(1+acc*0.45)));
+    bins[(t*BINS)|0].push(sx,sy,r);
+    pintadas++;
+  }
+  for(let b=0;b<BINS;b++){
+    const arr=bins[b]; if(!arr.length) continue;
+    ctx.fillStyle='rgba(31,105,150,'+(0.20+b*0.100).toFixed(3)+')';
+    ctx.beginPath();
+    for(let i=0;i<arr.length;i+=3){
+      ctx.moveTo(arr[i]+arr[i+2],arr[i+1]);
+      ctx.arc(arr[i],arr[i+1],arr[i+2],0,6.2832);
+    }
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  ctx.fillStyle='#6b8299';
+  ctx.font=(11*dpr)+'px Inter,system-ui,sans-serif';
+  ctx.fillText(pintadas.toLocaleString('es-CL')+' partículas encendidas de '+NUBE.length.toLocaleString('es-CL'), 12*dpr, H-12*dpr);
+}
+function loop(now){
+  const dt=(now-last)/1000; last=now;
+  if(spinning){
+    angle=(angle+dt*(+$('vel').value)) % 360;
+    $('ang').value=Math.round(angle);
+  }
+  $('angO').textContent=Math.round(angle)+'°';
+  $('tiltO').textContent=$('tilt').value+'°';
+  $('ocultaO').textContent=$('oculta').value+'%';
+  $('velO').textContent=$('vel').value;
+  $('zoomO').textContent=$('zoom').value;
+  $('fovO').textContent=$('fov').value+'\u00b0';
+  $('flatO').textContent=$('flat').value+'%';
+  $('squashO').textContent=$('squash').value+'%';
+  $('tamO').textContent=$('tam').value+'%';
+  $('arisO').textContent=$('aris').value+'%';
+  $('siluO').textContent=$('silu').value+'%';
+  $('luzO').textContent=$('luz').value+'%';
+  $('luzAO').textContent=$('luzA').value+'\u00b0';
+  $('flotO').textContent=$('flot').value+'%';
+  const cv2=+$('corte').value;
+  $('corteO').textContent=cv2===0?'mitad':(cv2<0?'más camión':'menos camión');
+  draw();
+  requestAnimationFrame(loop);
+}
+cv.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const z=$('zoom');
+  z.value=Math.max(+z.min,Math.min(+z.max, +z.value + Math.sign(e.deltaY)*7));
+},{passive:false});
+$('cortar').onclick=e=>{
+  const on=e.target.getAttribute('aria-pressed')!=='true';
+  e.target.setAttribute('aria-pressed',on);
+  e.target.textContent='Corte: '+(on?'ON':'OFF');
+};
+$('spin').onclick=e=>{ spinning=!spinning; e.target.setAttribute('aria-pressed',spinning);
+  e.target.textContent=spinning?'Pausar giro':'Reanudar giro'; };
+$('ang').oninput=e=>{ spinning=false; $('spin').setAttribute('aria-pressed',false);
+  $('spin').textContent='Reanudar giro'; angle=+e.target.value; };
+requestAnimationFrame(loop);
+</script>

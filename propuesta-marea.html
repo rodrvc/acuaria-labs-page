@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://acuarialabs.cl/">
+<title>Acuaria Labs — Agua en el desierto</title>
+<meta name="description" content="Propuesta visual exploratoria para Acuaria Labs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..600,100&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Marea concept — self-contained exploratory page. Does not touch styles.css. */
+:root {
+  --sea-deep: #072530;
+  --sea-mid: #0d3b47;
+  --foam: #eef8f5;
+  --aqua: #8fd8c6;
+  --copper: #c2703e;
+  --ink: #10303a;
+  --ink-soft: #3d5f68;
+  --shore: #f4f9f7;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  font-family: "Schibsted Grotesk", system-ui, sans-serif;
+  background: var(--shore);
+  color: var(--ink);
+  line-height: 1.6;
+}
+::selection { background: var(--aqua); color: var(--sea-deep); }
+a { color: inherit; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--copper);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Hero: the sea ---------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  background:
+    radial-gradient(120% 90% at 50% 110%, var(--sea-mid) 0%, var(--sea-deep) 60%);
+  color: var(--foam);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.hero canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 2rem clamp(1.5rem, 5vw, 4.5rem);
+}
+.wordmark {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+.hero-top a.mail {
+  font-size: 0.95rem;
+  color: var(--aqua);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.hero-top a.mail:hover { border-bottom-color: var(--aqua); }
+@media (max-width: 560px) { .hero-top a.mail { display: none; } }
+.hero-body {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 clamp(1.5rem, 5vw, 4.5rem) clamp(3rem, 7vh, 6rem);
+  max-width: 68rem;
+}
+.hero h1 {
+  font-family: "Fraunces", serif;
+  font-variation-settings: "SOFT" 100, "opsz" 144;
+  font-weight: 420;
+  font-size: clamp(3.2rem, 10vw, 8rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.6rem;
+  text-wrap: balance;
+}
+.hero p.lede {
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.55;
+  max-width: 34em;
+  color: #cfe8e2;
+  margin-bottom: 2.4rem;
+}
+.hero-cta {
+  display: inline-block;
+  width: fit-content;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--sea-deep);
+  background: var(--foam);
+  text-decoration: none;
+  padding: 0.9rem 1.7rem;
+  border-radius: 999px;
+  transition: background-color 160ms ease;
+}
+.hero-cta:hover { background: var(--aqua); }
+.hero-hint {
+  position: relative;
+  z-index: 2;
+  padding: 0 clamp(1.5rem, 5vw, 4.5rem) 1.6rem;
+  font-size: 0.85rem;
+  color: #9dc3bd;
+}
+/* Copper horizon: the one warm line on the page */
+.horizon {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--copper) 18%, #e0925e 50%, var(--copper) 82%, transparent);
+  border: 0;
+}
+
+/* ---------- Shore sections ---------- */
+section { padding: clamp(4.5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 4.5rem); }
+.measure { max-width: 66rem; margin: 0 auto; }
+h2 {
+  font-family: "Fraunces", serif;
+  font-variation-settings: "SOFT" 100;
+  font-weight: 480;
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.2rem;
+}
+.manifesto p {
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  line-height: 1.6;
+  max-width: 30em;
+  color: var(--ink);
+}
+.manifesto p + p { margin-top: 1.1rem; }
+.manifesto em {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--copper);
+}
+
+/* Services ledger: quiet rows, no cards */
+.services .measure { max-width: 66rem; }
+.service-list { list-style: none; border-top: 1px solid #cfe0da; margin-top: 2.4rem; }
+.service-list li {
+  display: grid;
+  grid-template-columns: minmax(14rem, 2fr) 3fr;
+  gap: 1rem 3rem;
+  padding: 1.9rem 0;
+  border-bottom: 1px solid #cfe0da;
+}
+.service-list h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 520;
+  font-size: 1.45rem;
+  line-height: 1.25;
+}
+.service-list p { color: var(--ink-soft); max-width: 34em; align-self: center; }
+@media (max-width: 640px) {
+  .service-list li { grid-template-columns: 1fr; gap: 0.4rem; }
+}
+
+/* Cities: one sentence, not a band */
+.cities { padding-top: 0; }
+.cities p {
+  font-family: "Fraunces", serif;
+  font-weight: 420;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  color: var(--ink-soft);
+  max-width: 30em;
+}
+.cities strong { font-weight: 560; color: var(--ink); }
+
+/* Contact: return to the sea */
+.contact {
+  background: var(--sea-deep);
+  color: var(--foam);
+}
+.contact h2 { color: var(--foam); }
+.contact p { color: #cfe8e2; max-width: 32em; margin-bottom: 2rem; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; font-size: 1.15rem; }
+.contact-links a {
+  color: var(--aqua);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(143, 216, 198, 0.4);
+  padding-bottom: 2px;
+}
+.contact-links a:hover { border-bottom-color: var(--aqua); }
+footer {
+  background: var(--sea-deep);
+  color: #7fa8a1;
+  font-size: 0.85rem;
+  padding: 0 clamp(1.5rem, 5vw, 4.5rem) 2rem;
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="sea" aria-hidden="true"></canvas>
+  <div class="hero-top">
+    <a class="wordmark" href="https://acuarialabs.cl/">Acuaria Labs</a>
+    <a class="mail" href="mailto:hola@acuarialabs.cl">hola@acuarialabs.cl</a>
+  </div>
+  <div class="hero-body">
+    <h1>Agua en el desierto.</h1>
+    <p class="lede">Somos un laboratorio de inteligencia artificial en Antofagasta. Llevamos la tecnología donde hace falta: a las empresas del norte de Chile que quieren trabajar mejor.</p>
+    <a class="hero-cta" href="mailto:hola@acuarialabs.cl">Conversemos</a>
+  </div>
+  <p class="hero-hint">La luz que ves es agua. Sigue bajando. ↓</p>
+</header>
+
+<hr class="horizon">
+
+<section class="manifesto">
+  <div class="measure">
+    <h2>Por qué agua</h2>
+    <p>Antofagasta es el desierto más árido del mundo, y aun así vive mirando al mar. Aquí nada llega solo: el agua, la energía, las ideas — todo hay que traerlo y hacerlo rendir.</p>
+    <p>Así tratamos la inteligencia artificial: no como una moda que se compra, sino como <em>un recurso que se canaliza</em>. La estudiamos, la probamos y la ponemos a correr por tu negocio, gota a gota, hasta que riega.</p>
+  </div>
+</section>
+
+<section class="services">
+  <div class="measure">
+    <h2>Lo que construimos</h2>
+    <ul class="service-list">
+      <li>
+        <h3>Agentes conversacionales</h3>
+        <p>Un asistente que atiende a tus clientes a toda hora, con la información real de tu negocio — no respuestas genéricas.</p>
+      </li>
+      <li>
+        <h3>Automatización de procesos</h3>
+        <p>Los trámites repetitivos de tu operación corriendo solos: cotizaciones, reportes, seguimientos, sin errores de copia y pega.</p>
+      </li>
+      <li>
+        <h3>Búsqueda en tus documentos</h3>
+        <p>Pregunta en lenguaje natural y recibe la respuesta junto al documento que la respalda. Tus contratos y manuales, por fin útiles.</p>
+      </li>
+      <li>
+        <h3>Formación de equipos</h3>
+        <p>Talleres prácticos para que tu equipo use inteligencia artificial en su trabajo diario, con casos de tu propia empresa.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="cities">
+  <div class="measure">
+    <p>Trabajamos desde <strong>Antofagasta</strong> con empresas de Mejillones, Calama, Iquique y Copiapó — y de todo Chile, porque el agua no respeta fronteras.</p>
+  </div>
+</section>
+
+<section class="contact">
+  <div class="measure">
+    <h2>Cuéntanos qué te quita tiempo</h2>
+    <p>Esa tarea que nadie quiere hacer, ese correo que se responde cien veces, ese documento que nadie encuentra. Por ahí partimos.</p>
+    <div class="contact-links">
+      <a href="mailto:hola@acuarialabs.cl">hola@acuarialabs.cl</a>
+      <a href="tel:+56982785644">+56 9 8278 5644</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="measure">Acuaria Labs — Antofagasta, Chile.</div>
+</footer>
+
+<script src="propuesta-marea.js" defer></script>
+</body>
+</html>

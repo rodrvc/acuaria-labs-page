@@ -1,0 +1,89 @@
+<!doctype html><meta charset="utf-8">
+<title>¿Entendí bien?</title>
+<style>
+ body{margin:0;font:15px/1.6 Inter,system-ui,sans-serif;color:#1a4b70;background:#fff;padding:26px 30px}
+ h1{font-size:17px;margin:0 0 4px}
+ p.sub{margin:0 0 22px;color:#6b8299;font-size:13px}
+ .fila{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+ .caja{border:1px solid #e2ecf3;border-radius:6px;padding:14px 16px 10px;background:#fcfdfe}
+ .caja h2{font-size:13px;margin:0 0 10px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:#3c80b4}
+ canvas{display:block}
+ .nota{font-size:12.5px;color:#5b7par;margin-top:8px;max-width:330px;color:#5b7286}
+ .leyenda{display:flex;gap:16px;margin-top:14px;font-size:12.5px;color:#5b7286;flex-wrap:wrap}
+ .leyenda i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+</style>
+<h1>Lo que entendí del corte</h1>
+<p class="sub">Esquema visto DESDE ARRIBA. La cámara (tú) está abajo, mirando hacia arriba.</p>
+
+<div class="fila">
+ <div class="caja">
+  <h2>1 · Ahora — camión completo</h2>
+  <canvas id="a" width="330" height="300"></canvas>
+  <div class="nota">Se dibujan todas las partículas: las del lado que mira a la cámara y también las del lado de atrás.</div>
+ </div>
+
+ <div class="caja">
+  <h2>2 · El plano de corte</h2>
+  <canvas id="b" width="330" height="300"></canvas>
+  <div class="nota">Un plano invisible parte el camión por la mitad, perpendicular a la mirada de la cámara.</div>
+ </div>
+
+ <div class="caja">
+  <h2>3 · Lo que quedaría</h2>
+  <canvas id="c" width="330" height="300"></canvas>
+  <div class="nota"><b>Solo la mitad de adelante se dibuja.</b> La mitad de atrás desaparece por completo. Al girar el camión, cambia qué mitad queda adelante.</div>
+ </div>
+</div>
+
+<div class="leyenda">
+ <span><i style="background:#1a4b70"></i>partículas que SÍ se dibujan</span>
+ <span><i style="background:#d8e6f0"></i>partículas descartadas</span>
+ <span><i style="background:#c0392b"></i>plano de corte</span>
+</div>
+
+<script>
+// nube con forma de camión vista desde arriba (rectángulo alargado)
+const pts=[];
+let sd=7;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
+for(let i=0;i<620;i++){
+  const x=(rnd()*2-1)*0.92, z=(rnd()*2-1)*0.52;
+  pts.push([x,z]);
+}
+const CX=165, CY=150, S=110;
+function base(ctx){
+  ctx.clearRect(0,0,330,300);
+  // cámara
+  ctx.fillStyle='#8fa8bd';
+  ctx.beginPath();ctx.moveTo(CX,286);ctx.lineTo(CX-13,300);ctx.lineTo(CX+13,300);ctx.closePath();ctx.fill();
+  ctx.font='11px Inter,system-ui';ctx.fillStyle='#8fa8bd';
+  ctx.fillText('cámara',CX+18,297);
+  // lineas de vision
+  ctx.strokeStyle='#eef3f7';ctx.setLineDash([3,4]);
+  ctx.beginPath();ctx.moveTo(CX,286);ctx.lineTo(CX-120,40);ctx.moveTo(CX,286);ctx.lineTo(CX+120,40);ctx.stroke();
+  ctx.setLineDash([]);
+}
+function dibuja(id,modo){
+  const ctx=document.getElementById(id).getContext('2d');
+  base(ctx);
+  for(const [x,z] of pts){
+    const px=CX+x*S, py=CY-z*S;
+    let on=true;
+    if(modo===3) on = z<0;          // z<0 = mitad cercana a la cámara
+    ctx.fillStyle = on ? '#1a4b70' : '#d8e6f0';
+    if(modo===1) ctx.fillStyle='#1a4b70';
+    ctx.beginPath();ctx.arc(px,py,1.9,0,6.2832);ctx.fill();
+  }
+  if(modo>=2){
+    ctx.strokeStyle='#c0392b';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(30,CY);ctx.lineTo(300,CY);ctx.stroke();
+    ctx.fillStyle='#c0392b';ctx.font='11px Inter,system-ui';
+    ctx.fillText('plano de corte',210,CY-7);
+    if(modo===3){
+      ctx.fillStyle='rgba(26,75,112,.05)';ctx.fillRect(30,CY,270,120);
+      ctx.fillStyle='#1a4b70';ctx.fillText('se dibuja ↓',36,CY+18);
+      ctx.fillStyle='#b9ccdb';ctx.fillText('se descarta ↑',36,CY-14);
+    }
+  }
+}
+dibuja('a',1);dibuja('b',2);dibuja('c',3);
+</script>

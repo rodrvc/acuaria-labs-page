@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://acuarialabs.cl/">
+<title>Acuaria Labs — Cielo de Atacama</title>
+<meta name="description" content="Propuesta visual exploratoria para Acuaria Labs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Cielo concept — self-contained exploratory page. Does not touch styles.css. */
+:root {
+  --night: #0b1026;
+  --night-high: #141b3d;
+  --starlight: #f2f4ff;
+  --star-dim: #aeb6d8;
+  --gold: #d7b97c;
+  --gold-deep: #a8863f;
+  --dawn: #f6f1e7;
+  --ink: #1c2340;
+  --ink-soft: #4c5372;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  font-family: "Onest", system-ui, sans-serif;
+  background: var(--dawn);
+  color: var(--ink);
+  line-height: 1.6;
+}
+::selection { background: var(--gold); color: var(--night); }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Hero: the night sky ---------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  background:
+    radial-gradient(140% 60% at 50% 118%, #3d2f52 0%, #1c1f45 34%, var(--night) 68%);
+  color: var(--starlight);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 2rem clamp(1.5rem, 5vw, 4.5rem);
+}
+.wordmark {
+  font-family: "Gloock", serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  color: var(--starlight);
+}
+.hero-top a.mail {
+  font-size: 0.95rem;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.hero-top a.mail:hover { border-bottom-color: var(--gold); }
+@media (max-width: 560px) { .hero-top a.mail { display: none; } }
+
+.hero-body {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3rem clamp(1.5rem, 5vw, 4.5rem);
+}
+.hero h1 {
+  font-family: "Gloock", serif;
+  font-weight: 400;
+  font-size: clamp(2.7rem, 8vw, 6.4rem);
+  line-height: 1.06;
+  letter-spacing: 0.005em;
+  max-width: 13em;
+  margin-bottom: 1.6rem;
+  text-wrap: balance;
+}
+.hero p.lede {
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.6;
+  max-width: 36em;
+  color: #c7cdea;
+  margin-bottom: 2.4rem;
+}
+.hero-cta {
+  display: inline-block;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--night);
+  background: var(--starlight);
+  text-decoration: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 999px;
+  transition: background-color 160ms ease;
+}
+.hero-cta:hover { background: var(--gold); }
+.hero-note {
+  position: relative;
+  z-index: 2;
+  padding: 0 clamp(1.5rem, 5vw, 4.5rem) 1.7rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  color: #8890b8;
+}
+.hero-note .caption em { color: var(--gold); font-style: normal; }
+@media (max-width: 640px) { .hero-note { flex-direction: column; gap: 0.4rem; } }
+
+/* ---------- Dawn sections ---------- */
+section { padding: clamp(4.5rem, 10vh, 8rem) clamp(1.5rem, 5vw, 4.5rem); }
+.measure { max-width: 66rem; margin: 0 auto; }
+h2 {
+  font-family: "Gloock", serif;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+}
+.manifesto p {
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  line-height: 1.65;
+  max-width: 31em;
+}
+.manifesto p + p { margin-top: 1.1rem; }
+
+/* Services: observation charts — each with its own small constellation */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3.5rem 4rem;
+  margin-top: 2.6rem;
+}
+@media (max-width: 760px) { .service-grid { grid-template-columns: 1fr; gap: 2.6rem; } }
+.service {
+  border-top: 1px solid var(--gold-deep);
+  padding-top: 1.4rem;
+}
+.service svg { display: block; margin-bottom: 1rem; }
+.service svg .line { stroke: var(--gold-deep); stroke-width: 1; opacity: 0.7; }
+.service svg .star { fill: var(--ink); }
+.service h3 {
+  font-family: "Gloock", serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.service p { color: var(--ink-soft); max-width: 30em; }
+
+.cities { padding-top: 0; }
+.cities p {
+  font-family: "Gloock", serif;
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  line-height: 1.4;
+  color: var(--ink-soft);
+  max-width: 28em;
+}
+.cities strong { font-weight: 400; color: var(--ink); }
+
+/* Contact: night again */
+.contact { background: var(--night); color: var(--starlight); }
+.contact h2 { color: var(--starlight); }
+.contact p { color: #c7cdea; max-width: 32em; margin-bottom: 2rem; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; font-size: 1.15rem; }
+.contact-links a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(215, 185, 124, 0.4);
+  padding-bottom: 2px;
+}
+.contact-links a:hover { border-bottom-color: var(--gold); }
+footer {
+  background: var(--night);
+  color: #6a7099;
+  font-size: 0.85rem;
+  padding: 0 clamp(1.5rem, 5vw, 4.5rem) 2rem;
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-top">
+    <a class="wordmark" href="https://acuarialabs.cl/">Acuaria Labs</a>
+    <a class="mail" href="mailto:hola@acuarialabs.cl">hola@acuarialabs.cl</a>
+  </div>
+  <div class="hero-body">
+    <h1>Miramos donde nadie más mira.</h1>
+    <p class="lede">Los telescopios más grandes de la Tierra observan desde nuestro desierto, porque aquí el cielo es más claro. Con esa misma convicción hacemos inteligencia artificial en Antofagasta: para que veas tu negocio con otra nitidez.</p>
+    <a class="hero-cta" href="mailto:hola@acuarialabs.cl">Conversemos</a>
+  </div>
+  <div class="hero-note">
+    <p class="caption">La Cruz del Sur ya estaba ahí. <em>Las líneas doradas las trazamos nosotros.</em></p>
+    <p>Sigue bajando ↓</p>
+  </div>
+</header>
+
+<section class="manifesto">
+  <div class="measure">
+    <h2>El mismo cielo, otra mirada</h2>
+    <p>Las estrellas siempre estuvieron ahí. Lo que cambió fue quién las miró: un observatorio convierte puntos de luz sueltos en conocimiento, trazando líneas que nadie había trazado.</p>
+    <p>Tu empresa es igual. Los datos ya los tienes — pedidos, correos, documentos, años de trabajo. Nosotros trazamos las líneas entre ellos hasta que aparece la figura: eso es la inteligencia artificial bien hecha.</p>
+  </div>
+</section>
+
+<section class="services">
+  <div class="measure">
+    <h2>Lo que construimos</h2>
+    <div class="service-grid">
+      <article class="service">
+        <svg width="120" height="44" viewBox="0 0 120 44" aria-hidden="true">
+          <polyline class="line" fill="none" points="8,34 34,12 62,26 92,8 112,20"/>
+          <circle class="star" cx="8" cy="34" r="2.6"/><circle class="star" cx="34" cy="12" r="3.4"/><circle class="star" cx="62" cy="26" r="2.2"/><circle class="star" cx="92" cy="8" r="3"/><circle class="star" cx="112" cy="20" r="2.4"/>
+        </svg>
+        <h3>Agentes conversacionales</h3>
+        <p>Un asistente que atiende a tus clientes a toda hora, con la información real de tu negocio — no respuestas genéricas.</p>
+      </article>
+      <article class="service">
+        <svg width="120" height="44" viewBox="0 0 120 44" aria-hidden="true">
+          <polyline class="line" fill="none" points="10,10 40,10 70,10 100,10 100,34 60,34"/>
+          <circle class="star" cx="10" cy="10" r="3"/><circle class="star" cx="40" cy="10" r="2.2"/><circle class="star" cx="70" cy="10" r="2.6"/><circle class="star" cx="100" cy="10" r="3.2"/><circle class="star" cx="100" cy="34" r="2.2"/><circle class="star" cx="60" cy="34" r="2.6"/>
+        </svg>
+        <h3>Automatización de procesos</h3>
+        <p>Los trámites repetitivos de tu operación corriendo solos: cotizaciones, reportes, seguimientos, sin errores de copia y pega.</p>
+      </article>
+      <article class="service">
+        <svg width="120" height="44" viewBox="0 0 120 44" aria-hidden="true">
+          <polyline class="line" fill="none" points="60,6 38,22 60,38 84,22 60,6"/>
+          <line class="line" x1="84" y1="22" x2="112" y2="22"/>
+          <circle class="star" cx="60" cy="6" r="2.4"/><circle class="star" cx="38" cy="22" r="2.8"/><circle class="star" cx="60" cy="38" r="2.4"/><circle class="star" cx="84" cy="22" r="3.2"/><circle class="star" cx="112" cy="22" r="2.2"/>
+        </svg>
+        <h3>Búsqueda en tus documentos</h3>
+        <p>Pregunta en lenguaje natural y recibe la respuesta junto al documento que la respalda. Tus contratos y manuales, por fin útiles.</p>
+      </article>
+      <article class="service">
+        <svg width="120" height="44" viewBox="0 0 120 44" aria-hidden="true">
+          <polyline class="line" fill="none" points="14,30 42,16 70,30 98,16"/>
+          <line class="line" x1="42" y1="16" x2="42" y2="36"/>
+          <line class="line" x1="98" y1="16" x2="98" y2="36"/>
+          <circle class="star" cx="14" cy="30" r="2.4"/><circle class="star" cx="42" cy="16" r="3"/><circle class="star" cx="42" cy="36" r="2"/><circle class="star" cx="70" cy="30" r="2.4"/><circle class="star" cx="98" cy="16" r="3.2"/><circle class="star" cx="98" cy="36" r="2"/>
+        </svg>
+        <h3>Formación de equipos</h3>
+        <p>Talleres prácticos para que tu equipo use inteligencia artificial en su trabajo diario, con casos de tu propia empresa.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="cities">
+  <div class="measure">
+    <p>Bajo el mismo cielo: trabajamos desde <strong>Antofagasta</strong> con empresas de Mejillones, Calama, Iquique y Copiapó — y de todo Chile.</p>
+  </div>
+</section>
+
+<section class="contact">
+  <div class="measure">
+    <h2>Cuéntanos qué quieres ver claro</h2>
+    <p>Ese proceso que nadie entiende completo, esos datos que están pero no se usan, esa pregunta que toma una semana responder. Por ahí partimos.</p>
+    <div class="contact-links">
+      <a href="mailto:hola@acuarialabs.cl">hola@acuarialabs.cl</a>
+      <a href="tel:+56982785644">+56 9 8278 5644</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="measure">Acuaria Labs — Antofagasta, Chile.</div>
+</footer>
+
+<script src="propuesta-cielo.js" defer></script>
+</body>
+</html>

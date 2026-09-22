@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acuaria Labs — Laboratorio de IA en Antofagasta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --marino:#11324a;
+  --azul:#1a4b70;
+  --azul-med:#2a6692;
+  --celeste:#3c80b4;
+  --acento:#64a1ce;
+  --borde:#b8d5ea;
+  --bruma:#eef6fb;
+  --texto:#4a6579;
+  --display:'Space Grotesk',system-ui,sans-serif;
+  --cuerpo:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:#fff;color:var(--texto);
+  font-family:var(--cuerpo);font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit}
+.env{max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+
+/* ---------------- barra ---------------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:80;
+  backdrop-filter:blur(14px);background:rgba(255,255,255,.7);
+  border-bottom:1px solid transparent;transition:border-color .3s,background .3s;
+}
+header.pegado{border-bottom-color:var(--borde);background:rgba(255,255,255,.92)}
+.barra{display:flex;align-items:center;justify-content:space-between;height:74px}
+.logo{
+  font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.02em;
+  color:var(--marino);text-decoration:none;display:flex;align-items:center;gap:10px;
+}
+.logo i{
+  width:9px;height:9px;border-radius:50%;background:var(--acento);
+  box-shadow:0 0 0 4px rgba(100,161,206,.22);animation:respira 3.4s ease-in-out infinite;
+}
+@keyframes respira{0%,100%{box-shadow:0 0 0 4px rgba(100,161,206,.22)}50%{box-shadow:0 0 0 9px rgba(100,161,206,.05)}}
+nav{display:flex;gap:30px;align-items:center}
+nav a{text-decoration:none;font-size:14.5px;font-weight:500;color:var(--texto);position:relative;padding:4px 0;transition:color .2s;cursor:pointer}
+nav a::after{content:'';position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--acento);transition:right .28s cubic-bezier(.4,0,.2,1)}
+nav a:hover{color:var(--azul)}
+nav a:hover::after{right:0}
+.cta-nav{background:var(--azul);color:#fff!important;padding:11px 22px;border-radius:100px;font-weight:600;transition:transform .2s,box-shadow .2s,background .2s}
+.cta-nav::after{display:none}
+.cta-nav:hover{background:var(--marino);transform:translateY(-1px);box-shadow:0 8px 22px rgba(26,75,112,.26)}
+.menu-btn{display:none;background:none;border:0;cursor:pointer;padding:8px}
+.menu-btn span{display:block;width:23px;height:2px;background:var(--marino);margin:5px 0;border-radius:2px}
+
+/* ============================================================
+   LA SECUENCIA
+   El objeto queda fijo en pantalla (sticky) mientras el scroll
+   mueve la camara y releva los textos. Scroll, camara y
+   contenido son UN solo movimiento.
+   ============================================================ */
+.secuencia{position:relative}          /* alto real = actos x 100vh, lo pone el JS */
+
+.escenario{position:sticky;top:0;height:100vh;overflow:hidden}
+/* ---- EL ORBE: solo degradados CSS, sin WebGL ni canvas ---- */
+.orbe{
+  position:absolute;z-index:1;
+  top:50%;right:9%;
+  width:min(46vh,430px);aspect-ratio:1;
+  transform:translateY(-50%) scale(var(--z,1));
+  transition:transform .18s linear;
+  will-change:transform;
+}
+.orbe::before{                       /* aura */
+  content:'';position:absolute;inset:-16%;border-radius:50%;
+  background:radial-gradient(circle,rgba(100,161,206,.20),transparent 66%);
+  animation:late 8s ease-in-out infinite;
+}
+.nucleo{
+  position:absolute;inset:0;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 34% 28%,
+    #ffffff 0%,#f4f9fd 16%,#d6e8f5 38%,#a9cde8 62%,#6ba4cd 84%,#3c80b4 100%);
+  box-shadow:inset -18px -22px 46px rgba(26,75,112,.22),0 24px 64px rgba(26,75,112,.18);
+}
+.veta{                               /* energia girando dentro */
+  position:absolute;inset:-40%;
+  background:conic-gradient(from 0deg,
+    transparent 0deg 40deg,rgba(255,255,255,.85) 62deg,
+    transparent 84deg 200deg,rgba(60,128,180,.55) 232deg,transparent 268deg 360deg);
+  filter:blur(18px);mix-blend-mode:soft-light;
+  animation:gira 20s linear infinite;
+}
+.malla{                              /* meridianos: lectura de esfera y de datos */
+  position:absolute;inset:0;border-radius:50%;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 26px,rgba(255,255,255,.28) 26px 27px),
+    repeating-linear-gradient(0deg,transparent 0 26px,rgba(255,255,255,.22) 26px 27px);
+  -webkit-mask:radial-gradient(circle at 50% 50%,#000 52%,transparent 78%);
+  mask:radial-gradient(circle at 50% 50%,#000 52%,transparent 78%);
+  opacity:.55;animation:desliza 24s linear infinite;
+}
+.canto{position:absolute;inset:0;border-radius:50%;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.65),inset 0 -14px 34px rgba(255,255,255,.55)}
+.brillo{position:absolute;top:12%;left:21%;width:26%;height:17%;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,255,255,.98),rgba(255,255,255,.35) 55%,transparent 76%);
+  filter:blur(4px)}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes desliza{to{background-position:104px 0,0 104px}}
+@keyframes late{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.8}}
+.trama{position:absolute;inset:0;z-index:0;opacity:.4}
+
+/* riel de progreso */
+.riel{
+  position:absolute;left:clamp(18px,3.4vw,40px);top:50%;transform:translateY(-50%);
+  z-index:6;display:flex;flex-direction:column;gap:14px;
+}
+.riel b{width:2px;height:32px;background:var(--borde);border-radius:2px;position:relative;overflow:hidden;display:block}
+.riel b::after{
+  content:'';position:absolute;inset:0;background:var(--azul);
+  transform:scaleY(0);transform-origin:top;transition:transform .45s cubic-bezier(.4,0,.2,1);
+}
+.riel b.on::after{transform:scaleY(1)}
+
+/* los actos viven apilados; solo uno esta visible */
+.acto{
+  position:absolute;inset:0;z-index:5;
+  display:flex;align-items:center;
+  padding:74px clamp(20px,5vw,56px) 0;
+  opacity:0;visibility:hidden;transform:translateY(24px);pointer-events:none;
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1),visibility .5s;
+}
+.acto.on{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.caja{max-width:min(520px,48%);margin-left:clamp(0px,3vw,44px)}
+
+.marbete{
+  display:inline-flex;align-items:center;gap:9px;
+  background:rgba(255,255,255,.82);border:1px solid var(--borde);
+  padding:8px 17px;border-radius:100px;font-size:12.5px;font-weight:600;
+  color:var(--celeste);letter-spacing:.04em;margin-bottom:clamp(12px,2.4vh,24px);backdrop-filter:blur(8px);
+}
+.marbete i{width:6px;height:6px;border-radius:50%;background:var(--acento);animation:respira 3.4s ease-in-out infinite}
+
+.acto h1,.acto h2{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(1.7rem,min(4.6vw,5.2vh),3.9rem);line-height:1.05;letter-spacing:-.035em;
+  color:var(--marino);margin:0 0 clamp(10px,2vh,20px);
+}
+.acto h2{font-size:clamp(1.55rem,min(4vw,4.6vh),3.2rem)}
+.acto em{
+  font-style:normal;
+  background:linear-gradient(105deg,var(--celeste),var(--acento) 55%,var(--azul-med));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.acto p{font-size:clamp(.95rem,1.9vh,1.1rem);margin:0 0 clamp(14px,2.6vh,26px);max-width:44ch}
+.acto p b{color:var(--azul);font-weight:600}
+
+.botones{display:flex;flex-wrap:wrap;gap:13px}
+.btn{
+  display:inline-flex;align-items:center;text-decoration:none;cursor:pointer;
+  font-weight:600;font-size:15.5px;padding:15px 29px;border-radius:100px;
+  transition:transform .2s,box-shadow .2s,background .2s,border-color .2s;
+}
+.btn-p{background:var(--azul);color:#fff;box-shadow:0 5px 20px rgba(26,75,112,.2)}
+.btn-p:hover{background:var(--marino);transform:translateY(-2px);box-shadow:0 12px 30px rgba(26,75,112,.3)}
+.btn-s{background:rgba(255,255,255,.75);color:var(--azul);border:1px solid var(--borde);backdrop-filter:blur(8px)}
+.btn-s:hover{border-color:var(--acento);transform:translateY(-2px);background:#fff}
+
+.lista{display:grid;gap:clamp(6px,1.1vh,10px);margin:0;padding:0;list-style:none}
+.lista li{
+  display:flex;gap:13px;align-items:flex-start;
+  background:rgba(255,255,255,.72);border:1px solid var(--borde);
+  border-radius:14px;padding:clamp(9px,1.5vh,13px) 16px;backdrop-filter:blur(8px);
+  transition:border-color .25s,transform .25s;
+}
+.lista li:hover{border-color:var(--acento);transform:translateX(4px)}
+.lista i{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--acento);margin-top:9px}
+.lista b{display:block;font-family:var(--display);font-weight:600;color:var(--marino);font-size:1.01rem}
+.lista span{font-size:clamp(.82rem,1.55vh,.91rem);line-height:1.45}
+
+.ruta{display:grid;gap:clamp(8px,1.5vh,13px);margin:0;padding:0;list-style:none;counter-reset:n}
+.ruta li{display:flex;gap:15px;align-items:flex-start;counter-increment:n}
+.ruta li::before{
+  content:counter(n,decimal-leading-zero);
+  font-family:var(--display);font-weight:700;font-size:.8rem;color:var(--acento);
+  flex:0 0 auto;padding-top:4px;letter-spacing:.04em;
+}
+.ruta b{display:block;font-family:var(--display);font-weight:600;color:var(--marino);font-size:1.03rem}
+.ruta span{font-size:clamp(.83rem,1.55vh,.92rem);line-height:1.45}
+
+.vias{display:flex;flex-wrap:wrap;gap:12px}
+.via{
+  display:inline-flex;align-items:center;text-decoration:none;
+  background:rgba(255,255,255,.75);border:1px solid var(--borde);color:var(--azul);
+  padding:14px 25px;border-radius:100px;font-weight:600;font-size:15px;
+  backdrop-filter:blur(8px);transition:border-color .2s,transform .2s,background .2s;
+}
+.via:hover{border-color:var(--acento);transform:translateY(-2px);background:#fff}
+.via.fuerte{background:var(--azul);color:#fff;border-color:var(--azul)}
+.via.fuerte:hover{background:var(--marino);border-color:var(--marino)}
+
+.pista{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:6;
+  font-size:11.5px;color:var(--celeste);font-weight:600;letter-spacing:.1em;
+  display:flex;flex-direction:column;align-items:center;gap:9px;transition:opacity .4s;
+}
+.pista i{display:block;width:1.5px;height:28px;background:linear-gradient(var(--acento),transparent);animation:baja 1.9s ease-in-out infinite}
+@keyframes baja{
+  0%{transform:scaleY(0);transform-origin:top}
+  45%{transform:scaleY(1);transform-origin:top}
+  55%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+
+footer{border-top:1px solid var(--borde);padding:44px 0;background:#fff;position:relative;z-index:10}
+.pie{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center;font-size:13.5px}
+.pie a{text-decoration:none;color:var(--texto);transition:color .2s}
+.pie a:hover{color:var(--azul)}
+.redes{display:flex;gap:20px}
+
+:focus-visible{outline:2.5px solid var(--acento);outline-offset:3px;border-radius:4px}
+
+@media (max-width:900px){
+  nav{
+    position:fixed;inset:74px 0 auto;background:#fff;flex-direction:column;
+    padding:26px clamp(20px,5vw,56px) 34px;gap:18px;align-items:stretch;
+    border-bottom:1px solid var(--borde);
+    transform:translateY(-125%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  }
+  nav.abierto{transform:none}
+  .menu-btn{display:block}
+  .cta-nav{text-align:center}
+  .riel{display:none}
+  .acto{align-items:flex-end;padding-bottom:84px}
+  .caja{
+    max-width:100%;margin-left:0;background:rgba(255,255,255,.88);
+    backdrop-filter:blur(10px);border-radius:20px;padding:24px 22px;border:1px solid var(--borde);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header id="cab">
+  <div class="env barra">
+    <a class="logo" href="#" data-ir="0"><i></i>Acuaria Labs</a>
+    <nav id="nav">
+      <a data-ir="1">Servicios</a>
+      <a data-ir="2">Cómo trabajamos</a>
+      <a data-ir="3">Laboratorio</a>
+      <a data-ir="4">Antofagasta</a>
+      <a class="cta-nav" data-ir="5">Conversemos</a>
+    </nav>
+    <button class="menu-btn" id="mb" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="secuencia" id="secuencia">
+  <div class="escenario">
+
+    <svg class="trama" aria-hidden="true"><defs>
+      <pattern id="pt" width="46" height="46" patternUnits="userSpaceOnUse">
+        <circle cx="1.6" cy="1.6" r="1.6" fill="#b8d5ea"/>
+      </pattern></defs>
+      <rect width="100%" height="100%" fill="url(#pt)"/>
+    </svg>
+
+    <div class="orbe" id="orbe" aria-hidden="true">
+      <div class="nucleo"><div class="veta"></div><div class="malla"></div></div>
+      <div class="canto"></div>
+      <div class="brillo"></div>
+    </div>
+
+    <div class="riel" aria-hidden="true">
+      <b class="on"></b><b></b><b></b><b></b><b></b><b></b>
+    </div>
+
+    <!-- ACTO 0 -->
+    <section class="acto on">
+      <div class="caja">
+        <span class="marbete"><i></i>LABORATORIO DE IA · ANTOFAGASTA</span>
+        <h1>Inteligencia artificial hecha en el <em>norte de Chile</em></h1>
+        <p>Diseñamos agentes, chatbots y automatizaciones para empresas que operan aquí. <b>Con base real en Antofagasta</b>, no como oficina remota.</p>
+        <div class="botones">
+          <a class="btn btn-p" data-ir="5">Conversemos tu proyecto</a>
+          <a class="btn btn-s" data-ir="1">Ver qué construimos</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTO 1 -->
+    <section class="acto">
+      <div class="caja">
+        <h2>Lo que <em>construimos</em></h2>
+        <ul class="lista">
+          <li><i></i><div><b>Chatbots de WhatsApp</b><span>Tu negocio responde a toda hora: consultas, agendamiento y calificación de clientes.</span></div></li>
+          <li><i></i><div><b>Automatización con IA</b><span>Correos, reportes, planillas y sistemas hablando entre sí, sin intervención manual.</span></div></li>
+          <li><i></i><div><b>Desarrollo a medida</b><span>Agentes y sistemas RAG que responden con los documentos de tu empresa.</span></div></li>
+          <li><i></i><div><b>Capacitación en IA</b><span>Talleres in-company. Se termina el día con un flujo funcionando.</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ACTO 2 -->
+    <section class="acto">
+      <div class="caja">
+        <h2>Del problema al <em>sistema funcionando</em></h2>
+        <ol class="ruta">
+          <li><div><b>Diagnóstico</b><span>Vemos tu operación y detectamos dónde se pierde tiempo o dinero.</span></div></li>
+          <li><div><b>Prototipo</b><span>Construimos algo funcionando rápido, para probarlo con datos reales.</span></div></li>
+          <li><div><b>Producción</b><span>Lo integramos a tus sistemas y lo dejamos operando de verdad.</span></div></li>
+          <li><div><b>Acompañamiento</b><span>Medimos, ajustamos y volvemos a ver si sigue funcionando.</span></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ACTO 3 -->
+    <section class="acto">
+      <div class="caja">
+        <h2>El <em>laboratorio</em></h2>
+        <p>Proyectos propios que financiamos y mantenemos nosotros. Sirven para probar cosas antes de llevarlas a un cliente.</p>
+        <ul class="lista">
+          <li><i></i><div><b>Campamento Tecnológico</b><span>IA, automatizaciones, Arduino y realidad aumentada. Julio 2026, Antofagasta.</span></div></li>
+          <li><i></i><div><b>Panoramas de la ciudad</b><span>App para descubrir qué pasa en Antofagasta y conectar con iniciativas locales.</span></div></li>
+          <li><i></i><div><b>Herramientas abiertas</b><span>Código abierto para que otros equipos del norte partan sin construir de cero.</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ACTO 4 -->
+    <section class="acto">
+      <div class="caja">
+        <h2>Estamos <em>acá</em>, no en una oficina remota</h2>
+        <p>Operamos físicamente desde Antofagasta. Podemos ir a tu planta, a tu bodega o a tu oficina, y volver la semana siguiente a ver si lo que instalamos está funcionando.</p>
+        <p><b>Antofagasta, Calama e Iquique</b> de forma presencial. Todo Chile de forma remota.</p>
+      </div>
+    </section>
+
+    <!-- ACTO 5 -->
+    <section class="acto">
+      <div class="caja">
+        <h2>Cuéntanos qué necesitas <em>resolver</em></h2>
+        <p>Respondemos todas las consultas. Si el proyecto no encaja con lo que hacemos, te lo decimos y te orientamos igual.</p>
+        <div class="vias">
+          <a class="via fuerte" href="https://wa.me/56982785644">Escribir por WhatsApp</a>
+          <a class="via" href="mailto:hola@acuarialabs.cl">hola@acuarialabs.cl</a>
+          <a class="via" href="tel:+56982785644">+56 9 8278 5644</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="pista" id="pista">SCROLL<i></i></div>
+  </div>
+</div>
+
+<footer>
+  <div class="env pie">
+    <span>© 2026 Acuaria Labs · Antofagasta, Chile</span>
+    <div class="redes">
+      <a href="https://github.com/Acuaria-Labs">GitHub</a>
+      <a href="https://www.linkedin.com/company/acuaria-labs/">LinkedIn</a>
+      <a href="https://www.instagram.com/acuarialabs/">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const ACTOS=6;
+const cab=document.getElementById('cab');
+const nav=document.getElementById('nav');
+const mb=document.getElementById('mb');
+const sec=document.getElementById('secuencia');
+
+mb.addEventListener('click',()=>nav.classList.toggle('abierto'));
+
+/* el alto de la secuencia: un viewport por acto */
+sec.style.height=(ACTOS*100)+'vh';
+
+/* los enlaces saltan al acto que les toca */
+document.querySelectorAll('[data-ir]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    nav.classList.remove('abierto');
+    const i=+a.dataset.ir;
+    const alto=sec.offsetHeight-innerHeight;
+    scrollTo({top:(i/(ACTOS-1))*alto,behavior:'smooth'});
+  });
+});
+
+/* ============================================================
+   El controlador. El scroll manda: releva el acto visible y
+   escala el orbe. Sin WebGL, sin canvas, sin bucle de dibujo.
+   ============================================================ */
+(function(){
+  const orbe=document.getElementById('orbe');
+  const actos=[...document.querySelectorAll('.acto')];
+  const rieles=[...document.querySelectorAll('.riel b')];
+  const pista=document.getElementById('pista');
+
+  let actual=-1, pedido=false;
+
+  function aplica(){
+    pedido=false;
+    const alto=Math.max(1,sec.offsetHeight-innerHeight);
+    const p=Math.min(1,Math.max(0,scrollY/alto));
+
+    // ZOOM: el orbe crece conforme bajas
+    orbe.style.setProperty('--z',(1+p*0.55).toFixed(4));
+
+    const i=Math.min(ACTOS-1,Math.round(p*(ACTOS-1)));
+    if(i!==actual){
+      actual=i;
+      actos.forEach((a,k)=>a.classList.toggle('on',k===i));
+      rieles.forEach((r,k)=>r.classList.toggle('on',k<=i));
+    }
+    pista.style.opacity=p>0.02?0:1;
+    cab.classList.toggle('pegado',scrollY>16);
+  }
+
+  function alScroll(){ if(!pedido){pedido=true;requestAnimationFrame(aplica)} }
+
+  addEventListener('scroll',alScroll,{passive:true});
+  addEventListener('resize',alScroll);
+  aplica();
+})();
+</script>
+</body>
+</html>

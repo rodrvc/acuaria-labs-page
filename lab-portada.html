@@ -1,0 +1,120 @@
+<!doctype html><meta charset="utf-8">
+<title>La Portada — prueba con partículas</title>
+<style>
+ body{margin:0;font:15px/1.6 Inter,system-ui,sans-serif;color:#1a4b70;background:#fff;
+      display:flex;flex-direction:column;min-height:100vh}
+ header{padding:14px 22px;border-bottom:1px solid #e7eef4}
+ h1{margin:0;font-size:15px;font-weight:600}
+ header p{margin:2px 0 0;font-size:12.5px;color:#6b8299}
+ main{flex:1;display:flex;align-items:center;justify-content:center;padding:8px}
+ .panel{border-top:1px solid #e7eef4;padding:12px 22px 18px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+ .grp{display:flex;align-items:center;gap:9px}
+ label{font-size:12px;color:#6b8299;min-width:70px}
+ input[type=range]{width:170px;accent-color:#3c80b4}
+ output{font-size:12px;color:#1a4b70;min-width:44px;font-variant-numeric:tabular-nums}
+ button{font:inherit;font-size:13px;padding:7px 15px;border:1px solid #1a4b70;background:#fff;color:#1a4b70;border-radius:3px;cursor:pointer}
+ button[aria-pressed=true]{background:#1a4b70;color:#fff}
+</style>
+<header><h1>La Portada — prueba con partículas</h1>
+<p>Proporciones reales del monumento: 43 m de alto, 23 m de ancho, 70 m de largo.</p></header>
+<main><canvas id="c" width="1100" height="560"></canvas></main>
+<div class="panel">
+ <button id="spin" aria-pressed="true">Pausar giro</button>
+ <div class="grp"><label for="ang">Ángulo</label><input id="ang" type="range" min="0" max="360" value="0"><output id="angO">0°</output></div>
+ <div class="grp"><label for="tilt">Inclinación</label><input id="tilt" type="range" min="-25" max="40" value="6"><output id="tiltO">6°</output></div>
+ <div class="grp"><label for="np">Partículas</label><input id="np" type="range" min="1500" max="12000" value="4810" step="10"><output id="npO">4.810</output></div>
+ <div class="grp"><label for="vel">Velocidad</label><input id="vel" type="range" min="0" max="60" value="14"><output id="velO">14</output></div>
+</div>
+<script>
+const cv=document.getElementById('c'),ctx=cv.getContext('2d'),$=id=>document.getElementById(id);
+const dpr=Math.min(devicePixelRatio||1,2);
+function size(){const w=Math.min(1100,innerWidth-20),h=Math.round(w*560/1100);
+ cv.style.width=w+'px';cv.style.height=h+'px';cv.width=w*dpr|0;cv.height=h*dpr|0;}
+size();addEventListener('resize',size);
+
+// Proporciones reales normalizadas: largo 70 -> 2.0 ; alto 43 -> 1.23 ; ancho 23 -> 0.66
+const L=1.0, H=0.63, W=0.30;
+let P=[],N=0;
+function construir(n){
+  P=[];let sd=99;const rnd=()=>{sd=(sd*1664525+1013904223)>>>0;return sd/4294967296;};
+  // Silueta de roca, no una caja: base ancha apoyada en el mar, paredes que se
+  // inclinan hacia adentro, cima irregular y el arco calado de lado a lado.
+  const ruido=(x,y)=>Math.sin(x*7.3+y*3.1)*0.028+Math.sin(x*17.7-y*9.4)*0.014;
+  const perfilX=y=>{                       // medio ancho a esa altura
+    const t=(y+H)/(2*H);
+    return L*(0.98-t*0.30+Math.sin(t*5.5)*0.035);
+  };
+  const perfilZ=y=>{
+    const t=(y+H)/(2*H);
+    return W*(1.0-t*0.46);
+  };
+  const cima=x=>H*(0.93-Math.abs(x/L)*0.10)+ruido(x*2.6,0)*1.6;
+  const arco=(x,y)=>{                      // hueco pasante, más ancho abajo
+    const ay=(y+H*0.94)/(H*1.02);
+    if(ay>1) return false;
+    const semi=0.44*Math.sqrt(Math.max(0,1-ay*ay))*(1+ay*0.35);
+    return Math.abs(x)<semi;
+  };
+  let it=0;
+  while(P.length<n && it<n*120){
+    it++;
+    const x=(rnd()*2-1)*L, y=-H+rnd()*2*H, z=(rnd()*2-1)*W;
+    const ax=perfilX(y)+ruido(x*3,y*4), az=perfilZ(y)+ruido(z*5,y*3)*0.5;
+    if(Math.abs(x)>ax||Math.abs(z)>az) continue;
+    if(y>cima(x)) continue;                 // techo irregular
+    if(y<-H*0.97) continue;                 // base
+    if(arco(x,y)) continue;                 // el arco
+    // cáscara: sólo cerca de alguna superficie
+    const dx=1-Math.abs(x)/ax, dz=1-Math.abs(z)/az, dy=(cima(x)-y)/H;
+    const ay2=(y+H*0.94)/(H*1.02);
+    const semi=0.44*Math.sqrt(Math.max(0,1-Math.min(1,ay2)*ay2))*(1+ay2*0.35);
+    const da=ay2<1?Math.abs(Math.abs(x)-semi)/L:9;
+    const borde=Math.min(dx,dz,dy,da*1.2);
+    if(borde>0.10 && rnd()>0.045) continue;
+    P.push([x,y,z,rnd()]);
+  }
+  N=P.length;
+}
+let angle=0,spin=true,last=performance.now();
+function draw(){
+  const Wd=cv.width,Hd=cv.height;ctx.clearRect(0,0,Wd,Hd);
+  const a=angle*Math.PI/180,tl=(+$('tilt').value)*Math.PI/180;
+  const ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(tl),sb=Math.sin(tl);
+  const s=Math.min(Wd/2.5,Hd/1.65);
+  const V=[];
+  for(const [x,y,z,r] of P){
+    const X=x*ca+z*sa,Zr=-x*sa+z*ca;
+    const Y=y*cb-Zr*sb,Z=y*sb+Zr*cb;
+    V.push([X,Y,Z,r]);
+  }
+  V.sort((p,q)=>p[2]-q[2]);
+  let mn=Infinity,mx=-Infinity;for(const v of V){if(v[2]<mn)mn=v[2];if(v[2]>mx)mx=v[2];}
+  const sp=(mx-mn)||1;
+  const B=8,bins=Array.from({length:B},()=>[]);
+  for(const [X,Y,Z,r] of V){
+    const d=(Z-mn)/sp;
+    const t=Math.max(0,Math.min(.999,0.22+d*0.62));
+    bins[(t*B)|0].push(Wd/2+X*s, Hd/2-Y*s, (0.62+d*0.55)*dpr);
+  }
+  for(let b=0;b<B;b++){const A=bins[b];if(!A.length)continue;
+    ctx.fillStyle='rgba(31,105,150,'+(0.16+b*0.095).toFixed(3)+')';
+    ctx.beginPath();
+    for(let i=0;i<A.length;i+=3){ctx.moveTo(A[i]+A[i+2],A[i+1]);ctx.arc(A[i],A[i+1],A[i+2],0,6.2832);}
+    ctx.fill();}
+  ctx.fillStyle='#6b8299';ctx.font=(11*dpr)+'px Inter,system-ui';
+  ctx.fillText(N.toLocaleString('es-CL')+' partículas',12*dpr,Hd-12*dpr);
+}
+function loop(now){
+  const dt=(now-last)/1000;last=now;
+  if(spin){angle=(angle+dt*(+$('vel').value))%360;$('ang').value=Math.round(angle);}
+  const want=+$('np').value;if(want!==N&&Math.abs(want-N)>60)construir(want);
+  $('angO').textContent=Math.round(angle)+'°';$('tiltO').textContent=$('tilt').value+'°';
+  $('npO').textContent=(+$('np').value).toLocaleString('es-CL');$('velO').textContent=$('vel').value;
+  draw();requestAnimationFrame(loop);
+}
+$('spin').onclick=e=>{spin=!spin;e.target.setAttribute('aria-pressed',spin);
+  e.target.textContent=spin?'Pausar giro':'Reanudar giro';};
+$('ang').oninput=e=>{spin=false;$('spin').setAttribute('aria-pressed',false);
+  $('spin').textContent='Reanudar giro';angle=+e.target.value;};
+construir(4810);requestAnimationFrame(loop);
+</script>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#061824">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Acuaria Labs — Experiencia Inmersiva</title>
+    <meta name="description" content="Prototipo inmersivo de Acuaria Labs: inteligencia artificial desarrollada desde Antofagasta.">
+    <link rel="canonical" href="https://acuarialabs.cl/">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Syne:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="immersive-concept">
+    <a class="ix-skip" href="#ix-main">Saltar al contenido</a>
+    <div class="ix-noise" aria-hidden="true"></div>
+    <div class="ix-progress" aria-hidden="true"><span></span></div>
+
+    <div class="ix-loader" id="ix-loader" aria-live="polite">
+        <div class="ix-loader-brand">ACUARIA<span>LABS</span></div>
+        <div class="ix-loader-line"><i></i></div>
+        <p>INICIANDO LABORATORIO</p>
+    </div>
+
+    <div class="ix-stage" aria-hidden="true">
+        <div class="ix-poster"><i></i><i></i><i></i><span></span></div>
+        <canvas id="ix-canvas"></canvas>
+    </div>
+
+    <header class="ix-header" id="ix-header">
+        <a class="ix-logo" href="#inicio" aria-label="Acuaria Labs, inicio">
+            <svg viewBox="0 0 34 34" aria-hidden="true"><ellipse cx="17" cy="17" rx="14" ry="6"/><ellipse cx="17" cy="17" rx="14" ry="6" transform="rotate(60 17 17)"/><ellipse cx="17" cy="17" rx="14" ry="6" transform="rotate(120 17 17)"/><circle cx="17" cy="17" r="2.5"/></svg>
+            <b>ACUARIA</b><span>LABS</span>
+        </a>
+        <div class="ix-location"><i></i><span>23.6509° S — ANTOFAGASTA</span></div>
+        <nav class="ix-nav" id="ix-nav" aria-label="Navegación principal">
+            <a href="#sistema">Sistema</a><a href="#capacidades">Capacidades</a><a href="#territorio">Territorio</a>
+            <a class="ix-talk" href="#contacto">Conversemos <span>↗</span></a>
+        </nav>
+        <button class="ix-menu" type="button" aria-label="Abrir menú" aria-controls="ix-nav" aria-expanded="false"><span></span><span></span></button>
+    </header>
+
+    <main id="ix-main">
+        <section class="ix-hero" id="inicio">
+            <div class="ix-hero-copy">
+                <p class="ix-overline"><span>LABORATORIO DE IA</span><i></i><span>ANTOFAGASTA · CHILE</span></p>
+                <h1 aria-label="La inteligencia no se instala. Se diseña.">
+                    <span class="ix-line"><b>La inteligencia</b></span>
+                    <span class="ix-line ix-outline"><b>no se instala.</b></span>
+                    <span class="ix-line ix-shift"><b>Se diseña.</b></span>
+                </h1>
+                <p class="ix-lead">Convertimos procesos, documentos y conversaciones en sistemas de IA que trabajan dentro de tu operación.</p>
+                <div class="ix-hero-actions">
+                    <a class="ix-btn ix-btn-solid ix-magnetic" href="#sistema"><span>Entrar al sistema</span><b>↓</b></a>
+                    <a class="ix-text-link" href="https://wa.me/56982785644?text=Hola%2C%20quiero%20conversar%20sobre%20un%20proyecto%20de%20IA" target="_blank" rel="noopener noreferrer">Hablar con el laboratorio <span>↗</span></a>
+                </div>
+            </div>
+            <div class="ix-object-label" aria-hidden="true"><span>OBJETO 01</span><b>REACTOR ACUÍFERO</b><i></i></div>
+            <div class="ix-scroll" aria-hidden="true"><span>SCROLL TO TRANSFORM</span><i></i></div>
+        </section>
+
+        <section class="ix-system" id="sistema">
+            <div class="ix-pin">
+                <div class="ix-chapter"><span>01</span><i></i><b>SISTEMA VIVO</b></div>
+                <article class="ix-beat is-active" data-beat="0">
+                    <p class="ix-beat-kicker">SEÑALES DISPERSAS</p>
+                    <h2>Todo comienza<br>con <em>fricción.</em></h2>
+                    <p>Información aislada. Procesos manuales. Conversaciones que no llegan a ninguna parte.</p>
+                </article>
+                <article class="ix-beat" data-beat="1">
+                    <p class="ix-beat-kicker">ORDEN + CONTEXTO</p>
+                    <h2>La señal encuentra<br>una <em>estructura.</em></h2>
+                    <p>Conectamos tus fuentes, limpiamos el ruido y diseñamos una arquitectura que tu equipo puede entender.</p>
+                </article>
+                <article class="ix-beat" data-beat="2">
+                    <p class="ix-beat-kicker">RAZONAMIENTO APLICADO</p>
+                    <h2>La estructura se vuelve<br><em>inteligencia.</em></h2>
+                    <p>Modelos, agentes y automatizaciones toman el contexto y ejecutan acciones con trazabilidad.</p>
+                </article>
+                <article class="ix-beat" data-beat="3">
+                    <p class="ix-beat-kicker">IMPACTO MEDIBLE</p>
+                    <h2>La inteligencia entra<br>en <em>operación.</em></h2>
+                    <p>No termina en una demo: se integra, se mide y evoluciona contigo.</p>
+                    <a class="ix-text-link" href="#capacidades">Ver capacidades <span>↓</span></a>
+                </article>
+                <div class="ix-beat-count" aria-hidden="true"><b>01</b><span>/ 04</span></div>
+            </div>
+        </section>
+
+        <section class="ix-capabilities" id="capacidades">
+            <header class="ix-section-head">
+                <div class="ix-chapter"><span>02</span><i></i><b>CAPACIDADES</b></div>
+                <h2>No ofrecemos tecnología.<br><span>Resolvemos cuellos de botella.</span></h2>
+            </header>
+            <div class="ix-track-wrap">
+                <div class="ix-track">
+                    <a class="ix-cap" href="chatbots-whatsapp/index.html">
+                        <span class="ix-cap-no">01 — CONVERSACIÓN</span>
+                        <h3>WhatsApp que<br>sí resuelve.</h3>
+                        <p>Atiende, agenda y califica oportunidades usando el lenguaje natural de tus clientes.</p>
+                        <div class="ix-cap-diagram"><i></i><i></i><i></i><span></span></div><b class="ix-arrow">↗</b>
+                    </a>
+                    <a class="ix-cap ix-cap-light" href="automatizacion/index.html">
+                        <span class="ix-cap-no">02 — FLUJO</span>
+                        <h3>Procesos que<br>se mueven solos.</h3>
+                        <p>Correos, planillas, reportes y sistemas conectados en una operación continua.</p>
+                        <div class="ix-flow-diagram"><i></i><span></span><i></i><span></span><i></i></div><b class="ix-arrow">↗</b>
+                    </a>
+                    <a class="ix-cap ix-cap-mid" href="desarrollo-a-medida/index.html">
+                        <span class="ix-cap-no">03 — SISTEMA</span>
+                        <h3>Software que<br>solo existe para ti.</h3>
+                        <p>Agentes y sistemas RAG construidos alrededor de tus datos, reglas y decisiones.</p>
+                        <div class="ix-grid-diagram"><i></i><i></i><i></i><i></i><span></span></div><b class="ix-arrow">↗</b>
+                    </a>
+                    <a class="ix-cap ix-cap-paper" href="capacitacion-ia-empresas/index.html">
+                        <span class="ix-cap-no">04 — EQUIPO</span>
+                        <h3>Personas que<br>saben usar la IA.</h3>
+                        <p>Capacitación aplicada a casos reales. El aprendizaje termina con algo funcionando.</p>
+                        <div class="ix-people-diagram"><i></i><i></i><i></i><span></span></div><b class="ix-arrow">↗</b>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="ix-territory" id="territorio">
+            <div class="ix-territory-map" aria-hidden="true">
+                <div class="ix-radar"><i></i><i></i><i></i><span></span></div>
+                <svg viewBox="0 0 580 760"><path d="M362 18c-23 55-40 108-65 158-23 45-54 90-49 142 4 42 31 73 33 115 3 61-42 105-52 163-8 48 13 98-2 145"/><path class="ix-route" d="M249 311C180 272 117 214 37 179M249 311c81-47 167-67 287-78M249 311c-72 69-124 140-183 239M249 311c84 75 142 144 240 208"/><circle cx="249" cy="311" r="7"/></svg>
+                <p>RADIO OPERATIVO<br><b>23.6509° S / 70.3975° W</b></p>
+            </div>
+            <div class="ix-territory-copy">
+                <div class="ix-chapter"><span>03</span><i></i><b>TERRITORIO</b></div>
+                <p class="ix-big-statement">La transformación digital también se construye <em>desde el norte.</em></p>
+                <div class="ix-territory-detail">
+                    <p>Acuaria Labs es una empresa de IA con base real en Antofagasta. Entendemos la distancia, la industria y la forma de operar de esta región.</p>
+                    <ul><li><span>ANTOFAGASTA</span><b>PRESENCIAL</b></li><li><span>CALAMA · IQUIQUE</span><b>REGIONAL</b></li><li><span>CHILE</span><b>REMOTO</b></li></ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="ix-contact" id="contacto">
+            <div class="ix-contact-orbit" aria-hidden="true"><i></i><i></i><span></span></div>
+            <div class="ix-chapter"><span>04</span><i></i><b>CONTACTO</b></div>
+            <div class="ix-contact-main">
+                <p>UNA CONVERSACIÓN PUEDE SER EL PRIMER PROTOTIPO.</p>
+                <h2>¿Qué podemos<br><em>hacer funcionar?</em></h2>
+                <div class="ix-contact-actions">
+                    <a class="ix-btn ix-btn-white ix-magnetic" href="https://wa.me/56982785644?text=Hola%2C%20quiero%20conversar%20sobre%20un%20proyecto%20de%20IA" target="_blank" rel="noopener noreferrer"><span>Escribir por WhatsApp</span><b>↗</b></a>
+                    <a href="mailto:hola@acuarialabs.cl">hola@acuarialabs.cl</a>
+                </div>
+            </div>
+            <footer class="ix-footer">
+                <div><b>ACUARIA</b><span>LABS</span></div><p>Antofagasta, Chile · +56 9 8278 5644</p>
+                <nav aria-label="Redes sociales"><a href="https://www.linkedin.com/company/acuaria-labs/" target="_blank" rel="noopener noreferrer">LI</a><a href="https://github.com/Acuaria-Labs" target="_blank" rel="noopener noreferrer">GH</a><a href="https://www.instagram.com/acuarialabs/" target="_blank" rel="noopener noreferrer">IG</a></nav>
+            </footer>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" defer></script>
+    <script src="experiencia-inmersiva.js" defer></script>
+</body>
+</html>
