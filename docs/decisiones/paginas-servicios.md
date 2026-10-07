@@ -41,3 +41,10 @@ Head por artículo: title/desc por keyword, canonical, OG type=article, Twitter,
 Enlaces internos: cada artículo enlaza a las 4 páginas de servicio y a otro artículo relacionado.
 Nav global (D3) ahora: Nosotros · Servicios · Proyectos · **Blog** · FAQ · Contacto — agregado en las 6 páginas existentes + blog. Footer "Navegación" también lleva Blog. Sigue siendo idéntico en todas.
 Nuevo artículo = copiar un `/blog/<slug>/index.html` existente, cambiar head/JSON-LD/cuerpo, agregarlo al listado y al sitemap con lastmod.
+
+## D6 (2026-10-06): `/ia-para-colegios/` — catálogo de IA para colegios (issue #10)
+Landing de servicio evergreen (no post de blog), GENÉRICA para cualquier colegio: nunca nombrar colegios reales, personas, órdenes religiosas ni sistemas de terceros (SchoolNet/Softland). Trato "usted".
+Estructura propia (catálogo, no D2 estricto): hero con foto → region-band → "De un vistazo" (6 soluciones en 3 áreas + "Para empezar") → un bloque por área → integración (Informática) → dónde se procesan los datos (3 opciones) → FAQ espejo JSON-LD → otros servicios → CTA demo 30 min.
+CSS: bloque `.school-*` al final de styles.css (estilos D1). Imágenes en `ia-para-colegios/img/` (WebP). Capturas del demo RAG con escudo/nombre genérico "Colegio Ejemplo", rotuladas "Demostración con documentos de ejemplo".
+Reglas de copy: sin precios, sin absolutos ("100%", "siempre", "garantiza", "al instante", "a cualquier hora"), integraciones = "lo definimos con Informática".
+NO enlazada aún desde home/#servicios ni footer global (pendiente decisión de Rodrigo).
