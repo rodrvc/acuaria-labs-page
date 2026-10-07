@@ -1732,3 +1732,268 @@ section {
     .blog-hero { padding: 8rem 0 3rem; }
     .post { padding: 3.5rem 0 4.5rem; }
 }
+
+/* ==========================================
+   IA para colegios (/ia-para-colegios/)
+   Catálogo de soluciones. Reusa .hero, .pillars, .about, .faq,
+   .projects y .philosophy .projects-cta; aquí solo lo propio (.school-*).
+   ========================================== */
+.school-hero-img {
+    margin: 0;
+}
+.school-hero-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: var(--shadow-xl);
+}
+
+.school-overview {
+    padding: 6rem 0 5rem;
+    background: var(--color-white);
+}
+.school-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+.school-overview-group {
+    padding: 1.5rem;
+    background: var(--primary-50);
+    border: 1px solid var(--primary-100);
+    border-radius: 16px;
+}
+.school-overview-group h3 {
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+}
+.school-overview-group ol {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.school-overview-group a {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    color: var(--color-gray-700);
+    font-weight: 500;
+    line-height: 1.45;
+}
+.school-overview-group a:hover { color: var(--color-primary); }
+.school-block-num {
+    color: var(--color-primary-light);
+    font-weight: 700;
+}
+
+.school-num {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-right: 0.6rem;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-size: 0.85rem;
+    font-weight: 700;
+    vertical-align: 0.2em;
+}
+.school-overview-group .school-num { margin-right: 0; }
+
+.school-block {
+    padding: 6rem 0;
+    background: var(--color-white);
+}
+.school-block--tint { background: var(--primary-50); }
+.school-block-head { margin-bottom: 2.5rem; }
+.school-block-lead {
+    font-size: 1.25rem;
+    color: var(--color-gray-600);
+    margin: 0;
+}
+
+.school-solution {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-bottom: 4rem;
+}
+.school-solution:last-child { margin-bottom: 0; }
+.school-solution--media { grid-template-columns: 1fr 1.15fr; }
+.school-solution h2 {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    margin-bottom: 0.75rem;
+}
+.school-subtitle {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-primary-light);
+}
+.school-solution-text p { color: var(--color-gray-700); }
+.school-scene {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--color-white);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    box-shadow: var(--shadow-sm);
+}
+.school-block--tint .school-scene { background: var(--color-white); }
+
+.school-badge {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.3rem 0.85rem;
+    border-radius: 50px;
+    background: var(--primary-100);
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.school-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    color: var(--color-gray-700);
+}
+.school-list li {
+    position: relative;
+    padding-left: 1.75rem;
+    line-height: 1.55;
+}
+.school-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.3em;
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 50%;
+    background: var(--primary-100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%231a4b70' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 0.8rem no-repeat;
+}
+.school-solution > .school-list {
+    padding: 1.75rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.school-strip,
+.school-photo {
+    margin: 0 0 2.5rem;
+}
+.school-photo { margin: 0; }
+.school-strip img,
+.school-photo img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.school-demo {
+    margin-top: 1rem;
+}
+.school-demo h3 { margin-bottom: 0.25rem; }
+.school-demo-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-gray-500);
+    margin-bottom: 1.5rem;
+}
+.school-shots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+.school-demo .school-shots {
+    grid-template-columns: 1fr;
+    max-width: 960px;
+    margin: 0 auto;
+    gap: 3rem;
+}
+.school-demo h3,
+.school-demo-label { text-align: center; }
+.school-shot { margin: 0; }
+.school-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    background: var(--color-white);
+}
+.school-shot figcaption {
+    margin-top: 0.85rem;
+    font-size: 0.9rem;
+    color: var(--color-gray-600);
+    line-height: 1.5;
+}
+
+.school-option {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-primary-light);
+}
+.pillar-card .school-list { margin-top: 1rem; font-size: 0.95rem; }
+.school-common {
+    max-width: 860px;
+    margin: 3rem auto 0;
+    padding: 2rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: 16px;
+}
+.school-common h3 { margin-bottom: 1rem; }
+.school-common p { margin: 1.25rem 0 0; color: var(--color-gray-600); }
+
+.about-text .school-list { margin-top: 1.5rem; }
+
+.philosophy .projects-cta .school-cta-text {
+    font-size: 1.1rem;
+    max-width: 640px;
+    margin: 0 auto 2rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+.school-contact {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 2rem;
+    margin-top: 2rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+.school-contact a { color: var(--color-white); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 1024px) {
+    .school-hero .hero-visual { display: block; max-width: 640px; margin: 0 auto; }
+    .school-overview-grid { grid-template-columns: 1fr 1fr; }
+    .school-solution,
+    .school-solution--media { grid-template-columns: 1fr; gap: 2rem; }
+    .school-photo { max-width: 640px; }
+}
+@media (max-width: 768px) {
+    .school-overview,
+    .school-block { padding: 4rem 0; }
+    .school-overview-grid,
+    .school-shots { grid-template-columns: 1fr; }
+    .school-hero-img { order: -1; }
+    .school-solution { margin-bottom: 3rem; }
+    .school-solution > .school-list,
+    .school-common { padding: 1.25rem; }
+    #contacto .projects-cta .btn + .btn { margin-top: 0.75rem; }
+}
