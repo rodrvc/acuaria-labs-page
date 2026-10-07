@@ -1997,3 +1997,22 @@ section {
     .school-common { padding: 1.25rem; }
     #contacto .projects-cta .btn + .btn { margin-top: 0.75rem; }
 }
+
+/* ==========================================
+   Home #projects: 4 tarjetas (2x2) + estado "Disponible"
+   Modificadores; las otras grillas .projects-grid no cambian.
+   ========================================== */
+.projects-grid--four {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.project-status.available .status-dot {
+    background: #16a34a;
+    animation: none;
+}
+
+@media (max-width: 768px) {
+    .projects-grid--four {
+        grid-template-columns: 1fr;
+    }
+}

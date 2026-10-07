@@ -47,4 +47,4 @@ Landing de servicio evergreen (no post de blog), GENÉRICA para cualquier colegi
 Estructura propia (catálogo, no D2 estricto): hero con foto → region-band → "De un vistazo" (6 soluciones en 3 áreas + "Para empezar") → un bloque por área → integración (Informática) → dónde se procesan los datos (3 opciones) → FAQ espejo JSON-LD → otros servicios → CTA demo 30 min.
 CSS: bloque `.school-*` al final de styles.css (estilos D1). Imágenes en `ia-para-colegios/img/` (WebP). Capturas del demo RAG con escudo/nombre genérico "Colegio Ejemplo", rotuladas "Demostración con documentos de ejemplo".
 Reglas de copy: sin precios, sin absolutos ("100%", "siempre", "garantiza", "al instante", "a cualquier hora"), integraciones = "lo definimos con Informática".
-NO enlazada aún desde home/#servicios ni footer global (pendiente decisión de Rodrigo).
+Enlazada (2026-10-07, aprobado por Rodrigo): 4ª tarjeta en home #projects con estado "Disponible" (`.project-status.available`, punto verde, sin parpadeo) + grilla 2x2 `.projects-grid--four` (1 col ≤768px); link "IA para colegios" en la columna Servicios del footer de todas las páginas. Sigue fuera de home #servicios.

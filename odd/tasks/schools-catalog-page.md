@@ -29,6 +29,7 @@ school and can rank for school-related searches (service-page strategy, `docs/de
 - [x] T4 Page HTML (head SEO/OG/JSON-LD, 6 solutions, integration, data options, FAQ, CTA) + CSS block.
 - [x] T5 sitemap + decision log.
 - [x] T6 Visual check at 375 / 768 / 1280 px; genericization grep; fix issues.
+- [x] T7 (approved 2026-10-07) Home #projects 4th card "IA para colegios" with "Disponible" status (green dot modifier), 2x2 grid modifier, footer link on all 13 pages. Checked at 375/768/1280: no horizontal scroll, 2x2 equal heights at 1280, single column at 768/375. Route: inline (mechanical).
 
 Route: inline (single owner; source context already loaded in the parent; one page + one CSS block).
 
