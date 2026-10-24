@@ -47,7 +47,16 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=pulido-site-1">
+    <!-- Three.js (v14): version pinned; downloaded lazily by pipeline-3d.js, desktop only. -->
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -165,7 +174,7 @@
     }
     </script>
 </head>
-<body>
+<body class="original-pulido">
     <!-- Elementos decorativos flotantes -->
     <div class="floating-elements">
         <div class="bubble bubble-1"></div>
@@ -178,7 +187,7 @@
     <!-- Header -->
     <header class="header">
         <nav class="nav container">
-            <a href="#" class="logo">
+            <a href="#inicio" class="logo">
                 <img src="ACUARIA-LABS2.png" alt="Acuaria Labs">
             </a>
             <ul class="nav-links" id="site-nav">
@@ -198,7 +207,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="inicio" class="hero">
         <div class="container hero-content">
             <div class="hero-text">
                 <p class="hero-tag">Laboratorio de IA · Antofagasta, Norte de Chile</p>
@@ -215,6 +224,15 @@
                 </div>
             </div>
             <div class="hero-visual">
+                <!-- Plano de fondo: referencia espacial para el parallax de la hélice. -->
+                <svg class="pulido-depth-back" viewBox="0 0 480 520" aria-hidden="true" focusable="false">
+                    <defs>
+                        <pattern id="pulido-lab-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+                            <path d="M48 0H0V48" fill="none" stroke="currentColor" stroke-width="1"/>
+                        </pattern>
+                    </defs>
+                    <rect x="24" y="20" width="432" height="480" fill="url(#pulido-lab-grid)"/>
+                </svg>
                 <div class="dna-helix">
                     <svg viewBox="0 0 200 400" class="helix-svg">
                         <defs>
@@ -276,139 +294,73 @@
                 </p>
             </div>
 
-            <div class="pipeline-graph" role="img" aria-label="Diagrama del pipeline de IA de Acuaria Labs: los datos del cliente pasan por ingesta, un modelo de lenguaje, agentes especializados y finalmente generan resultados.">
-                <svg class="pipeline-svg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="edgeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#3c80b4"/>
-                            <stop offset="100%" stop-color="#64a1ce"/>
-                        </linearGradient>
-                        <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#64a1ce" stop-opacity="0.22"/>
-                            <stop offset="100%" stop-color="#64a1ce" stop-opacity="0"/>
-                        </radialGradient>
-                    </defs>
-
-                    <!-- Connection edges (paths the particles travel along) -->
-                    <g class="pipeline-edges" fill="none" stroke="url(#edgeGradient)" stroke-width="2">
-                        <path id="edge-1" class="pipe-edge" d="M150,310 C230,310 250,112 330,112"/>
-                        <path id="edge-2" class="pipe-edge" d="M150,310 C230,310 250,508 330,508"/>
-                        <path id="edge-3" class="pipe-edge" d="M430,112 C510,112 490,310 570,310"/>
-                        <path id="edge-4" class="pipe-edge" d="M430,508 C510,508 490,310 570,310"/>
-                        <path id="edge-5" class="pipe-edge" d="M670,310 C750,310 750,112 830,112"/>
-                        <path id="edge-6" class="pipe-edge" d="M670,310 C740,310 760,310 830,310"/>
-                        <path id="edge-7" class="pipe-edge" d="M670,310 C750,310 750,508 830,508"/>
+            <div class="cl-network-toolbar"><span>DATOS QUE AYUDAN A TU EQUIPO Y ACTIVAN TUS SISTEMAS.</span><label><input type="checkbox" class="cl-network-pause"> Pausar animación</label></div>
+            <div class="cl-network-graph" data-label-style="annotation">
+                <svg class="cl-network-links" viewBox="0 0 1000 410" preserveAspectRatio="none" fill="none" aria-hidden="true">
+                    <g stroke="currentColor" stroke-width="1.5">
+                        <path id="cl-net-1" d="M100 150 H350"/>
+                        <path id="cl-net-2" d="M350 150 H600"/>
+                        <path id="cl-net-3" d="M600 150 C735 150 735 75 870 75"/>
+                        <path id="cl-net-4" d="M600 150 C735 150 735 235 870 235"/>
+                        <path id="cl-net-5" d="M970 75 H982 Q990 75 990 83 V332 Q990 340 982 340 H750" stroke-dasharray="4 5"/>
+                        <path id="cl-net-6" d="M970 235 H990" stroke-dasharray="4 5"/>
+                        <path id="cl-net-7" d="M600 295 V220" stroke-dasharray="4 5"/>
                     </g>
-
-                    <!-- Animated data particles travelling along the edges -->
-                    <g class="pipeline-particles" fill="#3c80b4">
-                        <circle r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#edge-1"/></animateMotion></circle>
-                        <circle r="3.5"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite"><mpath href="#edge-2"/></animateMotion></circle>
-                        <circle r="3.5"><animateMotion dur="1.8s" begin="0.6s" repeatCount="indefinite"><mpath href="#edge-3"/></animateMotion></circle>
-                        <circle r="3.5"><animateMotion dur="1.8s" begin="1.8s" repeatCount="indefinite"><mpath href="#edge-4"/></animateMotion></circle>
-                        <circle r="3.5"><animateMotion dur="2s" begin="0.3s" repeatCount="indefinite"><mpath href="#edge-5"/></animateMotion></circle>
-                        <circle r="3.5"><animateMotion dur="2s" begin="1s" repeatCount="indefinite"><mpath href="#edge-6"/></animateMotion></circle>
-                        <circle r="3.5"><animateMotion dur="2s" begin="1.6s" repeatCount="indefinite"><mpath href="#edge-7"/></animateMotion></circle>
-                    </g>
-
-                    <!-- Node glow halos -->
-                    <g class="pipeline-halos">
-                        <circle cx="100" cy="310" r="55" fill="url(#nodeGlow)"/>
-                        <circle cx="380" cy="112" r="55" fill="url(#nodeGlow)"/>
-                        <circle cx="380" cy="508" r="55" fill="url(#nodeGlow)"/>
-                        <circle cx="620" cy="310" r="60" fill="url(#nodeGlow)"/>
-                        <circle cx="880" cy="112" r="50" fill="url(#nodeGlow)"/>
-                        <circle cx="880" cy="310" r="50" fill="url(#nodeGlow)"/>
-                        <circle cx="880" cy="508" r="50" fill="url(#nodeGlow)"/>
+                    <!-- El pulso recorre la ruta completa: 01 -> 02 -> 03, se bifurca en
+                         las dos salidas (04 A / 04 B) y ambas vuelven a 05; el trazo punteado
+                         de 05 -> 03 cierra el ciclo. Las tarjetas se pintan encima del SVG,
+                         asi que el pulso "entra" y "sale" de cada una sin cruzarlas por fuera.
+                         Un solo trazo por ruta con stroke-dashoffset animado: sin JS. -->
+                    <g class="cl-network-particles" fill="none" stroke="#a9d9f5" stroke-linecap="round">
+                        <path class="cl-pulse cl-pulse-a" pathLength="1000" d="M100 150 H600 C735 150 735 75 870 75 H982 Q990 75 990 83 V332 Q990 340 982 340 H750"/>
+                        <path class="cl-pulse cl-pulse-b" pathLength="1000" d="M100 150 H600 C735 150 735 235 870 235 H982 Q990 235 990 243 V332 Q990 340 982 340 H750"/>
+                        <path class="cl-pulse cl-pulse-c" pathLength="1000" d="M600 295 V220"/>
                     </g>
                 </svg>
-
-                <div class="pipe-nodes">
-                    <article class="pipe-node node-source" style="--x:10%; --y:50%;" data-step="01">
-                        <div class="node-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                                <ellipse cx="12" cy="6" rx="7" ry="3"/>
-                                <path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/>
-                                <path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>
-                            </svg>
-                        </div>
-                        <h3>Tus datos</h3>
-                        <p>Documentos, APIs, bases de datos, conversaciones.</p>
-                    </article>
-
-                    <article class="pipe-node node-ingest" style="--x:38%; --y:18%;" data-step="02">
-                        <div class="node-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                                <path d="M4 7h16M4 12h16M4 17h10"/>
-                                <circle cx="18" cy="17" r="3"/>
-                            </svg>
-                        </div>
-                        <h3>Ingesta &amp; embeddings</h3>
-                        <p>Limpiamos, estructuramos y vectorizamos la información.</p>
-                    </article>
-
-                    <article class="pipe-node node-retrieval" style="--x:38%; --y:82%;" data-step="03">
-                        <div class="node-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                                <circle cx="11" cy="11" r="7"/>
-                                <path d="M21 21l-4.3-4.3"/>
-                            </svg>
-                        </div>
-                        <h3>Recuperación (RAG)</h3>
-                        <p>Buscamos el contexto relevante en una base vectorial.</p>
-                    </article>
-
-                    <article class="pipe-node node-model featured-node" style="--x:62%; --y:50%;" data-step="04">
-                        <div class="node-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                                <rect x="5" y="5" width="14" height="14" rx="3"/>
-                                <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
-                                <circle cx="12" cy="12" r="2.5"/>
-                            </svg>
-                        </div>
-                        <h3>Modelo / LLM</h3>
-                        <p>El núcleo de razonamiento que procesa y genera.</p>
-                    </article>
-
-                    <article class="pipe-node node-agent" style="--x:88%; --y:18%;" data-step="05">
-                        <div class="node-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                                <circle cx="12" cy="8" r="4"/>
-                                <path d="M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7"/>
-                            </svg>
-                        </div>
-                        <h3>Agentes</h3>
-                        <p>Ejecutan tareas, llaman herramientas y deciden.</p>
-                    </article>
-
-                    <article class="pipe-node node-output" style="--x:88%; --y:50%;" data-step="06">
-                        <div class="node-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                                <path d="M5 12l4 4 10-10"/>
-                            </svg>
-                        </div>
-                        <h3>Resultados</h3>
-                        <p>Respuestas, automatizaciones y decisiones accionables.</p>
-                    </article>
-
-                    <article class="pipe-node node-feedback" style="--x:88%; --y:82%;" data-step="07">
-                        <div class="node-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                                <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
-                                <path d="M21 3v5h-5"/>
-                                <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
-                                <path d="M3 21v-5h5"/>
-                            </svg>
-                        </div>
-                        <h3>Feedback loop</h3>
-                        <p>Medimos, evaluamos y mejoramos el sistema en producción.</p>
-                    </article>
-                </div>
+            <ol class="cl-flow">
+                <li>
+                    <span class="cl-flow-step">01</span>
+                    <svg viewBox="0 0 24 24" stroke-width="1.7" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+                    <h3>Tus datos</h3>
+                    <p>Documentos, APIs, bases de datos, conversaciones.</p>
+                </li>
+                <li>
+                    <span class="cl-flow-step">02</span>
+                    <svg viewBox="0 0 24 24" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="18" cy="17" r="3"/></svg>
+                    <h3>Preparación y contexto</h3>
+                    <p>Ordenamos la información y buscamos lo relevante.</p>
+                </li>
+                <li class="cl-flow-featured">
+                    <span class="cl-flow-step">03</span>
+                    <svg viewBox="0 0 24 24" stroke-width="1.7" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/><circle cx="12" cy="12" r="2.5"/></svg>
+                    <h3>IA + herramientas</h3>
+                    <p>Interpreta la información y resuelve tareas.</p>
+                    <span class="cl-flow-tag">NÚCLEO DEL SISTEMA</span>
+                </li>
+                <li>
+                    <span class="cl-flow-step">04 A</span>
+                    <svg viewBox="0 0 24 24" stroke-width="1.7" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 12h8M8 16h6"/></svg>
+                    <h3>Informes y respuestas</h3>
+                    <p>Información clara para apoyar las decisiones de tu equipo.</p>
+                </li>
+                <li>
+                    <span class="cl-flow-step">04 B</span>
+                    <svg viewBox="0 0 24 24" stroke-width="1.7" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>
+                    <h3>Acciones y automatización</h3>
+                    <p>Tareas ejecutadas en tus sistemas, con los controles acordados.</p>
+                </li>
+                <li>
+                    <span class="cl-flow-step">05</span>
+                    <svg viewBox="0 0 24 24" stroke-width="1.7" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+                    <h3>Revisión y mejora</h3>
+                    <p>Evaluamos los resultados y ajustamos el sistema con tu equipo.</p>
+                </li>
+            </ol>
             </div>
-
-            <div class="pipeline-cta">
+            <p class="cl-flow-loop">Dos salidas complementarias, según tu proyecto. La revisión permite ajustar el sistema; no implica que aprenda por sí solo.</p>
+            <div class="cl-flow-note">
                 <p>Construimos exactamente este tipo de sistemas a la medida de tu proyecto.</p>
-                <a href="#contact" class="btn btn-primary">Conversemos tu idea</a>
+                <a class="cl-button" href="#contact">Conversemos tu idea</a>
             </div>
         </div>
     </section>
@@ -421,7 +373,7 @@
                 <h2>Soluciones de IA para tu negocio</h2>
                 <p class="section-subtitle">Formas concretas en que la inteligencia artificial puede trabajar para tu empresa, desde Antofagasta para todo Chile.</p>
             </div>
-            <div class="projects-grid">
+            <div class="projects-grid projects-grid--four">
                 <a class="project-card-link" href="chatbots-whatsapp/index.html" aria-label="Chatbots de WhatsApp - ver servicio">
                     <article class="project-card">
                     <div class="project-icon" aria-hidden="true">
@@ -928,5 +880,7 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="pulido-motion.js?v=site-1"></script>
+    <script type="module" src="pipeline-3d.js?v=5b"></script>
 </body>
 </html>
